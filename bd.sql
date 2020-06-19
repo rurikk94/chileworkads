@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS `persona` (
   `apellidos` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `fecha_nacimiento` date DEFAULT NULL,
   `correo` varchar(50) NOT NULL,
-  `contrasena` varchar(50) NOT NULL,
+  `contrasena` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `tipo_user` enum('1','2','3') NOT NULL DEFAULT '1' COMMENT '1, usuario que puede agregar favoritos y comentar, 2 usuario que ofrece trabajo, 3 admin',
   `enable` enum('0','1','2','3') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '1' COMMENT '0, usuario no habilitado, 1 usario creado esperando confirmacion email, 2 usuaro habilitado',
   `borrado` datetime DEFAULT NULL,

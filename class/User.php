@@ -6,52 +6,48 @@ include_once("Validar.php");
  */
 class User
 {
-    private $cod_acc;
-    private $cod_user;
-    private $txt_acc;   //nombre_user
-    private $pass;
-    private $cod_off;   //activo?
-    private $status;    //estado?
+    private $id;
+    private $nombres;
+    private $correo;
+    private $contrasena;
 
-    private $cod_rol;   //Rol  anonimo/adminSistema/ejecutivo/profCertificado/...
-    private $cod_usertype;   //UserType paciente/profesional/asistente/institucion/servicio
+    private $tipo_user;
 
-    function __construct($userName,$password)
+    function __construct($correo,$password)
     {
         $validar = new Validar();
-        $userName = $validar->getValidados($userName);
+        $correo = $validar->getValidados($correo);
         $password = $validar->getValidados($password);
         $conn = new Db();
-        $query = "SELECT * FROM Account WHERE txt_acc = :txt_acc AND pass = :pass";
-        $user = $conn->seleccionar($query, ["txt_acc" => $userName,"pass" => $password]);
+        $query = "SELECT * FROM persona WHERE correo = '$correo'";// AND pass = '$password'";
+        $user = $conn->seleccionar($query, [$correo,$password]);
         if(sizeof($user)>0)
         {
-            $this->cod_acc = $user["cod_acc"];
-            $this->cod_user = $user["cod_user"];
-            $this->txt_acc = $user["txt_acc"];
-            $this->pass = $user["pass"];
-            $this->status = $user["status"];
-            $this->user_type = $user["user_type"];
+            $user = $user[0];
+            $this->id = $user["id"];
+            $this->nombres = $user["nombres"];
+            $this->correo = $user["correo"];
+            $this->contrasena = $user["contrasena"];
+            $this->tipo_user = $user["tipo_user"];
 
-            //$this->cod_rol = $user["user_type"];
         }
         return null;
     }
 
     public function is_admin()
     {
-        $admin_cod_rol = 2;
-        if ($this->user_type == $admin_cod_rol)
+        $admin_tipo_user = 2;
+        if ($this->tipo_user == $admin_tipo_user)
             return true;
         return false;
     }
-    public function getCodAcc(){
-        return $this->cod_acc;
+    public function getId(){
+        return $this->id;
     }
-    public function getTxtAcc(){
-        return $this->txt_acc;
+    public function getCorreo(){
+        return $this->correo;
     }
-    public function getPass(){
-        return $this->pass;
+    public function getContrasena(){
+        return $this->contrasena;
     }
 }

@@ -4,6 +4,9 @@ global $site_config;
 require_once('config.php');  //están las variables del sitio ($site_config)
 require_once('constantes.php');  //están las variables del sitio ($site_config)
 
+require_once($site_config['SITE']['base'] . '/class/Db.php');
+require_once($site_config['SITE']['base'] . '/class/User.php');
+
 
 function is_login(){
     comenzar_sesion();
@@ -12,10 +15,10 @@ function is_login(){
         die();
      }
 
-     if(!login($_SESSION['user']->getTxtAcc(),$_SESSION['user']->getPass())){
+     /* if(!login($_SESSION['user']->getCorreo(),$_SESSION['user']->getContrasena())){
         header("location:".__URL__."login.php");
         die();
-     }
+     } */
 }
 function comenzar_sesion(){
     if(!is_session_started())
@@ -25,11 +28,14 @@ function login($user,$pass){
     if(!is_null($user)&&!is_null($user)&&is_string($user)&&is_string($pass))
     {
         $user = new User($user,$pass);
-        if(!is_null($user->getCodAcc()))
+        if(!is_null($user->getId()))
         {
-            comenzar_sesion();
-            $_SESSION["user"]=$user;
-            return $user;
+            if(password_verify($pass, $user->getContrasena()))
+            {
+                comenzar_sesion();
+                $_SESSION["user"]=$user;
+                return $user;
+            }
         }
 
         else
