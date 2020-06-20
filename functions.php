@@ -6,6 +6,7 @@ require_once('constantes.php');  //están las variables del sitio ($site_config)
 
 require_once($site_config['SITE']['base'] . '/class/Db.php');
 require_once($site_config['SITE']['base'] . '/class/User.php');
+require_once($site_config['SITE']['base'] . '/class/Region.php');
 
 
 function is_login($r=true){
@@ -102,4 +103,15 @@ function modal($modal=null)
 {
     if ($modal && isset($modal["cuerpo"]) && isset($modal["titulo"]))
         require("./modal.php");
+}
+function regiones($filtro=[]){
+    $conn = new Db();
+    $query="SELECT *
+        FROM region
+        WHERE borrado IS NULL";
+    if(isset($filtro["id"]) && !is_null($filtro["id"]))
+    {
+        $query.=" AND id = ". $conn->validar($filtro["id"]);
+    }
+    return $conn->seleccionarObject($query,"Region");
 }
