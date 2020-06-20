@@ -6,17 +6,17 @@ include_once("Validar.php");
  */
 class Region
 {
-    private $id;
+    private $id_region;
     private $nombre_region;
 
     public function getId(){
-        return $this->id;
+        return $this->id_region;
     }
     public function getNombreRegion(){
         return $this->nombre_region;
     }
     public function setId($id){
-        $this->id = $id;
+        $this->id_region = $id;
     }
     public function setNombreRegion($nombre){
         $validar = new Validar();

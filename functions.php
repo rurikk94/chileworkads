@@ -7,6 +7,9 @@ require_once('constantes.php');  //están las variables del sitio ($site_config)
 require_once($site_config['SITE']['base'] . '/class/Db.php');
 require_once($site_config['SITE']['base'] . '/class/User.php');
 require_once($site_config['SITE']['base'] . '/class/Region.php');
+require_once($site_config['SITE']['base'] . '/class/Comuna.php');
+require_once($site_config['SITE']['base'] . '/class/Oficio.php');
+require_once($site_config['SITE']['base'] . '/class/Upload.php');
 
 
 function is_login($r=true){
@@ -27,6 +30,23 @@ function is_login($r=true){
             return true;
         }
     return true;
+}
+/**
+ * retorna la url del sitio + el parametro enviado
+ */
+function site_url($input=null){
+    $string = "";
+    switch (gettype($input)) {
+        case 'string':
+            $string = $input;
+            break;
+        case 'array':
+            $string = implode("/", $input);
+            break;
+        default:
+            break;
+    }
+    return __URL__ . $string;
 }
 function revisarEnable($correo)
 {
@@ -114,4 +134,34 @@ function regiones($filtro=[]){
         $query.=" AND id = ". $conn->validar($filtro["id"]);
     }
     return $conn->seleccionarObject($query,"Region");
+}
+function comunas($filtro=[]){
+    $conn = new Db();
+    $query="SELECT id_comuna, region_id, nombre_comuna, r.nombre_region
+        FROM comuna c
+        LEFT JOIN region r on r.id_region = c.region_id
+        WHERE c.borrado IS NULL AND r.borrado IS NULL";
+    if(isset($filtro["id"]) && !is_null($filtro["id"]))
+    {
+        $query.=" AND id_comuna = ". $conn->validar($filtro["id"]);
+    }
+    return $conn->seleccionarObject($query,"Comuna");
+}
+function oficios($filtro=[]){
+    $conn = new Db();
+    $query="SELECT id, oficio_nombre, oficio_icon, enable, categoria, cant FROM oficio o
+    LEFT JOIN (
+    SELECT oficio_id,COUNT(oficio_id) cant FROM persona_oficio
+    GROUP BY oficio_id) c
+    ON c.oficio_id = o.id
+    WHERE ENABLE = '1'";
+    if(isset($filtro["id"]) && !is_null($filtro["id"]))
+    {
+        $query.=" AND id = ". $conn->validar($filtro["id"]);
+    }
+    if(isset($filtro["nombre"]) && !is_null($filtro["nombre"]))
+    {
+        $query.=" AND oficio_nombre = ". $conn->validar($filtro["nombre"]);
+    }
+    return $conn->seleccionarObject($query,"Oficio");
 }
