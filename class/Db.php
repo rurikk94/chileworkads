@@ -42,24 +42,20 @@ class Db
     }
 
     /** ejecuta una query y puede mandar parametros a  */
-    public function update($sql = null, $datos = null)
+    public function update($query = null, $datos = null)
     {
-        try {
-            $insertStatement  =  $this->_connection->prepare($sql);
-            $resultado = $insertStatement->execute($datos);
+        $this->conectar();
+        if (mysqli_query($this->_connection, $query)) {
+            //$last_id = $this->_connection->insert_id;
             $this->desconectar();
-            return $resultado;
-        } catch (PDOException $e) {
-
-            if (!$this->_connection) {
-                print "¡Error! (" . $e->getCode() . "): " . $e->getMessage() . "<br/>";
-                $this->desconectar();
-                return FALSE;
-                die();
-                exit;
-            }
-            return NULL;
-        }
+            return TRUE;
+            //echo "New record created successfully";
+          } else {
+            echo "Error: " . $query . "<br>" . mysqli_error($this->_connection);
+            $this->desconectar();
+            RETURN FALSE;
+          }
+        $this->desconectar();
     }
 
     /** ejecuta una query y puede mandar parametros a  */
@@ -114,5 +110,9 @@ class Db
             echo "Error: " . $query . "<br>" . mysqli_error($this->_connection);
           }
         $this->desconectar();
+    }
+    function validar($value)
+    {
+        return mysqli_real_escape_string($this->_connection,$value);
     }
 }

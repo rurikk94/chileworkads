@@ -64,3 +64,38 @@ function is_session_started()
 function is_admin(){
     is_login();
 }
+function enviar_email($account=null,$message=null){
+    if(is_null($account) OR is_null($message))
+        return FALSE;
+    require_once("./vendor/phpmailer/PHPMailerAutoload.php");
+    /*Lo primero es añadir al script la clase phpmailer desde la ubicación en que esté*/
+    //require '../class.phpmailer.php';
+
+    //Crear una instancia de PHPMailer
+    $mail = new PHPMailer();
+    //Definir que vamos a usar SMTP
+    $mail->IsSMTP();
+    $mail->isHTML(true);
+    //Esto es para activar el modo depuración. En entorno de pruebas lo mejor es 2, en producción siempre 0
+    // 0 = off (producción)
+    // 1 = client messages
+    // 2 = client and server messages
+    $mail->SMTPDebug  = 0;
+    $mail->Host       = $account["host"];//'smtp.gmail.com'
+    $mail->Port       = $account["port"];//587;
+    $mail->SMTPSecure = 'tls';
+    $mail->SMTPAuth   = true;
+    $mail->Username   = $account["username"];//"videojuegos01vina@gmail.com";
+    $mail->Password   = $account["password"];//"videojuegos01";
+    $mail->SetFrom($message["byEmail"], $message["byName"]);//'ChileWorkAds@gmail.com','ChileWorkAds'
+    $mail->AddAddress($message["forEmail"],$message["forName"]);
+    $mail->Subject = $message["Titulo"];//'ChileWorkAds Bienvenido!';
+    $mail->Body = $message["Body"];//'Gracias por registrarse, su nombre es '.$nombre;
+    if(!$mail->Send()) {
+        //echo "Error: " . $mail->ErrorInfo;
+        return FALSE;
+    } else {
+        //echo "Enviado!";
+        return TRUE;
+    }
+}

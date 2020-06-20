@@ -26,6 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST'){
 <div class="container">
 <h1>Login</h1>
 <a name="btn-register" id="btn-register" class="btn btn-primary" href="./register.php" role="button">Registrarse</a>
+<a name="btn-recovery" id="btn-recovery" class="btn btn-primary" href="./recovery.php" role="button">Recuperar Contraseña</a>
 <form method="post">
 <label for="email">email</label>
 <input type="email" name="correo" id="correo">
