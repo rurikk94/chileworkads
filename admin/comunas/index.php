@@ -1,4 +1,4 @@
-<?php require_once("../../../functions.php"); ?>
+<?php require_once("../../functions.php"); ?>
 <?php is_admin();?>
 <!DOCTYPE html>
 <html lang="en">

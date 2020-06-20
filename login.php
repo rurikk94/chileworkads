@@ -1,15 +1,36 @@
 <?php require_once("./functions.php"); ?>
+<?php is_login(false); ?>
 <?php
 
 
 if ($_SERVER["REQUEST_METHOD"] == 'POST'){
     $email=$_POST["correo"];
     $pass=$_POST["contrasena"];
-    $asd=login($email,$pass);
-    if($asd){
-        header("location:".__URL__."index.php");
-        die();
-    }
+    $l = login($email,$pass);
+            if($l === 0){
+                $modal["titulo"]="Error";
+                $modal["cuerpo"]="Contraseña incorrecta";
+            }
+            if($l === 1)
+            {
+                $modal["titulo"]="Error";
+                $modal["cuerpo"]="Usuario no activado";
+            }
+            if($l === false)
+            {
+                $modal["titulo"]="Error";
+                $modal["cuerpo"]="Usuario no existe";
+            }
+            if(is_null($l))
+            {
+                $modal["titulo"]="Error";
+                $modal["cuerpo"]="No envió datos";
+            }
+            if(is_login(false))
+            {
+                header("location:".__URL__."index.php");
+                die();
+            }
 }
 ?>
 <!DOCTYPE html>
@@ -25,6 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST'){
 <body>
 <div class="container">
 <h1>Login</h1>
+<?php isset($modal) ? modal($modal) :'' ?>
 <a name="btn-register" id="btn-register" class="btn btn-primary" href="./register.php" role="button">Registrarse</a>
 <a name="btn-recovery" id="btn-recovery" class="btn btn-primary" href="./recovery.php" role="button">Recuperar Contraseña</a>
 <form method="post">

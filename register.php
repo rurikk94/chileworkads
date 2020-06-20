@@ -30,10 +30,13 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST'){
         $message["Titulo"]='ChileWorkAds Bienvenido!';
         $message["Body"]="<html><body>"
         ."<h1>ChileWorkAds</h1>"
-        ."Gracias por registrarse."
-        ."<a href='". __URL__."'>VISITAR</a>"
-        ."</body></html>";;
-    enviar_email($account,$message);
+        ."<p>Gracias por registrarse.</p><br/>"
+        ."<p>Siga el siguiente link para activar la cuenta.</p><br/>"
+        ."<a href='". __URL__."activar.php?id=".$contrasenaCodificada."'>ACTIVAR CUENTA</a>"
+        ."</body></html>";
+    if(enviar_email($account,$message)){
+        $modal["titulo"]="Registrar Cuenta.";
+        $modal["cuerpo"]="Se ha enviado un email a su correo.";}
 }
 ?>
 <!DOCTYPE html>
@@ -44,11 +47,12 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST'){
         <link rel="stylesheet" href="<?=__URL__.'/'?>css/bootstrap.css">
         <script src="<?=__URL__.'/'?>js/jquery-3.4.1.min.js"></script>
         <script src="<?=__URL__.'/'?>js/bootstrap.min.js"></script>
-    <title>Register</title>
+    <title>Registrarse</title>
 </head>
 <body>
 <div class="container">
-<h1>Register</h1>
+<h1>Registrarse</h1>
+<?php isset($modal) ? modal($modal) :'' ?>
 <a name="btn-login" id="btn-login" class="btn btn-primary" href="./login.php" role="button">Login</a>
 <a name="btn-recovery" id="btn-recovery" class="btn btn-primary" href="./recovery.php" role="button">Recuperar Contraseña</a>
 <form method="post">

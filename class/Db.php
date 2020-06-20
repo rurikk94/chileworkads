@@ -47,15 +47,16 @@ class Db
         $this->conectar();
         if (mysqli_query($this->_connection, $query)) {
             //$last_id = $this->_connection->insert_id;
-            $this->desconectar();
+            //$this->desconectar();
             return TRUE;
             //echo "New record created successfully";
           } else {
             echo "Error: " . $query . "<br>" . mysqli_error($this->_connection);
-            $this->desconectar();
+            //$this->desconectar();
             RETURN FALSE;
           }
-        $this->desconectar();
+        //$this->desconectar();
+        return NULL;
     }
 
     /** ejecuta una query y puede mandar parametros a  */
@@ -65,13 +66,13 @@ class Db
             $insertStatement  =  $this->_connection->prepare($sql);
             $resultado = $insertStatement->execute($datos);
             $resultado = $this->_connection->lastInsertId();
-            $this->desconectar();
+            //$this->desconectar();
             return $resultado;
         } catch (PDOException $e) {
 
             if (!$this->_connection) {
                 print "¡Error! (" . $e->getCode() . "): " . $e->getMessage() . "<br/>";
-                $this->desconectar();
+                //$this->desconectar();
                 return FALSE;
                 die();
                 exit;
@@ -81,7 +82,7 @@ class Db
     }
 
     /** selecciona devuelve array dependiendo de cant resultados */
-    function seleccionar($query = NULL, $datos = null)
+    function seleccionar($query = NULL)
     {
         $this->conectar();
         $result = $this->_connection->query($query);

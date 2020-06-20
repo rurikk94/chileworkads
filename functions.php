@@ -8,17 +8,34 @@ require_once($site_config['SITE']['base'] . '/class/Db.php');
 require_once($site_config['SITE']['base'] . '/class/User.php');
 
 
-function is_login(){
+function is_login($r=true){
     comenzar_sesion();
-    if(!isset($_SESSION['user'])){
-        header("location:".__URL__."login.php");
-        die();
+    if(!isset($_SESSION['user'])){  //si no existen datos de sesion
+        if($r)  //si activada redirigir
+            {
+                header("location:".__URL__."login.php");    //redirige
+                die();
+            }else{
+                return false;   //retorna false
+            }
      }
-
-     /* if(!login($_SESSION['user']->getCorreo(),$_SESSION['user']->getContrasena())){
-        header("location:".__URL__."login.php");
-        die();
-     } */
+     //si existen datos de sesion
+     if(revisarEnable($_SESSION["user"]->getCorreo())!=2){  //revisa enable del user, si no es 2 (activo)
+            logout(true);  //deslogea con redireccion
+        }else{  //si user enable = 2
+            return true;
+        }
+    return true;
+}
+function revisarEnable($correo)
+{
+    $user = new User($correo);
+    return $user->getEnable();
+}
+function revisarAdmin($correo)
+{
+    $user = new User($correo);
+    return $user->is_admin();
 }
 function comenzar_sesion(){
     if(!is_session_started())
@@ -27,28 +44,29 @@ function comenzar_sesion(){
 function login($user,$pass){
     if(!is_null($user)&&!is_null($user)&&is_string($user)&&is_string($pass))
     {
-        $user = new User($user,$pass);
-        if(!is_null($user->getId()))
-        {
-            if(password_verify($pass, $user->getContrasena()))
-            {
-                comenzar_sesion();
-                $_SESSION["user"]=$user;
-                return $user;
-            }
-        }
-
-        else
-            return false;
+        $user = new User($user);
+            if(is_null($user->getId()))
+                return false;
+            if(!password_verify($pass, $user->getContrasena()))
+                return 0;
+            if($user->getEnable()!='2')
+                return 1;
+            comenzar_sesion();
+            $_SESSION["user"]=$user;
+            return $user;
     }
     return NULL;
 }
-function logout(){
+function logout($r=true){
     comenzar_sesion();
 
     if(session_destroy()) {
-        header("Location: ".__URL__."login.php");
+        if($r)
+            {header("Location: ".__URL__."login.php");die();}
+        else
+            return true;
    }
+    return false;
 }
 function is_session_started()
 {
@@ -61,41 +79,27 @@ function is_session_started()
     }
     return FALSE;
 }
-function is_admin(){
-    is_login();
+function is_admin($r=true){
+    if(is_login(false)){
+        if(!revisarAdmin($_SESSION["user"]->getCorreo())){
+            if($r)
+                header("Location: ".__URL__."index.php");die();
+            return false;
+        }
+        return true;}
+        if($r)
+            header("Location: ".__URL__."index.php");die();
+        return false;
+
 }
 function enviar_email($account=null,$message=null){
     if(is_null($account) OR is_null($message))
-        return FALSE;
-    require_once("./vendor/phpmailer/PHPMailerAutoload.php");
-    /*Lo primero es añadir al script la clase phpmailer desde la ubicación en que esté*/
-    //require '../class.phpmailer.php';
-
-    //Crear una instancia de PHPMailer
-    $mail = new PHPMailer();
-    //Definir que vamos a usar SMTP
-    $mail->IsSMTP();
-    $mail->isHTML(true);
-    //Esto es para activar el modo depuración. En entorno de pruebas lo mejor es 2, en producción siempre 0
-    // 0 = off (producción)
-    // 1 = client messages
-    // 2 = client and server messages
-    $mail->SMTPDebug  = 0;
-    $mail->Host       = $account["host"];//'smtp.gmail.com'
-    $mail->Port       = $account["port"];//587;
-    $mail->SMTPSecure = 'tls';
-    $mail->SMTPAuth   = true;
-    $mail->Username   = $account["username"];//"videojuegos01vina@gmail.com";
-    $mail->Password   = $account["password"];//"videojuegos01";
-    $mail->SetFrom($message["byEmail"], $message["byName"]);//'ChileWorkAds@gmail.com','ChileWorkAds'
-    $mail->AddAddress($message["forEmail"],$message["forName"]);
-    $mail->Subject = $message["Titulo"];//'ChileWorkAds Bienvenido!';
-    $mail->Body = $message["Body"];//'Gracias por registrarse, su nombre es '.$nombre;
-    if(!$mail->Send()) {
-        //echo "Error: " . $mail->ErrorInfo;
-        return FALSE;
-    } else {
-        //echo "Enviado!";
-        return TRUE;
-    }
+        return NULL;
+    require("./sendemail.php");
+    return send_email($account,$message);
+}
+function modal($modal=null)
+{
+    if ($modal && isset($modal["cuerpo"]) && isset($modal["titulo"]))
+        require("./modal.php");
 }

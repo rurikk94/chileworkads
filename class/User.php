@@ -12,16 +12,16 @@ class User
     private $contrasena;
 
     private $tipo_user;
+    private $enable;
 
-    function __construct($correo,$password)
+    function __construct($correo)
     {
         $validar = new Validar();
         $correo = $validar->getValidados($correo);
-        $password = $validar->getValidados($password);
         $conn = new Db();
         $query = "SELECT * FROM persona WHERE correo = '$correo'";// AND pass = '$password'";
-        $user = $conn->seleccionar($query, [$correo,$password]);
-        if(sizeof($user)>0)
+        $user = $conn->seleccionar($query);
+        if(!is_null($user) && sizeof($user)>0)
         {
             $user = $user[0];
             $this->id = $user["id"];
@@ -29,6 +29,7 @@ class User
             $this->correo = $user["correo"];
             $this->contrasena = $user["contrasena"];
             $this->tipo_user = $user["tipo_user"];
+            $this->enable = $user["enable"];
 
         }
         return null;
@@ -36,7 +37,7 @@ class User
 
     public function is_admin()
     {
-        $admin_tipo_user = 2;
+        $admin_tipo_user = 3;
         if ($this->tipo_user == $admin_tipo_user)
             return true;
         return false;
@@ -49,5 +50,8 @@ class User
     }
     public function getContrasena(){
         return $this->contrasena;
+    }
+    public function getEnable(){
+        return $this->enable;
     }
 }

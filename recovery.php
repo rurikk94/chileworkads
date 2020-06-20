@@ -39,7 +39,9 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST'){
     ."<p>Recupere su contraseña en el siguiente link</p><br/> "
     ."<a href='". __URL__."recovery.php?id=".$user[0]["contrasena"]."'>CAMBIAR CONTRASEÑA</a>"
     ."</body></html>";
-    enviar_email($account,$message);
+    if(enviar_email($account,$message)){
+        $modal["titulo"]="Recuperar Contraseña.";
+        $modal["cuerpo"]="Se ha enviado un email a su correo.";}
 }
 ?>
 <!DOCTYPE html>
@@ -55,7 +57,9 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST'){
 <body>
 <div class="container">
 <h1>Recuperar Contraseña</h1>
+<?php isset($modal) ? modal($modal) :'' ?>
 <a name="btn-login" id="btn-login" class="btn btn-primary" href="./login.php" role="button">Login</a>
+<a name="btn-register" id="btn-register" class="btn btn-primary" href="./register.php" role="button">Registrarse</a>
 <form method="post">
 <label for="email">Correo</label>
 <input type="email" name="correo" id="correo">

@@ -1,5 +1,5 @@
 <?php require_once("./functions.php"); ?>
-<?php is_login();?>
+<?php is_login(true);?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
