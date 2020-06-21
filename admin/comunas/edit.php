@@ -26,6 +26,7 @@ if (($_SERVER["REQUEST_METHOD"] == 'POST') && isset($_POST["id"]) && isset($_POS
     <title>Admin</title>
 </head>
 <body>
+<?php require_once(__BASE__."nav.php");?>
     <div class="container">
     <h1>Editar Comuna</h1>
         <a name="btn-add" id="btn-add" class="btn btn-primary" href="./index.php" role="button">Volver</a>

@@ -11,10 +11,9 @@
     <title>ChileWorkAds</title>
 </head>
 <body>
+<?php require_once(__BASE__."nav.php");?>
 <div class="container">
 <h1>ChileWorkAds</h1>
-<a name="btn-logout" id="btn-logout" class="btn btn-primary" href="./logout.php" role="button">Salir</a>
-index
 <table class="table">
     <thead>
         <tr>

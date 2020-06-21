@@ -104,13 +104,14 @@ function is_admin($r=true){
     if(is_login(false)){
         if(!revisarAdmin($_SESSION["user"]->getCorreo())){
             if($r)
-                header("Location: ".__URL__."index.php");die();
+                {header("Location: ".__URL__."index.php");die();}
             return false;
         }
-        return true;}
-        if($r)
-            header("Location: ".__URL__."index.php");die();
-        return false;
+        return true;
+    }
+    if($r)
+        {header("Location: ".__URL__."index.php");die();}
+    return false;
 
 }
 function enviar_email($account=null,$message=null){

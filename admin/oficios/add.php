@@ -37,6 +37,7 @@ if (isset($_FILES["photo"])){
     <title>Admin</title>
 </head>
 <body>
+<?php require_once(__BASE__."nav.php");?>
     <div class="container">
         <h1>Agregar Oficio</h1>
         <a name="btn-volver" id="btn-add" class="btn btn-primary" href="../index.php" role="button">Volver</a>

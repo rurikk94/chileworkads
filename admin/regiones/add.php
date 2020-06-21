@@ -21,6 +21,7 @@ if (($_SERVER["REQUEST_METHOD"] == 'POST') && isset($_POST["nombre_region"])){
     <title>Admin</title>
 </head>
 <body>
+<?php require_once(__BASE__."nav.php");?>
     <div class="container">
     <h1>Agregar Región</h1>
         <a name="btn-add" id="btn-add" class="btn btn-primary" href="./index.php" role="button">Volver</a>

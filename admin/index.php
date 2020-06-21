@@ -11,6 +11,7 @@
     <title>Admin</title>
 </head>
 <body>
+<?php require_once(__BASE__."nav.php");?>
 <div class="container">
 <h1>Administrar</h1>
 <a name="" id="" class="btn btn-primary" href="./usuarios/index.php" role="button">Usuarios</a>

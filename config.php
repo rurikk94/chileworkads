@@ -5,7 +5,7 @@
     $site_config['PDO']['user']="chileworkads";
     $site_config['PDO']['pass']="chileworkads";
     $site_config['SITE']['base']=dirname(__FILE__).'/';
-    $site_config['SITE']['URL']="http://127.0.0.1/chileworkads/";
+    $site_config['SITE']['URL']="http://190.47.174.39/chileworkads/";
 
 /*
     $site_config['PDO']['server']="sql10.freemysqlhosting.net";

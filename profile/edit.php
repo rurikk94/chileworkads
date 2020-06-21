@@ -8,6 +8,8 @@
     <title>Editar Perfil</title>
 </head>
 <body>
+<?php require_once(__BASE__."nav.php");?>
+<h1>Editar</h1>
 
 </body>
 </html>

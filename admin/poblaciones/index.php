@@ -8,6 +8,7 @@
     <title>Admin</title>
 </head>
 <body>
+<?php require_once(__BASE__."nav.php");?>
 <a name="" id="" class="btn btn-primary" href="#" role="button">Agregar</a>
 <table class="table">
     <thead>

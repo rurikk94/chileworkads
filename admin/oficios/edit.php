@@ -40,6 +40,7 @@ if (($_SERVER["REQUEST_METHOD"] == 'POST')){
     <title>Admin</title>
 </head>
 <body>
+<?php require_once(__BASE__."nav.php");?>
     <div class="container">
         <h1>Editar Oficio</h1>
         <a name="btn-volver" id="btn-add" class="btn btn-primary" href="../index.php" role="button">Volver</a>
