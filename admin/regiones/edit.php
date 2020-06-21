@@ -14,7 +14,7 @@ if (($_SERVER["REQUEST_METHOD"] == 'POST') && isset($_POST["id"]) && isset($_POS
 }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
 <?php require_once(__BASE__."nav.php");?>
     <meta charset="UTF-8">

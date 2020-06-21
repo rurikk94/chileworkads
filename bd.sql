@@ -17,19 +17,27 @@ CREATE DATABASE IF NOT EXISTS `chileworkads` /*!40100 DEFAULT CHARACTER SET utf8
 USE `chileworkads`;
 
 -- Volcando estructura para tabla chileworkads.ciudad
+DROP TABLE IF EXISTS `ciudad`;
 CREATE TABLE IF NOT EXISTS `ciudad` (
   `id_ciudad` bigint NOT NULL AUTO_INCREMENT,
   `comuna_id` bigint NOT NULL,
   `nombre_ciudad` varchar(50) NOT NULL,
+  `borrado` datetime DEFAULT NULL,
   PRIMARY KEY (`id_ciudad`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla chileworkads.ciudad: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla chileworkads.ciudad: ~4 rows (aproximadamente)
 DELETE FROM `ciudad`;
 /*!40000 ALTER TABLE `ciudad` DISABLE KEYS */;
+INSERT INTO `ciudad` (`id_ciudad`, `comuna_id`, `nombre_ciudad`, `borrado`) VALUES
+	(1, 81, 'Viña del Mar', NULL),
+	(2, 79, 'Valparaíso', NULL),
+	(3, 77, 'Quilpué', NULL),
+	(4, 80, 'Villa Alemana', NULL);
 /*!40000 ALTER TABLE `ciudad` ENABLE KEYS */;
 
 -- Volcando estructura para tabla chileworkads.comuna
+DROP TABLE IF EXISTS `comuna`;
 CREATE TABLE IF NOT EXISTS `comuna` (
   `id_comuna` int NOT NULL AUTO_INCREMENT,
   `region_id` int NOT NULL,
@@ -392,6 +400,7 @@ INSERT INTO `comuna` (`id_comuna`, `region_id`, `nombre_comuna`, `provincia_id`,
 /*!40000 ALTER TABLE `comuna` ENABLE KEYS */;
 
 -- Volcando estructura para tabla chileworkads.oficio
+DROP TABLE IF EXISTS `oficio`;
 CREATE TABLE IF NOT EXISTS `oficio` (
   `id` int NOT NULL AUTO_INCREMENT,
   `oficio_nombre` varchar(50) NOT NULL,
@@ -401,7 +410,7 @@ CREATE TABLE IF NOT EXISTS `oficio` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla chileworkads.oficio: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla chileworkads.oficio: ~5 rows (aproximadamente)
 DELETE FROM `oficio`;
 /*!40000 ALTER TABLE `oficio` DISABLE KEYS */;
 INSERT INTO `oficio` (`id`, `oficio_nombre`, `oficio_icon`, `categoria`, `enable`) VALUES
@@ -409,10 +418,11 @@ INSERT INTO `oficio` (`id`, `oficio_nombre`, `oficio_icon`, `categoria`, `enable
 	(2, 'Soporte Ténico', 'soportetecnico.png', 'Reparaciones', 1),
 	(3, 'Reparación Bicicletas', 'bicicletas.png', 'Reparaciones', 1),
 	(4, 'Mecánico Autos', 'mecanico.png', 'Reparaciones', 1),
-	(5, 'MataPaco', '37ab4c4f59b5fb17ae61737730cdaf101592695595.webp', 'paco', 1);
+	(5, 'MataPaco', '37ab4c4f59b5fb17ae61737730cdaf101592695595.webp', 'paco', 0);
 /*!40000 ALTER TABLE `oficio` ENABLE KEYS */;
 
 -- Volcando estructura para tabla chileworkads.persona
+DROP TABLE IF EXISTS `persona`;
 CREATE TABLE IF NOT EXISTS `persona` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `rut` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
@@ -430,29 +440,39 @@ CREATE TABLE IF NOT EXISTS `persona` (
   `id_poblacion` bigint DEFAULT NULL,
   `cookie` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='datos de los usuarios, independiente del tipo';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='datos de los usuarios, independiente del tipo';
 
--- Volcando datos para la tabla chileworkads.persona: ~1 rows (aproximadamente)
+-- Volcando datos para la tabla chileworkads.persona: ~2 rows (aproximadamente)
 DELETE FROM `persona`;
 /*!40000 ALTER TABLE `persona` DISABLE KEYS */;
 INSERT INTO `persona` (`id`, `rut`, `nombres`, `genero`, `file_cv`, `foto_file`, `apellidos`, `fecha_nacimiento`, `correo`, `contrasena`, `tipo_user`, `enable`, `borrado`, `id_poblacion`, `cookie`) VALUES
-	(3, NULL, 'Chillán', NULL, NULL, NULL, NULL, NULL, 'sergio94mora@gmail.com', '$2y$10$5s9d6KZoB4E1qwiArT/Xi.Jhn9GETM2iZMHI9bXiaY17Ti1n0VqT6', '3', '2', NULL, NULL, NULL);
+	(3, NULL, 'Chillán', NULL, NULL, 'user.png', NULL, '1955-06-21', 'sergio94mora@gmail.com', '$2y$10$5s9d6KZoB4E1qwiArT/Xi.Jhn9GETM2iZMHI9bXiaY17Ti1n0VqT6', '3', '2', NULL, 3, NULL),
+	(4, NULL, 'J', NULL, NULL, 'user.png', NULL, NULL, 'rurikk94@gmail.com', '$2y$10$SyJGZSQWK6D6l/pcdqxOkuRrsr603xI7KSgf8aAjoqLf47GEPnaxK', '1', '1', NULL, NULL, NULL);
 /*!40000 ALTER TABLE `persona` ENABLE KEYS */;
 
 -- Volcando estructura para tabla chileworkads.persona_contacto
+DROP TABLE IF EXISTS `persona_contacto`;
 CREATE TABLE IF NOT EXISTS `persona_contacto` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `persona_id` bigint NOT NULL,
   `red_id` bigint NOT NULL,
+  `valor` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Volcando datos para la tabla chileworkads.persona_contacto: ~0 rows (aproximadamente)
 DELETE FROM `persona_contacto`;
 /*!40000 ALTER TABLE `persona_contacto` DISABLE KEYS */;
+INSERT INTO `persona_contacto` (`id`, `persona_id`, `red_id`, `valor`) VALUES
+	(1, 3, 1, '979856221'),
+	(2, 3, 2, 'rurikk94'),
+	(3, 3, 3, '979856221'),
+	(4, 3, 4, 'sergio94mora@gmail.com'),
+	(5, 3, 5, 'rurikk94');
 /*!40000 ALTER TABLE `persona_contacto` ENABLE KEYS */;
 
 -- Volcando estructura para tabla chileworkads.persona_oficio
+DROP TABLE IF EXISTS `persona_oficio`;
 CREATE TABLE IF NOT EXISTS `persona_oficio` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `persona_id` bigint NOT NULL,
@@ -462,7 +482,7 @@ CREATE TABLE IF NOT EXISTS `persona_oficio` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla chileworkads.persona_oficio: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla chileworkads.persona_oficio: ~7 rows (aproximadamente)
 DELETE FROM `persona_oficio`;
 /*!40000 ALTER TABLE `persona_oficio` DISABLE KEYS */;
 INSERT INTO `persona_oficio` (`id`, `persona_id`, `oficio_id`, `experiencia`, `detalle`) VALUES
@@ -476,19 +496,78 @@ INSERT INTO `persona_oficio` (`id`, `persona_id`, `oficio_id`, `experiencia`, `d
 /*!40000 ALTER TABLE `persona_oficio` ENABLE KEYS */;
 
 -- Volcando estructura para tabla chileworkads.poblacion
+DROP TABLE IF EXISTS `poblacion`;
 CREATE TABLE IF NOT EXISTS `poblacion` (
   `id_poblacion` bigint NOT NULL AUTO_INCREMENT,
   `ciudad_id` bigint NOT NULL,
+  `borrado` datetime DEFAULT NULL,
   `nombre_poblacion` varchar(50) NOT NULL,
   PRIMARY KEY (`id_poblacion`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla chileworkads.poblacion: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla chileworkads.poblacion: ~55 rows (aproximadamente)
 DELETE FROM `poblacion`;
 /*!40000 ALTER TABLE `poblacion` DISABLE KEYS */;
+INSERT INTO `poblacion` (`id_poblacion`, `ciudad_id`, `borrado`, `nombre_poblacion`) VALUES
+	(1, 1, NULL, 'Gómez Carreño'),
+	(2, 1, NULL, 'Mirador de Reñaca'),
+	(3, 1, NULL, 'Santa Julia'),
+	(4, 1, NULL, 'Villa Dulce'),
+	(5, 1, NULL, 'Glorias Navales'),
+	(6, 1, NULL, 'Recreo'),
+	(7, 1, NULL, 'Jardín del Mar'),
+	(8, 1, NULL, 'Santa Inés	'),
+	(9, 1, NULL, 'Achupallas'),
+	(10, 1, NULL, 'Miraflores '),
+	(11, 1, NULL, 'El Salto'),
+	(12, 1, NULL, 'Chorrillos'),
+	(13, 1, NULL, 'Forestal'),
+	(14, 2, NULL, 'Ramaditas'),
+	(15, 2, NULL, 'Alegre'),
+	(16, 2, NULL, 'Barón'),
+	(17, 2, NULL, 'Blanco'),
+	(18, 2, NULL, 'Bellavista'),
+	(19, 2, NULL, 'Concepción'),
+	(20, 2, NULL, 'Cordillera'),
+	(21, 2, NULL, 'Delicias'),
+	(22, 2, NULL, 'El Litre'),
+	(23, 2, NULL, 'El Molino'),
+	(24, 2, NULL, 'Esperanza'),
+	(25, 2, NULL, 'Jiménez'),
+	(26, 2, NULL, 'Larraín'),
+	(27, 2, NULL, 'La Cruz'),
+	(28, 2, NULL, 'La Cárcel'),
+	(29, 2, NULL, 'La Florida'),
+	(30, 2, NULL, 'La Merced'),
+	(31, 2, NULL, 'La Virgen'),
+	(32, 2, NULL, 'Las Cañas'),
+	(33, 2, NULL, 'Las Jarcias'),
+	(34, 2, NULL, 'Las Monjas'),
+	(35, 2, NULL, 'Los Placeres'),
+	(36, 2, NULL, 'Loceras'),
+	(37, 2, NULL, 'Lecheros'),
+	(38, 2, NULL, 'Mariposas'),
+	(39, 2, NULL, 'Mesilla'),
+	(40, 2, NULL, 'Miraflores'),
+	(41, 2, NULL, 'O\'Higgins'),
+	(42, 2, NULL, 'Pajonal'),
+	(43, 2, NULL, 'Panteón'),
+	(44, 2, NULL, 'Playa Ancha'),
+	(45, 2, NULL, 'Perdices'),
+	(46, 2, NULL, 'Polanco'),
+	(47, 2, NULL, 'Ramaditas'),
+	(48, 2, NULL, 'Reina Victoria'),
+	(49, 2, NULL, 'Rodelillo'),
+	(50, 2, NULL, 'Rocuant'),
+	(51, 2, NULL, 'San Juan de Dios'),
+	(52, 2, NULL, 'Santo Domingo'),
+	(53, 2, NULL, 'San Francisco'),
+	(54, 2, NULL, 'Toro'),
+	(55, 2, NULL, 'Yungay');
 /*!40000 ALTER TABLE `poblacion` ENABLE KEYS */;
 
 -- Volcando estructura para tabla chileworkads.provincia
+DROP TABLE IF EXISTS `provincia`;
 CREATE TABLE IF NOT EXISTS `provincia` (
   `id_provincia` int NOT NULL AUTO_INCREMENT,
   `provincia_nombre` varchar(64) NOT NULL,
@@ -556,6 +635,7 @@ INSERT INTO `provincia` (`id_provincia`, `provincia_nombre`, `region_id`) VALUES
 /*!40000 ALTER TABLE `provincia` ENABLE KEYS */;
 
 -- Volcando estructura para tabla chileworkads.region
+DROP TABLE IF EXISTS `region`;
 CREATE TABLE IF NOT EXISTS `region` (
   `id_region` int NOT NULL AUTO_INCREMENT,
   `nombre_region` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
@@ -585,6 +665,7 @@ INSERT INTO `region` (`id_region`, `nombre_region`, `borrado`) VALUES
 /*!40000 ALTER TABLE `region` ENABLE KEYS */;
 
 -- Volcando estructura para tabla chileworkads.resena
+DROP TABLE IF EXISTS `resena`;
 CREATE TABLE IF NOT EXISTS `resena` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `trabajador_id` bigint NOT NULL DEFAULT '0',
@@ -602,27 +683,30 @@ DELETE FROM `resena`;
 /*!40000 ALTER TABLE `resena` ENABLE KEYS */;
 
 -- Volcando estructura para tabla chileworkads.tipo_contacto
+DROP TABLE IF EXISTS `tipo_contacto`;
 CREATE TABLE IF NOT EXISTS `tipo_contacto` (
   `id` int NOT NULL AUTO_INCREMENT,
   `nombre_red` varchar(50) NOT NULL,
   `url_red` varchar(50) NOT NULL,
-  `icono_red` varchar(50) NOT NULL,
+  `icono_red` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `enable` tinyint NOT NULL DEFAULT '1',
   `borrado` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Volcando datos para la tabla chileworkads.tipo_contacto: ~3 rows (aproximadamente)
+-- Volcando datos para la tabla chileworkads.tipo_contacto: ~5 rows (aproximadamente)
 DELETE FROM `tipo_contacto`;
 /*!40000 ALTER TABLE `tipo_contacto` DISABLE KEYS */;
 INSERT INTO `tipo_contacto` (`id`, `nombre_red`, `url_red`, `icono_red`, `enable`, `borrado`) VALUES
-	(1, 'Teléfono', 'tel:', 'phone.ico', 1, NULL),
-	(2, 'Facebook', 'https://www.facebook.com/', 'facebook.ico', 1, NULL),
-	(3, 'Whatsapp', 'https://wa.me/', 'whatsapp.ico', 1, NULL),
-	(4, 'Email', 'mailto:', 'email.ico', 1, NULL);
+	(1, 'Teléfono', 'tel:', '930817b53d559220e1077b2cf095bec21592704189.png', 1, NULL),
+	(2, 'Facebook', 'https://www.facebook.com/', 'facebook.png', 1, NULL),
+	(3, 'Whatsapp', 'https://wa.me/', 'whatsapp.png', 1, NULL),
+	(4, 'Email', 'mailto:', 'email.png', 1, NULL),
+	(5, 'Twitter', 'https://twitter.com/', 'b02dad3047a010e5b3ecc90560e5fb891592703570.png', 1, NULL);
 /*!40000 ALTER TABLE `tipo_contacto` ENABLE KEYS */;
 
 -- Volcando estructura para tabla chileworkads.trabajo_imagen
+DROP TABLE IF EXISTS `trabajo_imagen`;
 CREATE TABLE IF NOT EXISTS `trabajo_imagen` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `trabajo_id` bigint NOT NULL,
@@ -637,6 +721,7 @@ DELETE FROM `trabajo_imagen`;
 /*!40000 ALTER TABLE `trabajo_imagen` ENABLE KEYS */;
 
 -- Volcando estructura para tabla chileworkads.trabajo_realizado
+DROP TABLE IF EXISTS `trabajo_realizado`;
 CREATE TABLE IF NOT EXISTS `trabajo_realizado` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `id_trabajador` bigint NOT NULL,

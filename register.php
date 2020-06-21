@@ -50,6 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST'){
     <title>Registrarse</title>
 </head>
 <body>
+<?php require_once(__BASE__."nav.php");?>
 <div class="container">
 <h1>Registrarse</h1>
 <?php isset($modal) ? modal($modal) :'' ?>

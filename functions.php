@@ -10,6 +10,10 @@ require_once($site_config['SITE']['base'] . '/class/Region.php');
 require_once($site_config['SITE']['base'] . '/class/Comuna.php');
 require_once($site_config['SITE']['base'] . '/class/Oficio.php');
 require_once($site_config['SITE']['base'] . '/class/Upload.php');
+require_once($site_config['SITE']['base'] . '/class/Red.php');
+require_once($site_config['SITE']['base'] . '/class/Ciudad.php');
+require_once($site_config['SITE']['base'] . '/class/Poblacion.php');
+require_once($site_config['SITE']['base'] . '/class/Contacto.php');
 
 
 function is_login($r=true){
@@ -50,12 +54,14 @@ function site_url($input=null){
 }
 function revisarEnable($correo)
 {
-    $user = new User($correo);
+    $user = new User();
+    $user->create($correo);
     return $user->getEnable();
 }
 function revisarAdmin($correo)
 {
-    $user = new User($correo);
+    $user = new User();
+    $user->create($correo);
     return $user->is_admin();
 }
 function comenzar_sesion(){
@@ -65,16 +71,17 @@ function comenzar_sesion(){
 function login($user,$pass){
     if(!is_null($user)&&!is_null($user)&&is_string($user)&&is_string($pass))
     {
-        $user = new User($user);
-            if(is_null($user->getId()))
+        $u = new User();
+        $u->create($user);
+            if(is_null($u->getId()))
                 return false;
-            if(!password_verify($pass, $user->getContrasena()))
+            if(!password_verify($pass, $u->getContrasena()))
                 return 0;
-            if($user->getEnable()!='2')
+            if($u->getEnable()!='2')
                 return 1;
             comenzar_sesion();
-            $_SESSION["user"]=$user;
-            return $user;
+            $_SESSION["user"]=$u;
+            return $u;
     }
     return NULL;
 }
@@ -146,6 +153,7 @@ function comunas($filtro=[]){
     {
         $query.=" AND id_comuna = ". $conn->validar($filtro["id"]);
     }
+    $query.=" ORDER BY nombre_comuna ASC";
     return $conn->seleccionarObject($query,"Comuna");
 }
 function oficios($filtro=[]){
@@ -164,5 +172,96 @@ function oficios($filtro=[]){
     {
         $query.=" AND oficio_nombre = ". $conn->validar($filtro["nombre"]);
     }
+    $query.=" ORDER BY oficio_nombre ASC";
     return $conn->seleccionarObject($query,"Oficio");
+}
+function redesSociales($filtro=[]){
+    $conn = new Db();
+    $query="SELECT * FROM tipo_contacto
+    WHERE ENABLE = '1' AND BORRADO IS NULL";
+    if(isset($filtro["id"]) && !is_null($filtro["id"]))
+    {
+        $query.=" AND id = ". $conn->validar($filtro["id"]);
+    }
+    if(isset($filtro["nombre"]) && !is_null($filtro["nombre"]))
+    {
+        $query.=" AND nombre_red = ". $conn->validar($filtro["nombre"]);
+    }
+    $query.=" ORDER BY nombre_red ASC";
+    return $conn->seleccionarObject($query,"Red");
+}
+function ciudades($filtro=[]){
+    $conn = new Db();
+    $query="SELECT
+    ci.id_ciudad, ci.comuna_id,ci.nombre_ciudad,
+    co.nombre_comuna,
+    re.nombre_region FROM ciudad ci
+    INNER JOIN comuna co on co.id_comuna = ci.comuna_id
+    INNER JOIN region re on re.id_region = co.region_id
+    WHERE ci.BORRADO IS NULL ";
+    if(isset($filtro["id"]) && !is_null($filtro["id"]))
+    {
+        $query.=" AND id_ciudad = ". $conn->validar($filtro["id"]);
+    }
+    if(isset($filtro["nombre"]) && !is_null($filtro["nombre"]))
+    {
+        $query.=" AND nombre_ciudad = ". $conn->validar($filtro["nombre"]);
+    }
+    $query.=" ORDER BY nombre_ciudad ASC";
+    return $conn->seleccionarObject($query,"Ciudad");
+}
+function poblaciones($filtro=[]){
+    $conn = new Db();
+    $query="SELECT * FROM poblacion po
+    INNER JOIN ciudad ci on ci.id_ciudad = po.ciudad_id
+    WHERE po.BORRADO IS NULL";
+    if(isset($filtro["id"]) && !is_null($filtro["id"]))
+    {
+        $query.=" AND po.id_poblacion = ". $conn->validar($filtro["id"]);
+    }
+    if(isset($filtro["nombre"]) && !is_null($filtro["nombre"]))
+    {
+        $query.=" AND po.nombre_poblacion = ". $conn->validar($filtro["nombre"]);
+    }
+    $query.=" ORDER BY po.nombre_poblacion ASC";
+    return $conn->seleccionarObject($query,"Poblacion");
+}
+function usuarios($filtro=[]){
+    $conn = new Db();
+    $query="SELECT * FROM persona p
+    WHERE p.BORRADO IS NULL";
+    if(isset($filtro["id"]) && !is_null($filtro["id"]))
+    {
+        $query.=" AND p.id = ". $conn->validar($filtro["id"]);
+    }
+    if(isset($filtro["nombre"]) && !is_null($filtro["nombre"]))
+    {
+        $query.=" AND p.nombres = ". $conn->validar($filtro["nombre"]);
+    }
+    $query.=" ORDER BY p.nombres ASC";
+    return $conn->seleccionarObject($query,"User");
+}
+function tipoUsuario($id)
+{
+    switch ($id) {
+        case 1:
+            return 'Usuario Normal';
+            break;
+        case 2:
+            return 'Usuario Trabajador';
+            break;
+        case 3:
+            return 'Admin';
+            break;
+    }
+}
+function contactoUsuario($filtro=[]){
+    if(!isset($filtro["persona"]) OR is_null($filtro["persona"]))
+        return NULL;
+
+    $conn = new Db();
+    $query="SELECT icono_red,url_red,valor,nombre_red FROM persona_contacto pc
+    INNER JOIN tipo_contacto tc ON tc.id = pc.red_id
+    WHERE tc.enable = 1 AND tc.borrado IS NULL AND pc.persona_id = ".$filtro["persona"];
+    return $conn->seleccionarObject($query,"Contacto");
 }

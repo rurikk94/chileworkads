@@ -1,12 +1,12 @@
 <?php require_once("../../functions.php"); ?>
 <?php is_admin();?>
 <?php
-    $regiones = regiones();
-if (($_SERVER["REQUEST_METHOD"] == 'POST') && isset($_POST["nombre_comuna"]) && isset($_POST["region"])){
-    $comuna = new Comuna();
-    $comuna->setNombreComuna($_POST["nombre_comuna"]);
-    $comuna->setRegionId($_POST["region"]);
-    if($comuna->insertar())
+    $comunas = comunas();
+if (($_SERVER["REQUEST_METHOD"] == 'POST') && isset($_POST["nombre"]) && isset($_POST["comuna"])){
+    $ciudad = new Ciudad();
+    $ciudad->setNombre_ciudad($_POST["nombre"]);
+    $ciudad->setComuna_id($_POST["comuna"]);
+    if($ciudad->insertar())
         header("Location: ./index.php");
         die();
 }
@@ -24,22 +24,22 @@ if (($_SERVER["REQUEST_METHOD"] == 'POST') && isset($_POST["nombre_comuna"]) && 
 <body>
 <?php require_once(__BASE__."nav.php");?>
     <div class="container">
-    <h1>Agregar Comuna</h1>
+    <h1>Agregar Ciudad</h1>
         <a name="btn-add" id="btn-add" class="btn btn-primary" href="./index.php" role="button">Volver</a>
         <form method="post">
         <div class="form-group">
-          <label for="">Nombre de la Comuna</label>
+          <label for="">Nombre de la Ciudad</label>
           <input type="text"
-            class="form-control" name="nombre_comuna" id="nombre_comuna" aria-describedby="helpId" placeholder="Ingrese un nombre para la comuna" required maxlength="100">
-          <small id="helpId" class="form-text text-muted">Nombre de la comuna</small>
+            class="form-control" name="nombre" id="nombre" aria-describedby="helpId" placeholder="Ingrese un nombre para la ciudad" required maxlength="100">
+          <small id="helpId" class="form-text text-muted">Nombre de la Ciudad</small>
         </div>
         <div class="form-group">
-            <label for="region">Región</label>
-            <select class="form-control" name="region" id="region" required>
-              <option value="">Seleccione una Región</option>
-              <?php foreach ($regiones as $r): ?>
+            <label for="comuna">Comuna</label>
+            <select class="form-control" name="comuna" id="comuna" required>
+              <option value="">Seleccione una Comuna</option>
+              <?php foreach ($comunas as $r): ?>
               <option value="<?=$r->getId()?>">
-                <?=$r->getNombreRegion()?>
+                <?=$r->getNombreComuna()?>
               </option>
               <?php endforeach;?>
             </select>

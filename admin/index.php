@@ -1,7 +1,7 @@
 <?php require_once("../functions.php"); ?>
 <?php is_admin();?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,6 +20,7 @@
 <a name="" id="" class="btn btn-primary" href="./ciudades/index.php" role="button">Ciudades</a>
 <a name="" id="" class="btn btn-primary" href="./poblaciones/index.php" role="button">Poblaciones</a>
 <a name="" id="" class="btn btn-primary" href="./oficios/index.php" role="button">Oficios</a>
+<a name="" id="" class="btn btn-primary" href="./redes/index.php" role="button">Redes Sociales</a>
 </div>
 </body>
 </html>

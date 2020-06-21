@@ -55,6 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST'){
     <title>Recuperar Contraseña</title>
 </head>
 <body>
+<?php require_once(__BASE__."nav.php");?>
 <div class="container">
 <h1>Recuperar Contraseña</h1>
 <?php isset($modal) ? modal($modal) :'' ?>
