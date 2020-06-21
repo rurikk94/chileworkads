@@ -14,6 +14,7 @@ require_once($site_config['SITE']['base'] . '/class/Red.php');
 require_once($site_config['SITE']['base'] . '/class/Ciudad.php');
 require_once($site_config['SITE']['base'] . '/class/Poblacion.php');
 require_once($site_config['SITE']['base'] . '/class/Contacto.php');
+require_once($site_config['SITE']['base'] . '/class/Favorito.php');
 
 
 function is_login($r=true){
@@ -31,9 +32,9 @@ function is_login($r=true){
      if(revisarEnable($_SESSION["user"]->getCorreo())!=2){  //revisa enable del user, si no es 2 (activo)
             logout(true);  //deslogea con redireccion
         }else{  //si user enable = 2
-            return true;
+            return $_SESSION["user"]->getId();
         }
-    return true;
+    return  $_SESSION["user"]->getId();
 }
 /**
  * retorna la url del sitio + el parametro enviado
@@ -238,6 +239,10 @@ function usuarios($filtro=[]){
     {
         $query.=" AND p.nombres = ". $conn->validar($filtro["nombre"]);
     }
+    if(isset($filtro["tipo"]) && !is_null($filtro["tipo"]))
+    {
+        $query.=" AND p.tipo_user = ". $conn->validar($filtro["tipo"]);
+    }
     $query.=" ORDER BY p.nombres ASC";
     return $conn->seleccionarObject($query,"User");
 }
@@ -264,4 +269,16 @@ function contactoUsuario($filtro=[]){
     INNER JOIN tipo_contacto tc ON tc.id = pc.red_id
     WHERE tc.enable = 1 AND tc.borrado IS NULL AND pc.persona_id = ".$filtro["persona"];
     return $conn->seleccionarObject($query,"Contacto");
+}
+function favoritos($filtro=[]){
+    if(!isset($filtro["user"]) OR is_null($filtro["user"]))
+        return NULL;
+
+    $conn = new Db();
+    $query="SELECT * FROM favorito f
+        INNER JOIN persona p on p.id = f.id_favorito
+        WHERE id_persona = ".$filtro["user"];
+    if (isset($filtro["persona"]) && !is_null($filtro["persona"]))
+        $query.=" AND id_favorito =".$filtro["persona"];
+    return $conn->seleccionarObject($query,"Favorito");
 }

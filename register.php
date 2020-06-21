@@ -58,11 +58,11 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST'){
 <a name="btn-recovery" id="btn-recovery" class="btn btn-primary" href="./recovery.php" role="button">Recuperar Contraseña</a>
 <form method="post">
 <label for="nombre">Nombre</label>
-<input type="text" name="nombre" id="nombre">
+<input type="text" name="nombre" id="nombre" required>
 <label for="correo">Correo</label>
-<input type="email" name="correo" id="correo">
+<input type="email" name="correo" id="correo" required>
 <label for="contrasena">Contraseña</label>
-<input type="password" name="contrasena" id="contrasena">
+<input type="password" name="contrasena" id="contrasena" required>
 <button type="submit" class="btn btn-primary">Crear Cuenta</button>
 </form>
 </div>

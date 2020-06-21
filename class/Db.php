@@ -59,28 +59,6 @@ class Db
         return NULL;
     }
 
-    /** ejecuta una query y puede mandar parametros a  */
-    public function execute($sql = null, $datos = null)
-    {
-        try {
-            $insertStatement  =  $this->_connection->prepare($sql);
-            $resultado = $insertStatement->execute($datos);
-            $resultado = $this->_connection->lastInsertId();
-            //$this->desconectar();
-            return $resultado;
-        } catch (PDOException $e) {
-
-            if (!$this->_connection) {
-                print "¡Error! (" . $e->getCode() . "): " . $e->getMessage() . "<br/>";
-                //$this->desconectar();
-                return FALSE;
-                die();
-                exit;
-            }
-            return NULL;
-        }
-    }
-
     /** selecciona devuelve array dependiendo de cant resultados */
     function seleccionar($query = NULL)
     {

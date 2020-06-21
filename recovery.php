@@ -63,7 +63,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST'){
 <a name="btn-register" id="btn-register" class="btn btn-primary" href="./register.php" role="button">Registrarse</a>
 <form method="post">
 <label for="email">Correo</label>
-<input type="email" name="correo" id="correo">
+<input type="email" name="correo" id="correo" required>
 <button type="submit">Recuperar</button>
 </form>
 </div>
