@@ -17,7 +17,6 @@ CREATE DATABASE IF NOT EXISTS `chileworkads` /*!40100 DEFAULT CHARACTER SET utf8
 USE `chileworkads`;
 
 -- Volcando estructura para tabla chileworkads.ciudad
-DROP TABLE IF EXISTS `ciudad`;
 CREATE TABLE IF NOT EXISTS `ciudad` (
   `id_ciudad` bigint NOT NULL AUTO_INCREMENT,
   `comuna_id` bigint NOT NULL,
@@ -37,7 +36,6 @@ INSERT INTO `ciudad` (`id_ciudad`, `comuna_id`, `nombre_ciudad`, `borrado`) VALU
 /*!40000 ALTER TABLE `ciudad` ENABLE KEYS */;
 
 -- Volcando estructura para tabla chileworkads.comuna
-DROP TABLE IF EXISTS `comuna`;
 CREATE TABLE IF NOT EXISTS `comuna` (
   `id_comuna` int NOT NULL AUTO_INCREMENT,
   `region_id` int NOT NULL,
@@ -47,7 +45,7 @@ CREATE TABLE IF NOT EXISTS `comuna` (
   PRIMARY KEY (`id_comuna`) USING BTREE
 ) ENGINE=MyISAM AUTO_INCREMENT=347 DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla chileworkads.comuna: 345 rows
+-- Volcando datos para la tabla chileworkads.comuna: 346 rows
 DELETE FROM `comuna`;
 /*!40000 ALTER TABLE `comuna` DISABLE KEYS */;
 INSERT INTO `comuna` (`id_comuna`, `region_id`, `nombre_comuna`, `provincia_id`, `borrado`) VALUES
@@ -399,8 +397,21 @@ INSERT INTO `comuna` (`id_comuna`, `region_id`, `nombre_comuna`, `provincia_id`,
 	(346, 7, 'comunita', NULL, '2020-06-20 19:48:41');
 /*!40000 ALTER TABLE `comuna` ENABLE KEYS */;
 
+-- Volcando estructura para tabla chileworkads.favorito
+CREATE TABLE IF NOT EXISTS `favorito` (
+  `id_persona` bigint NOT NULL,
+  `id_favorito` bigint NOT NULL,
+  PRIMARY KEY (`id_persona`,`id_favorito`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Volcando datos para la tabla chileworkads.favorito: ~0 rows (aproximadamente)
+DELETE FROM `favorito`;
+/*!40000 ALTER TABLE `favorito` DISABLE KEYS */;
+INSERT INTO `favorito` (`id_persona`, `id_favorito`) VALUES
+	(3, 4);
+/*!40000 ALTER TABLE `favorito` ENABLE KEYS */;
+
 -- Volcando estructura para tabla chileworkads.oficio
-DROP TABLE IF EXISTS `oficio`;
 CREATE TABLE IF NOT EXISTS `oficio` (
   `id` int NOT NULL AUTO_INCREMENT,
   `oficio_nombre` varchar(50) NOT NULL,
@@ -422,7 +433,6 @@ INSERT INTO `oficio` (`id`, `oficio_nombre`, `oficio_icon`, `categoria`, `enable
 /*!40000 ALTER TABLE `oficio` ENABLE KEYS */;
 
 -- Volcando estructura para tabla chileworkads.persona
-DROP TABLE IF EXISTS `persona`;
 CREATE TABLE IF NOT EXISTS `persona` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `rut` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
@@ -440,39 +450,37 @@ CREATE TABLE IF NOT EXISTS `persona` (
   `id_poblacion` bigint DEFAULT NULL,
   `cookie` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='datos de los usuarios, independiente del tipo';
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='datos de los usuarios, independiente del tipo';
 
 -- Volcando datos para la tabla chileworkads.persona: ~2 rows (aproximadamente)
 DELETE FROM `persona`;
 /*!40000 ALTER TABLE `persona` DISABLE KEYS */;
 INSERT INTO `persona` (`id`, `rut`, `nombres`, `genero`, `file_cv`, `foto_file`, `apellidos`, `fecha_nacimiento`, `correo`, `contrasena`, `tipo_user`, `enable`, `borrado`, `id_poblacion`, `cookie`) VALUES
-	(3, NULL, 'Chillán', NULL, NULL, 'user.png', NULL, '1955-06-21', 'sergio94mora@gmail.com', '$2y$10$5s9d6KZoB4E1qwiArT/Xi.Jhn9GETM2iZMHI9bXiaY17Ti1n0VqT6', '3', '2', NULL, 3, NULL),
-	(4, NULL, 'J', NULL, NULL, 'user.png', NULL, NULL, 'rurikk94@gmail.com', '$2y$10$SyJGZSQWK6D6l/pcdqxOkuRrsr603xI7KSgf8aAjoqLf47GEPnaxK', '1', '1', NULL, NULL, NULL);
+	(3, NULL, 'Chillán', NULL, NULL, 'b66005ed1827cea9139f95b5f683487e1592776347.png', NULL, '1955-06-21', 'sergio94mora@gmail.com', '$2y$10$hYnd0/86rfuHCrOBhJiyju80moHVhXouuZ06uNv2hqL225COcezS.', '3', '2', NULL, 3, NULL),
+	(4, NULL, 'J', NULL, NULL, 'user.png', NULL, NULL, 'rurikk94@gmail.com', '$2y$10$SyJGZSQWK6D6l/pcdqxOkuRrsr603xI7KSgf8aAjoqLf47GEPnaxK', '2', '2', NULL, 2, NULL),
+	(7, NULL, 'Pedro', NULL, NULL, 'user.png', NULL, NULL, 'mail@mail.com', 'qweasdzxc', '1', '2', NULL, 4, NULL);
 /*!40000 ALTER TABLE `persona` ENABLE KEYS */;
 
 -- Volcando estructura para tabla chileworkads.persona_contacto
-DROP TABLE IF EXISTS `persona_contacto`;
 CREATE TABLE IF NOT EXISTS `persona_contacto` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `persona_id` bigint NOT NULL,
   `red_id` bigint NOT NULL,
   `valor` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Volcando datos para la tabla chileworkads.persona_contacto: ~0 rows (aproximadamente)
 DELETE FROM `persona_contacto`;
 /*!40000 ALTER TABLE `persona_contacto` DISABLE KEYS */;
 INSERT INTO `persona_contacto` (`id`, `persona_id`, `red_id`, `valor`) VALUES
-	(1, 3, 1, '979856221'),
-	(2, 3, 2, 'rurikk94'),
-	(3, 3, 3, '979856221'),
-	(4, 3, 4, 'sergio94mora@gmail.com'),
-	(5, 3, 5, 'rurikk94');
+	(29, 4, 2, 'fb'),
+	(30, 3, 2, 'fb'),
+	(31, 3, 5, 'weasd'),
+	(32, 3, 4, 'mail');
 /*!40000 ALTER TABLE `persona_contacto` ENABLE KEYS */;
 
 -- Volcando estructura para tabla chileworkads.persona_oficio
-DROP TABLE IF EXISTS `persona_oficio`;
 CREATE TABLE IF NOT EXISTS `persona_oficio` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `persona_id` bigint NOT NULL,
@@ -486,17 +494,16 @@ CREATE TABLE IF NOT EXISTS `persona_oficio` (
 DELETE FROM `persona_oficio`;
 /*!40000 ALTER TABLE `persona_oficio` DISABLE KEYS */;
 INSERT INTO `persona_oficio` (`id`, `persona_id`, `oficio_id`, `experiencia`, `detalle`) VALUES
-	(1, 1, 1, 5, NULL),
+	(1, 1, 1, 5, 'qweasd asd qwe asd'),
 	(2, 1, 1, 2, NULL),
 	(3, 2, 2, 5, NULL),
-	(4, 3, 3, 3, NULL),
-	(5, 3, 2, 1, NULL),
+	(4, 3, 3, 3, 'qweq qwe asdqwe'),
+	(5, 3, 2, 1, 'qweq asd qwe  qw asd'),
 	(6, 4, 3, 1, NULL),
 	(7, 4, 2, 1, NULL);
 /*!40000 ALTER TABLE `persona_oficio` ENABLE KEYS */;
 
 -- Volcando estructura para tabla chileworkads.poblacion
-DROP TABLE IF EXISTS `poblacion`;
 CREATE TABLE IF NOT EXISTS `poblacion` (
   `id_poblacion` bigint NOT NULL AUTO_INCREMENT,
   `ciudad_id` bigint NOT NULL,
@@ -567,7 +574,6 @@ INSERT INTO `poblacion` (`id_poblacion`, `ciudad_id`, `borrado`, `nombre_poblaci
 /*!40000 ALTER TABLE `poblacion` ENABLE KEYS */;
 
 -- Volcando estructura para tabla chileworkads.provincia
-DROP TABLE IF EXISTS `provincia`;
 CREATE TABLE IF NOT EXISTS `provincia` (
   `id_provincia` int NOT NULL AUTO_INCREMENT,
   `provincia_nombre` varchar(64) NOT NULL,
@@ -635,7 +641,6 @@ INSERT INTO `provincia` (`id_provincia`, `provincia_nombre`, `region_id`) VALUES
 /*!40000 ALTER TABLE `provincia` ENABLE KEYS */;
 
 -- Volcando estructura para tabla chileworkads.region
-DROP TABLE IF EXISTS `region`;
 CREATE TABLE IF NOT EXISTS `region` (
   `id_region` int NOT NULL AUTO_INCREMENT,
   `nombre_region` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
@@ -665,7 +670,6 @@ INSERT INTO `region` (`id_region`, `nombre_region`, `borrado`) VALUES
 /*!40000 ALTER TABLE `region` ENABLE KEYS */;
 
 -- Volcando estructura para tabla chileworkads.resena
-DROP TABLE IF EXISTS `resena`;
 CREATE TABLE IF NOT EXISTS `resena` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `trabajador_id` bigint NOT NULL DEFAULT '0',
@@ -683,7 +687,6 @@ DELETE FROM `resena`;
 /*!40000 ALTER TABLE `resena` ENABLE KEYS */;
 
 -- Volcando estructura para tabla chileworkads.tipo_contacto
-DROP TABLE IF EXISTS `tipo_contacto`;
 CREATE TABLE IF NOT EXISTS `tipo_contacto` (
   `id` int NOT NULL AUTO_INCREMENT,
   `nombre_red` varchar(50) NOT NULL,
@@ -706,7 +709,6 @@ INSERT INTO `tipo_contacto` (`id`, `nombre_red`, `url_red`, `icono_red`, `enable
 /*!40000 ALTER TABLE `tipo_contacto` ENABLE KEYS */;
 
 -- Volcando estructura para tabla chileworkads.trabajo_imagen
-DROP TABLE IF EXISTS `trabajo_imagen`;
 CREATE TABLE IF NOT EXISTS `trabajo_imagen` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `trabajo_id` bigint NOT NULL,
@@ -721,7 +723,6 @@ DELETE FROM `trabajo_imagen`;
 /*!40000 ALTER TABLE `trabajo_imagen` ENABLE KEYS */;
 
 -- Volcando estructura para tabla chileworkads.trabajo_realizado
-DROP TABLE IF EXISTS `trabajo_realizado`;
 CREATE TABLE IF NOT EXISTS `trabajo_realizado` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `id_trabajador` bigint NOT NULL,

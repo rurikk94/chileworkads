@@ -38,7 +38,7 @@
                         <td><img src="<?=__URL__."uploads/images/".$u->getFoto_file()?>" class="img-fluid rounded-circle img-thumbnail w-100" alt=""></td>
                         <td><?=$u->getNombres()?></td>
                         <td>
-                            <a name="btn-detail" id="btn-detail" class="btn btn-info" href="../profile/index.php?id=<?=$u->getId()?>" role="button">Perfil</a>
+                            <a name="btn-detail" id="btn-detail" class="btn btn-info" href="./profile/index.php?id=<?=$u->getId()?>" role="button">Perfil</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

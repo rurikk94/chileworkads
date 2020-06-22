@@ -52,7 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST'){
 <a name="btn-recovery" id="btn-recovery" class="btn btn-primary" href="./recovery.php" role="button">Recuperar Contraseña</a>
 <form method="post">
 <label for="email">email</label>
-<input type="email" name="correo" id="correo" required>
+<input type="email" name="correo" id="correo" required value="<?=(isset($_POST["correo"]) ? $_POST["correo"]:'')?>">
 <label for="contrasena">Contraseña</label>
 <input type="password" name="contrasena" id="contrasena" required>
 <input type="submit" value="entrar">

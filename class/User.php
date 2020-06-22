@@ -78,6 +78,9 @@ class User
     public function getFoto_file(){
         return $this->foto_file;
     }
+    public function setFoto_file($foto){
+        $this->foto_file = $foto;
+    }
     public function getGenero(){
         return $this->genero;
     }
@@ -89,6 +92,13 @@ class User
     }
     public function getId_poblacion(){
         return $this->id_poblacion;
+    }
+    public function actualizarFoto(){
+        $conn = new Db();
+        $this->setId($conn->validar($this->getId()));
+        $this->setFoto_file($conn->validar($this->getFoto_file()));
+        return $conn->update("UPDATE persona SET foto_file ='".$this->getFoto_file()."'
+         WHERE id=".$this->getId());
     }
     public function habilitar(){
         $conn = new Db();

@@ -12,7 +12,7 @@ if (($_SERVER["REQUEST_METHOD"] == 'GET') && isset($_GET["id"])){
         $fav->insertar();
     else
         $fav->eliminar();
-    header("Location: ../profile/index.php?id=".$_GET["id"]);
+    header('Location: ' . $_SERVER['HTTP_REFERER']);
     die();
 }
 ?>

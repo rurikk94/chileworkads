@@ -15,6 +15,7 @@ require_once($site_config['SITE']['base'] . '/class/Ciudad.php');
 require_once($site_config['SITE']['base'] . '/class/Poblacion.php');
 require_once($site_config['SITE']['base'] . '/class/Contacto.php');
 require_once($site_config['SITE']['base'] . '/class/Favorito.php');
+require_once($site_config['SITE']['base'] . '/class/OficioPersona.php');
 
 
 function is_login($r=true){
@@ -265,7 +266,7 @@ function contactoUsuario($filtro=[]){
         return NULL;
 
     $conn = new Db();
-    $query="SELECT icono_red,url_red,valor,nombre_red FROM persona_contacto pc
+    $query="SELECT pc.id,icono_red,url_red,valor,nombre_red,pc.red_id FROM persona_contacto pc
     INNER JOIN tipo_contacto tc ON tc.id = pc.red_id
     WHERE tc.enable = 1 AND tc.borrado IS NULL AND pc.persona_id = ".$filtro["persona"];
     return $conn->seleccionarObject($query,"Contacto");
@@ -281,4 +282,27 @@ function favoritos($filtro=[]){
     if (isset($filtro["persona"]) && !is_null($filtro["persona"]))
         $query.=" AND id_favorito =".$filtro["persona"];
     return $conn->seleccionarObject($query,"Favorito");
+}
+function oficioPersona($filtro=[]){
+    $conn = new Db();
+    $query="SELECT po.id,po.persona_id,po.experiencia,po.detalle ,
+    o.id oficio_id, o.oficio_nombre ,o.oficio_icon,o.categoria
+    FROM persona_oficio po
+    INNER JOIN oficio o
+    ON o.id = po.oficio_id
+    WHERE o.enable = '1'";
+    if(isset($filtro["id"]) && !is_null($filtro["id"]))
+    {
+        $query.=" AND po.id = ". $conn->validar($filtro["id"]);
+    }
+    if(isset($filtro["persona"]) && !is_null($filtro["persona"]))
+    {
+        $query.=" AND po.persona_id = ". $conn->validar($filtro["persona"]);
+    }
+    if(isset($filtro["nombre"]) && !is_null($filtro["nombre"]))
+    {
+        $query.=" AND o.oficio_nombre = ". $conn->validar($filtro["nombre"]);
+    }
+    $query.=" ORDER BY o.oficio_nombre ASC";
+    return $conn->seleccionarObject($query,"OficioPersona");
 }

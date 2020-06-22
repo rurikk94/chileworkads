@@ -54,6 +54,15 @@ class Red
         public function setEnable($enable){
             $this->enable = $enable;
         }
+        public function toArray(){
+            $array=[
+                "id"=> $this->getId(),
+                "nombre_red"=> $this->getNombre_red(),
+                "url_red"=> $this->getUrl_red(),
+                "icono_red"=> $this->getIcono_red()
+            ];
+            return $array;
+        }
 
     public function insertar(){
         $conn = new Db();

@@ -7,6 +7,7 @@ if (($_SERVER["REQUEST_METHOD"] == 'GET') && isset($_GET["id"])){
         $poblacion = poblaciones(["id"=>$u->getId_poblacion()])[0];
     $contactoPersona = contactoUsuario(["persona"=>$u->getId()]);
     $favorito = favoritos(["user"=>is_login(false),"persona"=>$u->getId()]);
+    $oficiosPersona = oficioPersona(["persona"=>$u->getId()]);
 }
 ?>
 <!DOCTYPE html>
@@ -25,7 +26,7 @@ if (($_SERVER["REQUEST_METHOD"] == 'GET') && isset($_GET["id"])){
         <h1>Usuarios</h1>
         <a name="btn-volver" id="btn-add" class="btn btn-primary" href="../index.php" role="button">Volver</a>
         <?php if($u->getId()==is_login(false)) : ?>
-            <a name="btn-fav" id="btn-fav" class="btn btn-info" onclick="return confirm('¿Está seguro?')" href="./edit.php?>" role="button"><?=($u->getId()==is_login(false)) ? 'Editar Mi Perfil' : ''?></a>
+            <a name="btn-fav" id="btn-fav" class="btn btn-info" href="./edit.php?>" role="button"><?=($u->getId()==is_login(false)) ? 'Editar Mi Perfil' : ''?></a>
         <?php else: ?>
             <a name="btn-fav" id="btn-fav" class="btn btn-info" onclick="return confirm('¿Está seguro?')" href="../favorites/toggle.php?id=<?=$u->getId()?>" role="button"><?=!is_null($favorito) ? 'Eliminar Favorito' : 'Agregar Favorito'?></a>
         <?php endif;?>
@@ -72,9 +73,48 @@ if (($_SERVER["REQUEST_METHOD"] == 'GET') && isset($_GET["id"])){
                     <tr>
                         <td>Contacto</td>
                         <td>
-                        <?php if (!is_null($contactoPersona)){foreach($contactoPersona as $cp): ?>
-                            <a href="<?=$cp->getUrl_red().$cp->getValor()?>"><img src="<?=__URL__."uploads/images/".$cp->getIcono_red()?>" class="img-fluid rounded img-thumbnail" style="height: 100px" alt="<?=$cp->getNombre_red()?>"></a>
-                        <?php endforeach;}?>
+
+                            <div class="card-columns" id="contactos">
+                            <?php if (!is_null($contactoPersona)){foreach($contactoPersona as $cp): ?>
+                                <div class="card red" id="red-<?=$cp->getId()?>" tipored="<?=$cp->getRed_id()?>" valor="<?=$cp->getValor()?>">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img class="card-img-top" src="<?=__URL__."uploads/images/".$cp->getIcono_red()?>" alt="Card image cap">
+                                            </div>
+                                            <div class="col-9">
+                                                <h6 class="card-title"><?=$cp->getValor()?></h6>
+                                                <a href="<?=$cp->getUrl_red().$cp->getValor()?>" class="btn btn-block btn-primary">Ir</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endforeach;}?>
+                            </div>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Oficios</td>
+                        <td>
+                            <div class="card-columns" id="oficios">
+                            <?php if (!is_null($oficiosPersona)){foreach($oficiosPersona as $op): ?>
+                                <div class="card oficio" id="oficio-<?=$op->getId()?>" tipooficio="<?=$op->getOficio_id()?>" expeciencia="<?=$op->getExperiencia()?>">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <img class="card-img-top" src="<?=__URL__."uploads/images/".$op->getOficio_icon()?>" alt="Card image cap">
+                                            </div>
+                                            <div class="col-9">
+                                                <h6 class="card-title"><?=$op->getOficio_nombre()?></h6>
+                                                <p>experiencia: <?=$op->getExperiencia()?></p>
+                                                <p>detalle: <?=$op->getDetalle()?></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endforeach;}?>
+                            </div>
 
                         </td>
                     </tr>
