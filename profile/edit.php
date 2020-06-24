@@ -5,6 +5,7 @@
     $contactoPersona = contactoUsuario(["persona"=>$u->getId()]);
     $redes = redesSociales();
     $oficios = oficios();
+    $ciudades = ciudades();
     $oficiosPersona = oficioPersona(["persona"=>$u->getId()]);
     if($u->getId_poblacion())
         $poblacion = poblaciones(["id"=>$u->getId_poblacion()])[0];
@@ -13,21 +14,29 @@
         $config["allowed_type"] = ["jpg","png","jpeg","gif","webp"];
         $config["max_size"] = 10*1000000;//*1Mb
 
-        $subida = new Upload($config);
-        /* if(!isset($_POST["submit"])) {
-            echo "no mando nada por post";
-            die();
-        } */
         if (isset($_FILES["photo-file"])){
+            $subida = new Upload($config);
             if ($subida->do_upload($_FILES["photo-file"]))
             {
                 $u->setFoto_file($subida->nombre_archivo_subido);
-                $u->actualizarFoto();
-                //if($u->actualizar())
-                    //header("Location: ./index.php");
-                    //die();
+                if($u->actualizarFoto())
+                    echo "<script>alert('Usuario Modificado')</script>";
             }
         }
+    }
+    if($_SERVER["REQUEST_METHOD"] == 'POST')
+    {
+        $u->setTipoUser($_POST["nombres"]);
+        $u->setApellidos($_POST["apellidos"]);
+        $u->setGenero($_POST["genero"]);
+        $u->setRut($_POST["rut"]);
+        $u->setFecha_nacimiento($_POST["fecha_nac"]);
+        $u->setCorreo($_POST["correo"]);
+        $u->setTipoUser($_POST["tipoUser"]);
+        $u->setId_poblacion($_POST["poblacion"]);
+        if($u->actualizar())
+            header("Refresh:0");
+
     }
 ?>
 <!DOCTYPE html>
@@ -38,6 +47,9 @@
         <link rel="stylesheet" href="<?=__URL__?>css/bootstrap.css">
         <script src="<?=__URL__?>js/jquery-3.4.1.min.js"></script>
         <script src="<?=__URL__?>js/bootstrap.min.js"></script>
+        <script src="<?=__URL__?>js/validarRUT.js"></script>
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
     <title>Editar Mi Perfil</title>
 </head>
 <body>
@@ -80,11 +92,15 @@
             </tr>
             <tr>
                 <td>RUT</td>
-                <td><input type="text" name="rut" id="rut" value="<?=!is_null($u->getRut()) ? $u->getRut():''?>"></td>
+                <td><input type="text" oninput="checkRut(this)" name="rut" id="rut" value="<?=!is_null($u->getRut()) ? $u->getRut():''?>"></td>
             </tr>
             <tr>
                 <td>Tipo Usuario</td>
-                <td><?=tipoUsuario($u->getTipoUser())?></td>
+                <td>
+                <select name="tipoUser" id="tipoUser">
+                <option value="1" <?=(!is_null($u->getTipoUser()) && (1==$u->getTipoUser())) ? 'selected':''?>>Usuario Buscador</option>
+                <option value="2" <?=(!is_null($u->getTipoUser()) && (2==$u->getTipoUser())) ? 'selected':''?>>Usuario Trabajador</option>
+                </select></td>
             </tr>
             <tr>
                 <td>Fecha de Nacimiento</td>
@@ -95,9 +111,29 @@
                 <td><input type="email" name="correo" id="correo" value="<?=!is_null($u->getCorreo()) ? $u->getCorreo():''?>"></td>
             </tr>
             <tr>
-                <td>Poblacion</td>
-                <td><?php if(isset($poblacion))
-                echo $poblacion->getNombre_poblacion().", ".$poblacion->getCiudad_nombre();?></td>
+                <td>Ubicación</td>
+                <td>
+                <select class="js-example-basic-single" style="width: 50%" name="poblacion">
+                    <?php //foreach($ciudades as $c) : ?>
+                    <?php $poblaciones = poblaciones(/* ["ciudad_id"=>$c->getID()] */); ?>
+                    <?php if(!is_null($poblaciones)) : ?>
+                        <?php foreach($poblaciones as $p) : ?>
+                        <?php //if($p->getCiudad_id()==$c->getId()) : ?>
+                            <option value="<?=$p->getId()?>" <?=($p->getId()==$poblacion->getId())?'selected':''?>>
+                                <?=$p->getNombre_poblacion()?>, <?=$p->nombre_ciudad?>
+                            </option>
+                        <?php //endif;?>
+                        <?php endforeach;?>
+                    <?php endif;?>
+                    <?php //endforeach;?>
+                </select>
+
+                <?php
+                if(isset($poblacion))
+                    echo $poblacion->getNombre_poblacion().", ".$poblacion->getCiudad_nombre();
+                ?>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#localidadModal" data-whatever="@fat">Agregar Población</button>
+                </td>
             </tr>
             <tr>
             <td><button type="submit" class="btn btn-primary">Guardar</button></td><td></td>
@@ -231,6 +267,40 @@
     </div>
   </div>
 </div>
+
+<div class="modal fade" id="localidadModal" tabindex="-1" role="dialog" aria-labelledby="localidadModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="localidadModalLabel">Agregar Población</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <form action="../admin/poblaciones/addpoblacion.php" method="post">
+          <div class="form-group">
+            <label for="selectciudad" class="col-form-label">Ciudad:</label>
+            <select  class="js-example-basic-ciudad text-capitalize" style="width:100%"  name="selectciudad" id="selectciudad">
+              <option value="">Seleccione una Ciudad</option>
+              <?php foreach(ciudades() as $c):?>
+              <option value="<?=$c->getId()?>"><?=$c->getNombre_ciudad()?>, <?=$c->nombre_region?></option>
+              <?php endforeach; ?>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="addpoblacion" class="col-form-label">Población:</label>
+            <input type="text" name="addpoblacion" id="addpoblacion">
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Agregar</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
 <script src="../js/perfil.js"></script>
 <script>const __URL__="<?=__URL__?>"</script>
 <script>
@@ -239,6 +309,11 @@
         var fileName = $(this).val();
         //replace the "Choose a file" label
         $(this).next('.custom-file-label').html(fileName);
+    });
+    // In your Javascript (external .js resource or <script> tag)
+    $(document).ready(function() {
+        $('.js-example-basic-single').select2();
+        $('.js-example-basic-ciudad').select2();
     });
 </script>
 </body>

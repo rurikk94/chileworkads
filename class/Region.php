@@ -23,6 +23,14 @@ class Region
         $nombre = $validar->getValidados($nombre);
         $this->nombre_region = $nombre;
     }
+    public function getRegion($id_region){
+        $conn = new Db();
+        $r = $conn->seleccionarObject("SELECT * FROM region WHERE id_region=".$conn->validar($id_region)." AND borrado IS NULL","Region");
+        if (sizeof($r)==1){
+            $this->setIdRegion($r[0]->getIdRegion());
+            $this->setNombreRegion($r[0]->getNombreRegion());
+        }
+    }
     public function insertar(){
         $conn = new Db();
         $this->setNombreRegion($conn->validar($this->getNombreRegion()));
@@ -35,11 +43,11 @@ class Region
         $conn = new Db();
         $this->setId($conn->validar($this->getId()));
         $this->setNombreRegion($conn->validar($this->getNombreRegion()));
-        return $conn->update("UPDATE region SET nombre_region = '".$this->getNombreRegion()."' WHERE id=".$this->getId());
+        return $conn->update("UPDATE region SET nombre_region = '".$this->getNombreRegion()."' WHERE id_region =".$this->getId());
     }
     public function eliminar(){
         $conn = new Db();
         $this->setId($conn->validar($this->getId()));
-        return $conn->update("UPDATE region SET borrado = now() WHERE id=".$this->getId());
+        return $conn->update("UPDATE region SET borrado = now() WHERE id_region =".$this->getId());
     }
 }

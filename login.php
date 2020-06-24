@@ -51,11 +51,15 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST'){
 <a name="btn-register" id="btn-register" class="btn btn-primary" href="./register.php" role="button">Registrarse</a>
 <a name="btn-recovery" id="btn-recovery" class="btn btn-primary" href="./recovery.php" role="button">Recuperar Contraseña</a>
 <form method="post">
-<label for="email">email</label>
-<input type="email" name="correo" id="correo" required value="<?=(isset($_POST["correo"]) ? $_POST["correo"]:'')?>">
-<label for="contrasena">Contraseña</label>
-<input type="password" name="contrasena" id="contrasena" required>
-<input type="submit" value="entrar">
+    <div class="form-group">
+        <label for="correo">Email</label>
+        <input type="email" class="form-control" name="correo" id="correo" aria-describedby="emailHelpId" placeholder="Ingrese su email" required value="<?=(isset($_POST["correo"]) ? $_POST["correo"]:'')?>">
+    </div>
+    <div class="form-group">
+        <label for="contrasena">Contraseña</label>
+        <input type="password" class="form-control" name="contrasena" id="contrasena" placeholder="">
+    </div>
+    <button type="submit" class="btn btn-primary">Entrar</button>
 </form>
 </div>
 </body>

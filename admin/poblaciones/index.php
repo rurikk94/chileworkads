@@ -2,6 +2,7 @@
 <?php is_admin();?>
 <?php
 $poblaciones = poblaciones();
+$ciudades = ciudades();
 /*
 $conn = new Db();
 $regiones = $conn->seleccionar("SELECT * FROM region;"); */
@@ -27,7 +28,7 @@ $regiones = $conn->seleccionar("SELECT * FROM region;"); */
             <h2>No hay Poblaciones</h2>
         <?php else: ?>
         <div class="table-responsive">
-            <table class="table">
+            <table class="table table-sm">
                 <thead>
                     <tr>
                         <th>Población</th>
@@ -39,9 +40,9 @@ $regiones = $conn->seleccionar("SELECT * FROM region;"); */
                 <?php foreach($poblaciones as $p) : ?>
                     <tr>
                         <td><?=$p->getNombre_poblacion()?></td>
-                        <td><?=$p->getCiudad_nombre()?></td>
-                        <td><a name="btn-mod" id="btn-mod" class="btn btn-primary" href="./edit.php?id=<?=$p->getId_poblacion()?>" role="button">Modificar</a>
-                        <a name="btn-del" id="btn-del" class="btn btn-danger" onclick="return confirm('¿Está seguro?')" href="./delete.php?id=<?=$p->getId_poblacion()?>" role="button">Eliminar</a></td>
+                        <td><?=$p->sP($ciudades,$p->getCiudad_id())->getNombre_ciudad()?></td>
+                        <td><a name="btn-mod" id="btn-mod" class="btn btn-primary" href="./edit.php?id=<?=$p->getId()?>" role="button">Modificar</a>
+                        <a name="btn-del" id="btn-del" class="btn btn-danger" onclick="return confirm('¿Está seguro?')" href="./delete.php?id=<?=$p->getId()?>" role="button">Eliminar</a></td>
                     </tr>
                 <?php endforeach; ?>
                 </tbody>

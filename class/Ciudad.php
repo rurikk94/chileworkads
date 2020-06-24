@@ -1,19 +1,20 @@
 <?php
 include_once("Db.php");
 include_once("Validar.php");
+include_once("Comuna.php");
 /**
  * City
  */
-class Ciudad
+class Ciudad extends Hijo
 {
     private $id_ciudad;
-    private $comuna_id;
+    private $id_comuna;
     private $nombre_ciudad;
-    private $nombre_comuna;
-    private $nombre_region;
+
+    public $nombre_region;
 
     //get y set
-        public function getId_ciudad(){
+        public function getId(){
             return $this->id_ciudad;
         }
 
@@ -22,11 +23,11 @@ class Ciudad
         }
 
         public function getComuna_id(){
-            return $this->comuna_id;
+            return $this->id_comuna;
         }
 
         public function setComuna_id($comuna_id){
-            $this->comuna_id = $comuna_id;
+            $this->id_comuna = $comuna_id;
         }
 
         public function getNombre_ciudad(){
@@ -36,19 +37,22 @@ class Ciudad
         public function setNombre_ciudad($nombre_ciudad){
             $this->nombre_ciudad = $nombre_ciudad;
         }
-        public function getComuna_nombre(){
-            return $this->nombre_comuna;
-        }
-        public function getRegion_nombre(){
-            return $this->nombre_region;
-        }
     //
 
+    public function getCiudad($id_ciudad){
+        $conn = new Db();
+        $c = $conn->seleccionarObject("SELECT * FROM ciudad WHERE id_ciudad=".$conn->validar($id_ciudad)." AND borrado IS NULL","Ciudad");
+        if (sizeof($c)==1){
+            $this->setId_ciudad($c[0]->getId_ciudad());
+            $this->setNombre_ciudad($c[0]->getNombre_ciudad());
+            $this->setComuna_id($c[0]->getComuna_id());
+        }
+    }
     public function insertar(){
         $conn = new Db();
         $this->setNombre_ciudad($conn->validar($this->getNombre_ciudad()));
         $this->setComuna_id($conn->validar($this->getComuna_id()));
-        $add = $conn->insertar("INSERT INTO ciudad (comuna_id,nombre_ciudad)
+        $add = $conn->insertar("INSERT INTO ciudad (id_comuna,nombre_ciudad)
         VALUES (".$this->getComuna_id().",'".$this->getNombre_ciudad()."')");
         if($add)
             $this->setId_ciudad($add);
@@ -61,7 +65,7 @@ class Ciudad
         $this->setComuna_id($conn->validar($this->getComuna_id()));
         return $conn->update("UPDATE ciudad
         SET nombre_ciudad = '".$this->getNombre_ciudad()."'
-            , comuna_id = ".$this->getComuna_id()."
+            , id_comuna = ".$this->getComuna_id()."
          WHERE id_ciudad =".$this->getId_ciudad());
     }
     public function eliminar(){

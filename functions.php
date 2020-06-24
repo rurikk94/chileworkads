@@ -16,6 +16,7 @@ require_once($site_config['SITE']['base'] . '/class/Poblacion.php');
 require_once($site_config['SITE']['base'] . '/class/Contacto.php');
 require_once($site_config['SITE']['base'] . '/class/Favorito.php');
 require_once($site_config['SITE']['base'] . '/class/OficioPersona.php');
+require_once($site_config['SITE']['base'] . '/class/Hijo.php');
 
 
 function is_login($r=true){
@@ -140,17 +141,16 @@ function regiones($filtro=[]){
         FROM region
         WHERE borrado IS NULL";
     if(isset($filtro["id"]) && !is_null($filtro["id"]))
-    {
-        $query.=" AND id = ". $conn->validar($filtro["id"]);
+    {   $flag=1;
+        $query.=" AND id_region = ". $conn->validar($filtro["id"]);
     }
     return $conn->seleccionarObject($query,"Region");
 }
 function comunas($filtro=[]){
     $conn = new Db();
-    $query="SELECT id_comuna, region_id, nombre_comuna, r.nombre_region
+    $query="SELECT id_comuna, id_region, nombre_comuna
         FROM comuna c
-        LEFT JOIN region r on r.id_region = c.region_id
-        WHERE c.borrado IS NULL AND r.borrado IS NULL";
+        WHERE c.borrado IS NULL";
     if(isset($filtro["id"]) && !is_null($filtro["id"]))
     {
         $query.=" AND id_comuna = ". $conn->validar($filtro["id"]);
@@ -193,37 +193,42 @@ function redesSociales($filtro=[]){
     return $conn->seleccionarObject($query,"Red");
 }
 function ciudades($filtro=[]){
-    $conn = new Db();
+    $conn = new Db();   $flag = 0;
     $query="SELECT
-    ci.id_ciudad, ci.comuna_id,ci.nombre_ciudad,
-    co.nombre_comuna,
-    re.nombre_region FROM ciudad ci
-    INNER JOIN comuna co on co.id_comuna = ci.comuna_id
-    INNER JOIN region re on re.id_region = co.region_id
-    WHERE ci.BORRADO IS NULL ";
+    ci.id_ciudad, ci.id_comuna,ci.nombre_ciudad, CONCAT('Region ', LOWER(r.nombre_region)) nombre_region
+    FROM ciudad ci
+    INNER JOIN comuna co on co.id_comuna = ci.id_comuna
+    INNER JOIN region r on r.id_region = co.id_region";
+    if (sizeof($filtro)>0)
+        $query.=" WHERE ";
     if(isset($filtro["id"]) && !is_null($filtro["id"]))
-    {
-        $query.=" AND id_ciudad = ". $conn->validar($filtro["id"]);
+    { $flag=1;
+        $query.=" id_ciudad = ". $conn->validar($filtro["id"]);
     }
     if(isset($filtro["nombre"]) && !is_null($filtro["nombre"]))
-    {
+    {   if($flag==1)  $query.=" AND ";
         $query.=" AND nombre_ciudad = ". $conn->validar($filtro["nombre"]);
     }
     $query.=" ORDER BY nombre_ciudad ASC";
     return $conn->seleccionarObject($query,"Ciudad");
 }
 function poblaciones($filtro=[]){
-    $conn = new Db();
+    $conn = new Db();   $flag = 0;
     $query="SELECT * FROM poblacion po
-    INNER JOIN ciudad ci on ci.id_ciudad = po.ciudad_id
-    WHERE po.BORRADO IS NULL";
+    INNER JOIN ciudad ci on ci.id_ciudad = po.ciudad_id ";
+    if (sizeof($filtro)>0)
+        $query.=" WHERE ";
     if(isset($filtro["id"]) && !is_null($filtro["id"]))
-    {
-        $query.=" AND po.id_poblacion = ". $conn->validar($filtro["id"]);
+    { $flag=1;
+        $query.=" po.id_poblacion = ". $conn->validar($filtro["id"]);
     }
     if(isset($filtro["nombre"]) && !is_null($filtro["nombre"]))
-    {
-        $query.=" AND po.nombre_poblacion = ". $conn->validar($filtro["nombre"]);
+    {   if($flag==1)  $query.=" AND ";
+        $query.=" po.nombre_poblacion = ". $conn->validar($filtro["nombre"]);
+    }
+    if(isset($filtro["ciudad_id"]) && !is_null($filtro["ciudad_id"]))
+    {   if($flag==1)  $query.=" AND ";
+        $query.=" po.ciudad_id = ". $conn->validar($filtro["ciudad_id"]);
     }
     $query.=" ORDER BY po.nombre_poblacion ASC";
     return $conn->seleccionarObject($query,"Poblacion");

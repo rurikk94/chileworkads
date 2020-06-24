@@ -15,6 +15,7 @@ class User
     private $rut;
     private $foto_file;
 
+    private $admin;
     private $tipo_user;
     private $enable;
     private $genero;
@@ -36,6 +37,7 @@ class User
             $this->contrasena = $user["contrasena"];
             $this->tipo_user = $user["tipo_user"];
             $this->enable = $user["enable"];
+            $this->admin = $user["admin"];
 
         }
         return null;
@@ -43,8 +45,7 @@ class User
 
     public function is_admin()
     {
-        $admin_tipo_user = 3;
-        if ($this->tipo_user == $admin_tipo_user)
+        if ($this->admin)
             return true;
         return false;
     }
@@ -75,8 +76,17 @@ class User
     public function getRut(){
         return $this->rut;
     }
+    public function setRut($rut){
+        $this->rut = $rut;
+    }
     public function getFoto_file(){
         return $this->foto_file;
+    }
+    public function setAdmin($admin){
+        return $this->admin = $admin;
+    }
+    public function getAdmin(){
+        return $this->admin;
     }
     public function setFoto_file($foto){
         $this->foto_file = $foto;
@@ -84,14 +94,29 @@ class User
     public function getGenero(){
         return $this->genero;
     }
+    public function setGenero($genero){
+        $this->genero = $genero;
+    }
+    public function setApellidos($apellidos){
+        $this->apellidos = $apellidos;
+    }
     public function getApellidos(){
         return $this->apellidos;
     }
     public function getFecha_nacimiento(){
         return $this->fecha_nacimiento;
     }
+    public function setFecha_nacimiento($fecha_nacimiento){
+        $this->fecha_nacimiento = $fecha_nacimiento;
+    }
+    public function setCorreo($correo){
+        $this->correo = $correo;
+    }
     public function getId_poblacion(){
         return $this->id_poblacion;
+    }
+    public function setId_poblacion($id_poblacion){
+        $this->id_poblacion = $id_poblacion;
     }
     public function actualizarFoto(){
         $conn = new Db();
@@ -120,5 +145,24 @@ class User
         $this->setId($conn->validar($this->getId()));
         $this->setTipoUser($conn->validar($tipo));
         return $conn->update("UPDATE persona SET tipo_user = '".$this->getTipoUser()."' WHERE id=".$this->getId());
+    }
+    public function cambiarAdmin($tipo){
+        $conn = new Db();
+        $this->setId($conn->validar($this->getId()));
+        $this->setTipoUser($conn->validar($tipo));
+        return $conn->update("UPDATE persona SET admin = '".$this->getTipoUser()."' WHERE id=".$this->getId());
+    }
+    public function actualizar(){
+        $conn = new Db();
+        return $conn->update("UPDATE persona SET
+            rut = '".$this->getRut()."' ,
+            nombres = '".$this->getNombres()."' ,
+            genero = '".$this->getGenero()."' ,
+            apellidos = '".$this->getApellidos()."' ,
+            fecha_nacimiento = '".$this->getFecha_nacimiento()."' ,
+            tipo_user = '".$this->getTipoUser()."' ,
+            id_poblacion = '".$this->getId_poblacion()."'
+            WHERE id=".$this->getId());
+
     }
 }

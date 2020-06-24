@@ -10,8 +10,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST'){
 
     $conn = new Db();
     $insertado = $conn->insertar(
-        "INSERT INTO  persona (nombres,correo,contrasena)
-        VALUES ('$nombre','$correo','$contrasenaCodificada');"
+        "INSERT INTO  persona (nombres,foto_file,correo,contrasena)
+        VALUES ('$nombre','user.png','$correo','$contrasenaCodificada');"
     );
 
     if (!$insertado)
@@ -57,13 +57,21 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST'){
 <a name="btn-login" id="btn-login" class="btn btn-primary" href="./login.php" role="button">Login</a>
 <a name="btn-recovery" id="btn-recovery" class="btn btn-primary" href="./recovery.php" role="button">Recuperar Contraseña</a>
 <form method="post">
-<label for="nombre">Nombre</label>
-<input type="text" name="nombre" id="nombre" required>
-<label for="correo">Correo</label>
-<input type="email" name="correo" id="correo" required>
-<label for="contrasena">Contraseña</label>
-<input type="password" name="contrasena" id="contrasena" required>
-<button type="submit" class="btn btn-primary">Crear Cuenta</button>
+    <div class="form-group">
+        <label for="nombre">Nombre</label>
+        <input type="text"
+            class="form-control" name="nombre" id="nombre" required>
+    </div>
+    <div class="form-group">
+        <label for="email">Correo</label>
+        <input type="email" class="form-control" name="correo" id="correo" aria-describedby="emailHelpId" required>
+        <small id="emailHelpId" class="form-text text-muted">Se le enviará un email para activar la cuenta</small>
+    </div>
+    <div class="form-group">
+        <label for="contrasena">Contraseña</label>
+        <input type="password" class="form-control" name="contrasena" id="contrasena" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Crear Cuenta</button>
 </form>
 </div>
 </body>

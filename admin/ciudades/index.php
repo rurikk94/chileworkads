@@ -2,6 +2,12 @@
 <?php is_admin();?>
 <?php
 $ciudades = ciudades();
+$comunas = comunas();
+$regiones = regiones();
+/* foreach ($ciudades as $c){
+    $c->getComuna($c->getComuna_id());
+    $c->getRegion($c->getRegionId());
+} */
 /*
 $conn = new Db();
 $regiones = $conn->seleccionar("SELECT * FROM region;"); */
@@ -27,7 +33,7 @@ $regiones = $conn->seleccionar("SELECT * FROM region;"); */
             <h2>No hay Ciudades</h2>
         <?php else: ?>
         <div class="table-responsive">
-            <table class="table">
+            <table class="table table-sm">
                 <thead>
                     <tr>
                         <th>Ciudad</th>
@@ -40,10 +46,10 @@ $regiones = $conn->seleccionar("SELECT * FROM region;"); */
                 <?php foreach($ciudades as $c) : ?>
                     <tr>
                         <td><?=$c->getNombre_ciudad()?></td>
-                        <td><?=$c->getComuna_nombre()?></td>
-                        <td><?=$c->getRegion_nombre()?></td>
-                        <td><a name="btn-mod" id="btn-mod" class="btn btn-primary" href="./edit.php?id=<?=$c->getId_ciudad()?>" role="button">Modificar</a>
-                        <a name="btn-del" id="btn-del" class="btn btn-danger" onclick="return confirm('¿Está seguro?')" href="./delete.php?id=<?=$c->getId_ciudad()?>" role="button">Eliminar</a></td>
+                        <td><?=$c->sP($comunas,$c->getComuna_id())->getNombreComuna()?></td>
+                        <td><?=$c->sP($regiones,$c->p->getRegionId())->getNombreRegion()?></td>
+                        <td><a name="btn-mod" id="btn-mod" class="btn btn-primary" href="./edit.php?id=<?=$c->getId()?>" role="button">Modificar</a>
+                        <a name="btn-del" id="btn-del" class="btn btn-danger" onclick="return confirm('¿Está seguro?')" href="./delete.php?id=<?=$c->getId()?>" role="button">Eliminar</a></td>
                     </tr>
                 <?php endforeach; ?>
                 </tbody>

@@ -1,18 +1,19 @@
 <?php
 include_once("Db.php");
 include_once("Validar.php");
+include_once("Ciudad.php");
 /**
  * Poblacion
  */
-class Poblacion
+class Poblacion extends Ciudad
 {
     private $id_poblacion;
     private $ciudad_id;
     private $nombre_poblacion;
-    private $nombre_ciudad;
+    public $nombre_ciudad;
 
     //set y get
-        public function getId_poblacion(){
+        public function getId(){
             return $this->id_poblacion;
         }
 

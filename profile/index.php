@@ -9,6 +9,9 @@ if (($_SERVER["REQUEST_METHOD"] == 'GET') && isset($_GET["id"])){
     $favorito = favoritos(["user"=>is_login(false),"persona"=>$u->getId()]);
     $oficiosPersona = oficioPersona(["persona"=>$u->getId()]);
 }
+if(!isset($_GET["id"])){
+    header("location:".__URL__."index.php");exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -18,15 +21,15 @@ if (($_SERVER["REQUEST_METHOD"] == 'GET') && isset($_GET["id"])){
         <link rel="stylesheet" href="<?=__URL__?>css/bootstrap.css">
         <script src="<?=__URL__?>js/jquery-3.4.1.min.js"></script>
         <script src="<?=__URL__?>js/bootstrap.min.js"></script>
-    <title>Admin</title>
+    <title>Usuario</title>
 </head>
 <body>
 <?php require_once(__BASE__."nav.php");?>
     <div class="container">
-        <h1>Usuarios</h1>
+        <h1>Usuario</h1>
         <a name="btn-volver" id="btn-add" class="btn btn-primary" href="../index.php" role="button">Volver</a>
         <?php if($u->getId()==is_login(false)) : ?>
-            <a name="btn-fav" id="btn-fav" class="btn btn-info" href="./edit.php?>" role="button"><?=($u->getId()==is_login(false)) ? 'Editar Mi Perfil' : ''?></a>
+            <a name="btn-fav" id="btn-fav" class="btn btn-info" href="./edit.php" role="button"><?=($u->getId()==is_login(false)) ? 'Editar Mi Perfil' : ''?></a>
         <?php else: ?>
             <a name="btn-fav" id="btn-fav" class="btn btn-info" onclick="return confirm('¿Está seguro?')" href="../favorites/toggle.php?id=<?=$u->getId()?>" role="button"><?=!is_null($favorito) ? 'Eliminar Favorito' : 'Agregar Favorito'?></a>
         <?php endif;?>
@@ -67,8 +70,13 @@ if (($_SERVER["REQUEST_METHOD"] == 'GET') && isset($_GET["id"])){
                     </tr>
                     <tr>
                         <td>Poblacion</td>
-                        <td><?php if(isset($poblacion))
-                        echo $poblacion->getNombre_poblacion().", ".$poblacion->getCiudad_nombre();?></td>
+                        <td><?php if($u->getId_poblacion()){
+                                echo $poblacion->getNombre_poblacion().", ".$poblacion->getCiudad_nombre();
+                            ?>
+                                <a target="_blank" href="<?="https://www.google.com/maps/search/".$poblacion->getNombre_poblacion().", ".$poblacion->getCiudad_nombre()."/";?>"><img src="<?=__URL__."uploads/images/gmap.png"?>"  style="height: 100px" alt=""></a>
+
+                        <?php } ?>
+                        </td>
                     </tr>
                     <tr>
                         <td>Contacto</td>
@@ -84,7 +92,7 @@ if (($_SERVER["REQUEST_METHOD"] == 'GET') && isset($_GET["id"])){
                                             </div>
                                             <div class="col-9">
                                                 <h6 class="card-title"><?=$cp->getValor()?></h6>
-                                                <a href="<?=$cp->getUrl_red().$cp->getValor()?>" class="btn btn-block btn-primary">Ir</a>
+                                                <a href="<?=$cp->getUrl_red().$cp->getValor()?>"  target="_blank" class="btn btn-block btn-primary">Ir</a>
                                             </div>
                                         </div>
                                     </div>

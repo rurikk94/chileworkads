@@ -31,7 +31,7 @@ if (($_SERVER["REQUEST_METHOD"] == 'POST') && isset($_POST["id"]) && isset($_POS
     <h1>Editar Ciudad</h1>
         <a name="btn-add" id="btn-add" class="btn btn-primary" href="./index.php" role="button">Volver</a>
         <form method="post">
-        <input type="hidden" name="id" value="<?=$ciudad[0]->getId_ciudad()?>">
+        <input type="hidden" name="id" value="<?=$ciudad[0]->getId()?>">
         <div class="form-group">
           <label for="">Nombre de la ciudad</label>
           <input type="text"
@@ -39,7 +39,7 @@ if (($_SERVER["REQUEST_METHOD"] == 'POST') && isset($_POST["id"]) && isset($_POS
           <small id="helpId" class="form-text text-muted">Nombre de la ciudad</small>
         </div>
         <div class="form-group">
-            <label for="comuna">Región</label>
+            <label for="comuna">Comuna</label>
             <select class="form-control" name="comuna" id="comuna" required>
               <option value="">Seleccione una Comuna</option>
               <?php foreach ($comunas as $c): ?>

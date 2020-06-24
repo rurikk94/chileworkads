@@ -2,9 +2,7 @@
 <?php is_admin();?>
 <?php
 $comunas = comunas();
-/*
-$conn = new Db();
-$regiones = $conn->seleccionar("SELECT * FROM region;"); */
+$regiones = regiones();
 
 ?>
 <!DOCTYPE html>
@@ -39,7 +37,7 @@ $regiones = $conn->seleccionar("SELECT * FROM region;"); */
                 <?php foreach($comunas as $c) : ?>
                     <tr>
                         <td><?=$c->getNombreComuna()?></td>
-                        <td><?=$c->getRegionNombre()?></td>
+                        <td><?=$c->sP($regiones,$c->getRegionId())->getNombreRegion()?></td>
                         <td><a name="btn-mod" id="btn-mod" class="btn btn-primary" href="./edit.php?id=<?=$c->getId()?>" role="button">Modificar</a>
                         <a name="btn-del" id="btn-del" class="btn btn-danger" onclick="return confirm('¿Está seguro?')" href="./delete.php?id=<?=$c->getId()?>" role="button">Eliminar</a></td>
                     </tr>

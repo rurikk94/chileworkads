@@ -31,7 +31,7 @@ if (($_SERVER["REQUEST_METHOD"] == 'POST') && isset($_POST["id"]) && isset($_POS
     <h1>Editar Ciudad</h1>
         <a name="btn-add" id="btn-add" class="btn btn-primary" href="./index.php" role="button">Volver</a>
         <form method="post">
-        <input type="hidden" name="id" value="<?=$poblacion[0]->getId_poblacion()?>">
+        <input type="hidden" name="id" value="<?=$poblacion[0]->getId()?>">
         <div class="form-group">
           <label for="">Nombre de la poblacion</label>
           <input type="text"
@@ -43,7 +43,7 @@ if (($_SERVER["REQUEST_METHOD"] == 'POST') && isset($_POST["id"]) && isset($_POS
             <select class="form-control" name="ciudad" id="ciudad" required>
               <option value="">Seleccione una Ciudad</option>
               <?php foreach ($ciudades as $c): ?>
-              <option value="<?=$c->getId_ciudad()?>" <?=($c->getId_ciudad()==$poblacion[0]->getCiudad_id()) ? 'selected="selected"':''?>>
+              <option value="<?=$c->getId()?>" <?=($c->getId()==$poblacion[0]->getCiudad_id()) ? 'selected="selected"':''?>>
                 <?=$c->getNombre_ciudad()?>
               </option>
               <?php endforeach;?>

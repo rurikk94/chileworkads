@@ -62,9 +62,12 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST'){
 <a name="btn-login" id="btn-login" class="btn btn-primary" href="./login.php" role="button">Login</a>
 <a name="btn-register" id="btn-register" class="btn btn-primary" href="./register.php" role="button">Registrarse</a>
 <form method="post">
-<label for="email">Correo</label>
-<input type="email" name="correo" id="correo" required>
-<button type="submit">Recuperar</button>
+<div class="form-group">
+  <label for="">Correo</label>
+  <input type="email" class="form-control" name="correo" id="correo" aria-describedby="emailHelpId" placeholder="" required>
+  <small id="emailHelpId" class="form-text text-muted">Se le enviará un correo al email</small>
+</div>
+<button type="submit" class="btn btn-primary">Recuperar</button>
 </form>
 </div>
 </body>
