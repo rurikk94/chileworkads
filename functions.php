@@ -17,6 +17,7 @@ require_once($site_config['SITE']['base'] . '/class/Contacto.php');
 require_once($site_config['SITE']['base'] . '/class/Favorito.php');
 require_once($site_config['SITE']['base'] . '/class/OficioPersona.php');
 require_once($site_config['SITE']['base'] . '/class/Hijo.php');
+require_once($site_config['SITE']['base'] . '/class/Resena.php');
 
 
 function is_login($r=true){
@@ -155,6 +156,10 @@ function comunas($filtro=[]){
     {
         $query.=" AND id_comuna = ". $conn->validar($filtro["id"]);
     }
+    if(isset($filtro["id_region"]) && !is_null($filtro["id_region"]))
+    {
+        $query.=" AND id_region = ". $conn->validar($filtro["id_region"]);
+    }
     $query.=" ORDER BY nombre_comuna ASC";
     return $conn->seleccionarObject($query,"Comuna");
 }
@@ -207,7 +212,11 @@ function ciudades($filtro=[]){
     }
     if(isset($filtro["nombre"]) && !is_null($filtro["nombre"]))
     {   if($flag==1)  $query.=" AND ";
-        $query.=" AND nombre_ciudad = ". $conn->validar($filtro["nombre"]);
+        $query.=" nombre_ciudad = ". $conn->validar($filtro["nombre"]);
+    }
+    if(isset($filtro["id_comuna"]) && !is_null($filtro["id_comuna"]))
+    {   if($flag==1)  $query.=" AND ";
+        $query.=" ci.id_comuna = ". $conn->validar($filtro["id_comuna"]);
     }
     $query.=" ORDER BY nombre_ciudad ASC";
     return $conn->seleccionarObject($query,"Ciudad");
@@ -233,10 +242,65 @@ function poblaciones($filtro=[]){
     $query.=" ORDER BY po.nombre_poblacion ASC";
     return $conn->seleccionarObject($query,"Poblacion");
 }
+function resenas($filtro=[])
+{
+
+    $conn = new Db();
+    $query="SELECT * FROM resena r
+    WHERE r.enable = '1'";
+    if(isset($filtro["id"]) && !is_null($filtro["id"]))
+    {
+        $query.=" AND r.id = ". $conn->validar($filtro["id"]);
+    }
+    if(isset($filtro["trabajador_id"]) && !is_null($filtro["trabajador_id"]))
+    {
+        $query.=" AND r.trabajador_id = ". $conn->validar($filtro["trabajador_id"]);
+    }
+    if(isset($filtro["quien_resena_id"]) && !is_null($filtro["quien_resena_id"]))
+    {
+        $query.=" AND r.quien_resena_id = ". $conn->validar($filtro["quien_resena_id"]);
+    }
+    if(isset($filtro["evaluacion"]) && !is_null($filtro["evaluacion"]))
+    {
+        $query.=" AND r.evaluacion >= ". $conn->validar($filtro["evaluacion"]);
+    }
+    $query.=" ORDER BY r.fecha DESC";
+    return $conn->seleccionarObject($query,"Resena");
+}
+function filtroOficios($filtro=[]){
+
+    $oficos=[];
+    foreach ($filtro as $key => $value) {
+        //$a=0;
+        if (stristr($key,"oficio-"))
+            array_push($oficos,$value);
+    }
+    /* if(isset($filtro["filtro-region"]) && !is_null($filtro["filtro-region"])) */
+    /* if(isset($filtro["filtro-comuna"]) && !is_null($filtro["filtro-comuna"])) */
+    /* if(isset($filtro["filtro-ciudad"]) && !is_null($filtro["filtro-ciudad"])) */
+    /* if(isset($filtro["estrellas"]) && !is_null($filtro["estrellas"])) */
+    /*{
+        $conn = new Db();
+        $query="SELECT * FROM persona p
+        WHERE p.BORRADO IS NULL";
+
+        return $conn->seleccionar($query);
+    } */
+    return $oficos;
+}
 function usuarios($filtro=[]){
     $conn = new Db();
-    $query="SELECT * FROM persona p
-    WHERE p.BORRADO IS NULL";
+    $query="SELECT p.*,
+        (SELECT count(resena.id) FROM resena
+            WHERE resena.trabajador_id = p.id ) count,
+        (SELECT AVG(resena.evaluacion) FROM resena
+            WHERE resena.trabajador_id = p.id ) avg,
+            p.id_poblacion, c.id_ciudad, c.id_comuna, co.id_region
+        FROM persona p
+            LEFT JOIN poblacion po ON po.id_poblacion = p.id_poblacion
+            LEFT JOIN ciudad c ON c.id_ciudad = po.ciudad_id
+            LEFT JOIN comuna co ON co.id_comuna = c.id_comuna
+        WHERE p.BORRADO IS NULL";
     if(isset($filtro["id"]) && !is_null($filtro["id"]))
     {
         $query.=" AND p.id = ". $conn->validar($filtro["id"]);
@@ -245,11 +309,47 @@ function usuarios($filtro=[]){
     {
         $query.=" AND p.nombres = ". $conn->validar($filtro["nombre"]);
     }
+    if(isset($filtro["region"]) && !is_null($filtro["region"]))
+    {
+        $query.=" AND co.id_region = ". $conn->validar($filtro["region"]);
+    }
+    if(isset($filtro["comuna"]) && !is_null($filtro["comuna"]))
+    {
+        $query.=" AND co.id_comuna = ". $conn->validar($filtro["comuna"]);
+    }
+    if(isset($filtro["ciudad"]) && !is_null($filtro["ciudad"]))
+    {
+        $query.=" AND c.id_ciudad = ". $conn->validar($filtro["ciudad"]);
+    }
+    if(isset($filtro["poblacion"]) && !is_null($filtro["poblacion"]))
+    {
+        $query.=" AND p.id_poblacion = ". $conn->validar($filtro["poblacion"]);
+    }
+    if(isset($filtro["nombre_like"]) && !is_null($filtro["nombre_like"]))
+    {
+        $query.=" AND p.nombres like '%". $conn->validar($filtro["nombre_like"]) . "%' ";
+    }
     if(isset($filtro["tipo"]) && !is_null($filtro["tipo"]))
     {
         $query.=" AND p.tipo_user = ". $conn->validar($filtro["tipo"]);
     }
-    $query.=" ORDER BY p.nombres ASC";
+    if(isset($filtro["enable"]) && !is_null($filtro["enable"]))
+    {
+        $query.=" AND p.enable = '". $conn->validar($filtro["enable"]) . "' ";
+    }
+    if(isset($filtro["personas"]) && !is_null($filtro["personas"]))
+    {
+        $query.=" AND p.id IN (". implode(",", $filtro["personas"]) . " ) ";
+    }
+    if(isset($filtro["avg"]) && !is_null($filtro["avg"]) && ($filtro["avg"]>0))
+    {
+        $query.=" HAVING avg >= ". $filtro["avg"];
+    }
+    if(isset($filtro["order"]) && !is_null($filtro["order"]))
+    {
+        $query.=" ORDER BY " . $filtro["order"];
+    }else
+        $query.=" ORDER BY p.nombres ASC";
     return $conn->seleccionarObject($query,"User");
 }
 function tipoUsuario($id)
@@ -307,6 +407,10 @@ function oficioPersona($filtro=[]){
     if(isset($filtro["nombre"]) && !is_null($filtro["nombre"]))
     {
         $query.=" AND o.oficio_nombre = ". $conn->validar($filtro["nombre"]);
+    }
+    if(isset($filtro["oficios"]) && !is_null($filtro["oficios"]))
+    {
+        $query.=" AND o.id IN (". implode(",", $filtro["oficios"]) . " ) ";
     }
     $query.=" ORDER BY o.oficio_nombre ASC";
     return $conn->seleccionarObject($query,"OficioPersona");

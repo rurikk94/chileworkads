@@ -11,7 +11,7 @@
         $poblacion = poblaciones(["id"=>$u->getId_poblacion()])[0];
     if (($_SERVER["REQUEST_METHOD"] == 'POST') && isset($_FILES["photo-file"])){
         $config["upload_path"] = "uploads/images/";
-        $config["allowed_type"] = ["jpg","png","jpeg","gif","webp"];
+        $config["allowed_type"] = ["jpg","png","jpeg","gif","webp","svg","svg"];
         $config["max_size"] = 10*1000000;//*1Mb
 
         if (isset($_FILES["photo-file"])){
@@ -24,12 +24,13 @@
             }
         }
     }
-    if($_SERVER["REQUEST_METHOD"] == 'POST')
+    if(($_SERVER["REQUEST_METHOD"] == 'POST') && !isset($_FILES["photo-file"]))
     {
-        $u->setTipoUser($_POST["nombres"]);
+        $u->setNombres($_POST["nombres"]);
         $u->setApellidos($_POST["apellidos"]);
         $u->setGenero($_POST["genero"]);
         $u->setRut($_POST["rut"]);
+        if($_POST["fecha_nac"]=="") $_POST["fecha_nac"]=NULL;
         $u->setFecha_nacimiento($_POST["fecha_nac"]);
         $u->setCorreo($_POST["correo"]);
         $u->setTipoUser($_POST["tipoUser"]);
@@ -45,6 +46,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="<?=__URL__?>css/bootstrap.css">
+        <script src="<?=__URL__?>js/jquery-3.4.1.min.js"></script>
+        <script src="<?=__URL__?>js/bootstrap.min.js"></script>
+        <script src="https://kit.fontawesome.com/0786957a7f.js" crossorigin="anonymous"></script>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="<?=__URL__?>css/material-icons.css">
+        <link rel="stylesheet" href="<?=__URL__?>css/css.css">
         <script src="<?=__URL__?>js/jquery-3.4.1.min.js"></script>
         <script src="<?=__URL__?>js/bootstrap.min.js"></script>
         <script src="<?=__URL__?>js/validarRUT.js"></script>
@@ -77,6 +84,15 @@
                     </form>
                 </td>
             </tr>
+            <tr><td>Descripción</td>
+            <td>
+              <div class="editor" style="background-color:powderblue;">
+                <?=!is_null($u->getBio()) ? $u->getBio():'Escribe algo sobre ti.'?>
+              </div>
+            <button type="submit" id="btn_bio"class="btn btn-primary">Guardar Bio</button>
+            </td>
+
+            </tr>
             <form method="post">
             <tr>
                 <td>Nombres</td>
@@ -95,12 +111,15 @@
                 <td><input type="text" oninput="checkRut(this)" name="rut" id="rut" value="<?=!is_null($u->getRut()) ? $u->getRut():''?>"></td>
             </tr>
             <tr>
-                <td>Tipo Usuario</td>
+                <td>Mostrar Perfil</td>
                 <td>
                 <select name="tipoUser" id="tipoUser">
-                <option value="1" <?=(!is_null($u->getTipoUser()) && (1==$u->getTipoUser())) ? 'selected':''?>>Usuario Buscador</option>
-                <option value="2" <?=(!is_null($u->getTipoUser()) && (2==$u->getTipoUser())) ? 'selected':''?>>Usuario Trabajador</option>
-                </select></td>
+                <option value="1" <?=(!is_null($u->getTipoUser()) && (1==$u->getTipoUser())) ? 'selected':''?>>No</option>
+                <option value="2" <?=(!is_null($u->getTipoUser()) && (2==$u->getTipoUser())) ? 'selected':''?>>Si</option>
+                </select>
+                <p>Esta opción le permite que los otros usuarios puedan ver su perfil y
+                 que lo puedan contactar con alguna de sus redes sociales</p>
+                </td>
             </tr>
             <tr>
                 <td>Fecha de Nacimiento</td>
@@ -140,10 +159,10 @@
             </tr>
             </form>
             <tr>
-                <td>Contactos
+                <td>Redes Sociales
                     <button type="button" name="btn-editar-contactos" id="btn-editar-contactos" class="btn btn-primary btn-lg btn-block" onclick="showBtnDel()">Editar</button>
                     <button type="button" name="btn-guardar-contactos" id="btn-guardar-contactos" class="btn btn-success btn-lg btn-block" onclick="guardarContactos()">Guardar</button>
-                    <button type="button" name="btn-add-contactos" id="btn-add-contactos"  class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Agregar</button>
+                    <button type="button" name="btn-add-contactos" id="btn-add-contactos"  class="btn btn-primary" data-toggle="modal" data-target="#ModalContacto">Agregar</button>
                 </td>
                 <td>
                     <div class="card-columns" id="contactos">
@@ -170,12 +189,12 @@
                 <td>Oficios
                     <button type="button" name="btn-editar-oficios" id="btn-editar-oficios" class="btn btn-primary btn-lg btn-block" onclick="showBtnDelOficio()">Editar</button>
                     <button type="button" name="btn-guardar-oficios" id="btn-guardar-oficios" class="btn btn-success btn-lg btn-block" onclick="guardarOficios()">Guardar</button>
-                    <button type="button" name="btn-add-oficios" id="btn-add-oficios"  class="btn btn-primary" data-toggle="modal" data-target="#exampleModal2">Agregar</button>
+                    <button type="button" name="btn-add-oficios" id="btn-add-oficios"  class="btn btn-primary" data-toggle="modal" data-target="#ModalOficio">Agregar</button>
                 </td>
                 <td>
                     <div class="card-columns" id="oficios">
                     <?php if (!is_null($oficiosPersona)){foreach($oficiosPersona as $op): ?>
-                        <div class="card oficio" id="oficio-<?=$op->getId()?>" tipooficio="<?=$op->getOficio_id()?>" expeciencia="<?=$op->getExperiencia()?>">
+                        <div class="card oficio" id="oficio-<?=$op->getId()?>" tipooficio="<?=$op->getOficio_id()?>" experiencia="<?=$op->getExperiencia()?>">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-3">
@@ -185,7 +204,8 @@
                                         <h6 class="card-title"><?=$op->getOficio_nombre()?></h6>
                                         <p>experiencia: <?=$op->getExperiencia()?></p>
                                         <button onclick="eliminarOficio(this)" type="button" name="btn-eliminar-oficio" id="<?=$op->getId()?>" class="btn btn-danger btn-lg btn-block btn-del-red-of">Eliminar</button>
-                                        <p>detalle: <?=$op->getDetalle()?></p>
+                                        <p>detalle:</p>
+                                       <p class="oficio-detalle"> <?=$op->getDetalle()?></p>
                                     </div>
                                 </div>
                             </div>
@@ -198,7 +218,7 @@
     </table>
 </div>
 </div>
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="ModalContacto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -231,7 +251,7 @@
   </div>
 </div>
 
-<div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="ModalOficio" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -262,7 +282,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-primary" id="btn-add-red-input" onclick="agregarContacto()" data-dismiss="modal" >Agregar</button>
+        <button type="button" class="btn btn-primary" id="btn-add-red-input" onclick="agregarOficio()" data-dismiss="modal" >Agregar</button>
       </div>
     </div>
   </div>
@@ -316,5 +336,79 @@
         $('.js-example-basic-ciudad').select2();
     });
 </script>
+
+<script src="../js/ckeditor.js"></script>
+	<script>InlineEditor
+			.create( document.querySelector( '.editor' ), {
+
+				toolbar: {
+					items: [
+						'heading',
+						'|',
+						'bold',
+						'italic',
+						'link',
+						'bulletedList',
+						'numberedList',
+						'|',
+						'indent',
+						'outdent',
+						'|',
+						'underline',
+						'blockQuote',
+						'insertTable',
+						'undo',
+						'redo'
+					]
+				},
+				language: 'en',
+				table: {
+					contentToolbar: [
+						'tableColumn',
+						'tableRow',
+						'mergeTableCells'
+					]
+				},
+				licenseKey: '',
+
+			} )
+			.then( editor => {
+				window.editor = editor;
+
+
+
+
+			} )
+			.catch( error => {
+				console.error( 'Oops, something gone wrong!' );
+				console.error( 'Please, report the following error in the https://github.com/ckeditor/ckeditor5 with the build id and the error stack trace:' );
+				console.warn( 'Build id: 4eoalpo8okv1-lqk2ucq9lghg' );
+				console.error( error );
+      } );
+
+    document.querySelector( '#btn_bio' ).addEventListener( 'click', () => {
+        const bio = editor.getData();
+        console.log(bio)
+        const data = new FormData();
+        data.append('bio', bio);
+        fetch('../api/saveBio.php', {
+          method: 'POST',
+          body: data
+        }).then(function(response) {
+            if(response.ok) {
+                console.log('Respuesta OK');
+                alert("Bio guardada");
+                location.reload();
+            } else {
+                console.log('Respuesta de red OK pero respuesta HTTP no OK');
+            }
+        })
+        .catch(function(error) {
+        console.log('Hubo un problema con la petición Fetch:' + error.message);
+        });
+
+        // ...
+    } );
+	</script>
 </body>
 </html>

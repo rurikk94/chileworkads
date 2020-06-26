@@ -31,7 +31,8 @@ class Upload {
         $ruta_name_archivo_subido = $this->upload_path . $this->nombre_archivo_subido;
         // Check if image file is a actual image or fake image
         //if(isset($_POST["submit"])) {
-            $check = getimagesize($file["tmp_name"]);
+            //$check = getimagesize($file["tmp_name"]);
+            $check = file_exists($file["tmp_name"]);
             if($check !== false) {
                 //echo "File is an image - " . $check["mime"] . ".";
                 $uploadOk = 1;

@@ -56,6 +56,17 @@ class Oficio
         public function getCant(){
             return $this->cant;
         }
+
+        public function toArray(){
+            $array=[
+                "id"=> $this->getId(),
+                "oficio_nombre"=> $this->getOficio_nombre(),
+                "oficio_icon"=> $this->getOficio_icon(),
+                "categoria"=> $this->getCategoria(),
+                "enable"=> $this->getEnable()
+            ];
+            return $array;
+        }
     //
     function insertar(){
         $conn = new Db();

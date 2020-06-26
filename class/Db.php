@@ -109,4 +109,45 @@ class Db
     {
         return mysqli_real_escape_string($this->_connection,$value);
     }
+
+  function execSQL($sql, $params, $close){
+    //$mysqli = new mysqli("localhost", "user", "pass", "db");
+    $this->conectar();
+    $stmt = mysqli_prepare($this->_connection,$sql) or die ("Failed to prepared the statement!");
+    call_user_func_array(array($stmt, 'bind_param'), $this->refValues($params));
+    $stmt->execute();
+    if($close){
+      return $result = $this->_connection->affected_rows;
+    } else {
+        $meta = $stmt->result_metadata();
+        while ( $field = $meta->fetch_field() ) {
+            $parameters[] = &$row[$field->name];
+        }
+
+    call_user_func_array(array($stmt, 'bind_result'), $this->refValues($parameters));
+    while ( $stmt->fetch() ) {
+        $x = array();
+        foreach( $row as $key => $val ) {
+          $x[$key] = $val;
+        }
+        $results[] = $x;
+    }
+    $result = $results;
+    }
+    $stmt->close();
+    //$this->_connection->close();
+    //$this->desconectar();
+    return  $result;
+  }
+
+  function refValues($arr){
+  if (strnatcmp(phpversion(),'5.3') >= 0) //Reference is required for PHP 5.3+
+  {
+    $refs = array();
+    foreach($arr as $key => $value)
+        $refs[$key] = &$arr[$key];
+    return $refs;
+  }
+  return $arr;
+  }
 }

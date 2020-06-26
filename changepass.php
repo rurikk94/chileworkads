@@ -57,18 +57,34 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST'){
     <title>Cambiar Contraseña</title>
 </head>
 <body>
-<div class="container">
-<h1>Cambiar Contraseña</h1>
-<a name="btn-login" id="btn-login" class="btn btn-primary" href="./login.php" role="button">Login</a>
-<form method="post">
-<input type="hidden" name="id" value="<?=$id?>">
-<input type="hidden" name="hash" value="<?=$pass?>">
-<label for="email">Correo</label>
-<input type="email" name="correo" id="correo">
-<label for="contrasena">Contraseña</label>
-<input type="password" name="contrasena" id="contrasena">
-<button type="submit">Cambiar Contraseña</button>
-</form>
-</div>
+    <div class="container">
+    <div class="row">
+        <div class="col-sm-9 col-md-3 mx-auto">
+            <img  src="<?=__URL__?>logo.png" class="img-fluid" alt="logo">
+        </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-9 col-md-7 col-lg-6 mx-auto">
+                <h1>Cambiar Contraseña</h1>
+                <a name="btn-login" id="btn-login" class="btn btn-primary" href="./login.php" role="button">Login</a>
+                <form method="post">
+                    <input type="hidden" name="id" value="<?=$id?>">
+                    <input type="hidden" name="hash" value="<?=$pass?>">
+                    <div class="form-group">
+                    <label for="correo">Correo</label>
+                    <input type="text"
+                    class="form-control" name="correo" id="correo" required>
+                    <div class="form-group">
+                        <label for="contrasena">Contraseña</label>
+                        <input type="password" class="form-control" name="contrasena" id="contrasena" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Cambiar Contraseña</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

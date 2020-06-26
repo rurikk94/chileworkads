@@ -41,26 +41,45 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST'){
         <link rel="stylesheet" href="<?=__URL__?>css/bootstrap.css">
         <script src="<?=__URL__?>js/jquery-3.4.1.min.js"></script>
         <script src="<?=__URL__?>js/bootstrap.min.js"></script>
+        <script src="https://kit.fontawesome.com/0786957a7f.js" crossorigin="anonymous"></script>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="<?=__URL__?>css/material-icons.css">
+        <link rel="stylesheet" href="<?=__URL__?>css/css.css">
+        <script src="<?=__URL__?>js/jquery-3.4.1.min.js"></script>
+        <script src="<?=__URL__?>js/bootstrap.min.js"></script>
     <title>Login</title>
 </head>
 <body>
-<?php require_once(__BASE__."nav.php");?>
 <div class="container">
-<h1>Login</h1>
-<?php isset($modal) ? modal($modal) :'' ?>
-<a name="btn-register" id="btn-register" class="btn btn-primary" href="./register.php" role="button">Registrarse</a>
-<a name="btn-recovery" id="btn-recovery" class="btn btn-primary" href="./recovery.php" role="button">Recuperar Contraseña</a>
-<form method="post">
-    <div class="form-group">
-        <label for="correo">Email</label>
-        <input type="email" class="form-control" name="correo" id="correo" aria-describedby="emailHelpId" placeholder="Ingrese su email" required value="<?=(isset($_POST["correo"]) ? $_POST["correo"]:'')?>">
+  <div class="row">
+      <div class="col-sm-9 col-md-3 mx-auto">
+      <img  src="<?=__URL__?>logo.png" class="img-fluid" alt="logo">
+      </div>
     </div>
-    <div class="form-group">
-        <label for="contrasena">Contraseña</label>
-        <input type="password" class="form-control" name="contrasena" id="contrasena" placeholder="">
-    </div>
-    <button type="submit" class="btn btn-primary">Entrar</button>
-</form>
 </div>
+    <div class="container">
+    <div class="row">
+        <div class="col-sm-9 col-md-7 col-lg-6 mx-auto">
+        <h1>Login</h1>
+        <?php isset($modal) ? modal($modal) :'' ?>
+        <a name="btn-register" id="btn-register" class="btn btn-primary" href="./register.php" role="button">Registrarse</a>
+        <a name="btn-recovery" id="btn-recovery" class="btn btn-primary" href="./recovery.php" role="button">Recuperar Contraseña</a>
+        <fieldset style="border:1px">
+        <legend>Ingrese sus datos</legend>
+        <form method="post">
+            <div class="form-group">
+                <label for="correo">Email</label>
+                <input type="email" class="form-control" name="correo" id="correo" aria-describedby="emailHelpId" placeholder="Ingrese su email" required value="<?=(isset($_POST["correo"]) ? $_POST["correo"]:'')?>">
+            </div>
+            <div class="form-group">
+                <label for="contrasena">Contraseña</label>
+                <input type="password" class="form-control" name="contrasena" id="contrasena" placeholder="">
+            </div>
+            <button type="submit" class="btn btn-primary">Entrar</button>
+        </form>
+        </fieldset>
+        </div>
+    </div>
+    </div>
 </body>
 </html>

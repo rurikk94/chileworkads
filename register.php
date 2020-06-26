@@ -50,8 +50,16 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST'){
     <title>Registrarse</title>
 </head>
 <body>
-<?php require_once(__BASE__."nav.php");?>
 <div class="container">
+  <div class="row">
+      <div class="col-sm-9 col-md-3 mx-auto">
+      <img  src="<?=__URL__?>logo.png" class="img-fluid" alt="logo">
+      </div>
+    </div>
+</div>
+    <div class="container">
+    <div class="row">
+        <div class="col-sm-9 col-md-7 col-lg-6 mx-auto">
 <h1>Registrarse</h1>
 <?php isset($modal) ? modal($modal) :'' ?>
 <a name="btn-login" id="btn-login" class="btn btn-primary" href="./login.php" role="button">Login</a>
@@ -73,6 +81,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST'){
     </div>
     <button type="submit" class="btn btn-primary">Crear Cuenta</button>
 </form>
+</div>
+</div>
 </div>
 </body>
 </html>

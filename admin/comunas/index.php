@@ -13,6 +13,12 @@ $regiones = regiones();
         <link rel="stylesheet" href="<?=__URL__?>css/bootstrap.css">
         <script src="<?=__URL__?>js/jquery-3.4.1.min.js"></script>
         <script src="<?=__URL__?>js/bootstrap.min.js"></script>
+        <script src="https://kit.fontawesome.com/0786957a7f.js" crossorigin="anonymous"></script>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="<?=__URL__?>css/material-icons.css">
+        <link rel="stylesheet" href="<?=__URL__?>css/css.css">
+        <script src="<?=__URL__?>js/jquery-3.4.1.min.js"></script>
+        <script src="<?=__URL__?>js/bootstrap.min.js"></script>
     <title>Admin</title>
 </head>
 <body>

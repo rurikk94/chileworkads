@@ -14,6 +14,14 @@ class Ciudad extends Hijo
     public $nombre_region;
 
     //get y set
+    public function toArray(){
+        $array=[
+            "id_ciudad"=>$this->getId(),
+            "id_comuna"=>$this->getComuna_id(),
+            "nombre_ciudad"=>$this->getNombre_ciudad()
+        ];
+        return $array;
+    }
         public function getId(){
             return $this->id_ciudad;
         }

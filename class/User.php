@@ -14,12 +14,20 @@ class User
     private $contrasena;
     private $rut;
     private $foto_file;
+    private $bio;
 
     private $admin;
     private $tipo_user;
     private $enable;
     private $genero;
     private $id_poblacion;
+
+    public $count;
+    public $avg;
+
+    public $id_ciudad;
+    public $id_comuna;
+    public $id_region;
 
     function create($correo)
     {
@@ -31,6 +39,7 @@ class User
         if(!is_null($user) && sizeof($user)>0)
         {
             $user = $user[0];
+            $this->bio = $user["bio"];
             $this->id = $user["id"];
             $this->nombres = $user["nombres"];
             $this->correo = $user["correo"];
@@ -55,8 +64,17 @@ class User
     public function getId(){
         return $this->id;
     }
+    public function setBio($bio){
+        $this->bio =$bio;
+    }
+    public function getBio(){
+        return $this->bio;
+    }
     public function getNombres(){
         return $this->nombres;
+    }
+    public function setNombres($nombres){
+        $this->nombres = $nombres;
     }
     public function getCorreo(){
         return $this->correo;
@@ -104,6 +122,8 @@ class User
         return $this->apellidos;
     }
     public function getFecha_nacimiento(){
+        /* if(is_null($this->fecha_nacimiento))
+            return ''; */
         return $this->fecha_nacimiento;
     }
     public function setFecha_nacimiento($fecha_nacimiento){
@@ -152,17 +172,49 @@ class User
         $this->setTipoUser($conn->validar($tipo));
         return $conn->update("UPDATE persona SET admin = '".$this->getTipoUser()."' WHERE id=".$this->getId());
     }
+    public function getCalificacion(){
+        $conn = new Db();
+        $query = "SELECT AVG(evaluacion) nota FROM resena WHERE trabajador_id = ".$this->getId()." AND enable = '1'";
+        $evaluacion = $conn->seleccionar($query)[0]["nota"];
+        return $evaluacion;
+    }
     public function actualizar(){
         $conn = new Db();
-        return $conn->update("UPDATE persona SET
+        //execSQL("INSERT INTO table(id, name) VALUES (?,?)", array('ss', $id, $name), true);
+        $result = $conn->execSQL("UPDATE persona SET
+            bio = ?,
+            rut = ?,
+            nombres = ?,
+            genero = ?,
+            apellidos = ?,
+            fecha_nacimiento = ?,
+            tipo_user = ?,
+            id_poblacion = ?
+            WHERE id = ?",
+            [
+                "ssssssiii",
+                $this->getBio(),
+                $this->getRut(),
+                $this->getNombres(),
+                $this->getGenero(),
+                $this->getApellidos(),
+                $this->getFecha_nacimiento(),
+                $this->getTipoUser(),
+                $this->getId_poblacion(),
+                $this->getId()
+            ],
+            True);
+            return $result;
+
+        /* return $conn->update("UPDATE persona SET
             rut = '".$this->getRut()."' ,
             nombres = '".$this->getNombres()."' ,
             genero = '".$this->getGenero()."' ,
             apellidos = '".$this->getApellidos()."' ,
-            fecha_nacimiento = '".$this->getFecha_nacimiento()."' ,
+            fecha_nacimiento = '".$conn->validar($this->getFecha_nacimiento())."' ,
             tipo_user = '".$this->getTipoUser()."' ,
             id_poblacion = '".$this->getId_poblacion()."'
-            WHERE id=".$this->getId());
+            WHERE id=".$this->getId()); */
 
     }
 }

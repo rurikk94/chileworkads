@@ -74,5 +74,27 @@ class OficioPersona{
     public function setCategoria($categoria){
         $this->categoria = $categoria;
     }
+	public function insertar(){
+		$conn = new Db();
+		try {
+			$this->setPersona_id($conn->validar($this->getPersona_id()));
+			$this->setOficio_id($conn->validar($this->getOficio_id()));
+			$this->setExperiencia($conn->validar($this->getExperiencia()));
+			$this->setDetalle($conn->validar($this->getDetalle()));
+
+			$add = $conn->insertar("INSERT INTO persona_oficio (persona_id,oficio_id,experiencia,detalle)
+			VALUES (".$this->getPersona_id().",".$this->getOficio_id().",'".$this->getExperiencia()."','".$this->getDetalle()."')");
+			if($add)
+				$this->setId($add);
+			return $add;
+		} catch (\Throwable $th) {
+			return false;
+		}
+	}
+    public function eliminar(){
+        $conn = new Db();
+        $this->setId($conn->validar($this->getId()));
+        return $conn->update("DELETE FROM persona_oficio WHERE id=".$this->getId());
+    }
 }
 ?>

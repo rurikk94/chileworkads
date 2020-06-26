@@ -45,6 +45,14 @@ class Comuna extends Hijo
         $nombre = $validar->getValidados($nombre);
         $this->nombre_comuna = $nombre;
     }
+    public function toArray(){
+        $array=[
+            "id_comuna"=>$this->getId(),
+            "id_region"=>$this->getRegionId(),
+            "nombre_comuna"=>$this->getNombreComuna()
+        ];
+        return $array;
+    }
     public function insertar(){
         $conn = new Db();
         $this->setNombreComuna($conn->validar($this->getNombreComuna()));

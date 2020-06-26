@@ -9,8 +9,15 @@
             $r->setId_persona(is_login(false));
             $r->setRed_id($red["tipored"]);
             $r->setValor($red["valor"]);
-            if(!$r->insertar())
-                $error=1;
+            if ($r->insertar()) {
+                header('200 OK');
+                print "Guardado";
+                //return TRUE;
+            } else {
+                header('HTTP/1.1 500 Internal Server Error');
+                print "Error al Guardar";
+                //return FALSE;
+            }
         }
         if(!is_null($contactoPersona)){
         foreach($contactoPersona as $cp){
