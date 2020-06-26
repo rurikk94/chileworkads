@@ -34,6 +34,7 @@ if (($_SERVER["REQUEST_METHOD"] == 'GET') && isset($_GET)){
     if(isset($_GET["estrellas"]))
         $filtro["avg"]=$_GET["estrellas"];
         $filtro["order"]="  COUNT  DESC, AVG desc";
+        if(!isset($_GET["page"]))   $_GET["page"]=1;
     $resultadosPagina = 25;
         $filtro["limit"]="   LIMIT ".($_GET["page"]-1)*$resultadosPagina. " ";
     //if(isset($_GET["page"]) && $_GET["page"]>1)
@@ -93,39 +94,41 @@ if (($_SERVER["REQUEST_METHOD"] == 'GET') && isset($_GET)){
                 </ul>
             </nav>
             <?php endif; ?>
-        <div class="table-responsive">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th style="width:130px">Imagen</th>
-                        <th>Usuario</th>
-                        <th> </th>
-                    </tr>
-                </thead>
-                <tbody>
                 <?php foreach($usuarios as $u) : ?>
-                    <tr>
-                        <td><img src="<?=__URL__."uploads/images/".$u->getFoto_file()?>" class="img-fluid rounded-circle img-thumbnail w-100" alt=""></td>
-                        <td><p><?=$u->getNombres()?> <?=$u->getApellidos()?></p>
-                        <?php if($u->getRut()) : ?>
-                            <i class="material-icons google-icon">verified</i>
-                        <?php endif; ?>
-                        <?php $nota = $u->getCalificacion();
-                         if($nota>6):?>
-                        <span class="material-icons md-48">star</span><?=$nota?>
-                        <?php elseif($nota>3): ?>
-                        <i class="material-icons md-18">star_outline</i><?=$nota?>
-                        <?php elseif($nota>0): ?>
-                        <i class="material-icons md-36">star_half</i><?=$nota?>
-                        <?php endif; ?>
-                        </td>
-                        <td>
-                            <a name="btn-detail" id="btn-detail" class="btn btn-info" href="./profile/index.php?id=<?=$u->getId()?>" role="button">Perfil</a>
-                        </td>
-                    </tr>
+                        <div class="card shadow mb-3 col-10 col-sm-10 col-md-8 col-lg-8 mx-auto">
+                            <div class="row">
+                                <div class="col-3 m-2">
+                                    <div class="row">
+                                            <img  class="card-img-top rounded-circle  mx-auto" src="<?=__URL__."uploads/images/".$u->getFoto_file()?>" alt="Card image cap">
+                                            </div>
+                                    <div class="row">
+                                            <a name="btn-detail" id="btn-detail" class="btn btn-info  mx-auto" href="./profile/index.php?id=<?=$u->getId()?>" role="button">Perfil</a>
+                                        </div>
+                                    </div>
+                                <div class="col-7 m-2">
+                                    <div class="row">
+                                        <h5 class="card-title"><?=$u->getNombres()?> <?=$u->getApellidos()?></h5>
+                                    </div>
+                                    <div class="row">
+                                        <p>
+                                            <?php if($u->getRut()) : ?>
+                                                <i class="material-icons google-icon">verified</i>
+                                            <?php endif; ?>
+                                            <?php $nota = $u->getCalificacion();
+                                            if($nota>6):?>
+                                                <span class="material-icons md-48">star</span><?=$nota?>
+                                                <?php elseif($nota>3): ?>
+                                                <i class="material-icons md-18">star_outline</i><?=$nota?>
+                                                <?php elseif($nota>0): ?>
+                                                <i class="material-icons md-36">star_half</i><?=$nota?>
+                                            <?php endif; ?>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                 <?php endforeach; ?>
-                </tbody>
-            </table>
             <?php if (!isset($_GET["page"])) $_GET["page"]=1;
             if($paginas>0): ?>
             <nav aria-label="...">
@@ -151,7 +154,6 @@ if (($_SERVER["REQUEST_METHOD"] == 'GET') && isset($_GET)){
                 </ul>
             </nav>
             <?php endif; ?>
-        </div>
         <?php endif; ?>
     </div>
     <script>

@@ -38,185 +38,153 @@ if(!isset($_GET["id"])){
 <body>
 <?php require_once(__BASE__."nav.php");?>
     <div class="container">
-        <h1>Usuario</h1>
         <a name="btn-volver" id="btn-add" class="btn btn-primary" href="../index.php" role="button">Volver</a>
-        <?php if($u->getId()==is_login(false)) : ?>
-            <a name="btn-fav" id="btn-fav" class="btn btn-info" href="./edit.php" role="button"><?=($u->getId()==is_login(false)) ? 'Editar Mi Perfil' : ''?></a>
-        <?php else: ?>
-            <a name="btn-fav" id="btn-fav" class="btn btn-info" onclick="return confirm('¿Está seguro?')" href="../favorites/toggle.php?id=<?=$u->getId()?>" role="button"><?=!is_null($favorito) ? 'Eliminar Favorito' : 'Agregar Favorito'?></a>
-        <?php endif;?>
-        <div class="table">
-            <table class="table">
-                <tbody>
-                    <tr>
-                        <td>Imagen</td>
-                        <td><img src="<?=__URL__."uploads/images/".$u->getFoto_file()?>" class="img-fluid rounded-circle img-thumbnail" style="height: 100px" alt=""></td>
-                    </tr>
-                    <tr>
-                        <td>Nombres</td>
-                        <td><?=$u->getNombres()?></td>
-                    </tr>
-                    <tr>
-                        <td>Apellidos</td>
-                        <td><?=$u->getApellidos()?></td>
-                    </tr>
-                    <tr>
-                        <td>Bio</td>
-                        <td><?=$u->getBio()?></td>
-                    </tr>
-                    <tr>
-                        <td>Genero</td>
-                        <td><?=$u->getGenero()?></td>
-                    </tr>
-                    <tr>
-                        <td>RUT</td>
-                        <td><?=$u->getRut()?></td>
-                    </tr>
-                    <tr>
-                        <td>Tipo Usuario</td>
-                        <td><?=tipoUsuario($u->getTipoUser())?></td>
-                    </tr>
-                    <tr>
-                        <td>Fecha de Nacimiento</td>
-                        <td id="fecha"><?=$u->getFecha_nacimiento()?></td>
-                    </tr>
-                    <tr>
-                        <td>Correo</td>
-                        <td><?=$u->getCorreo()?></td>
-                    </tr>
-                    <tr>
-                        <td>Poblacion</td>
-                        <td><?php if($u->getId_poblacion()){
-                                echo $poblacion->getNombre_poblacion().", ".$poblacion->getCiudad_nombre();
-                            ?>
-                                <a target="_blank" href="<?="https://www.google.com/maps/search/".$poblacion->getNombre_poblacion().", ".$poblacion->getCiudad_nombre()."/";?>"><img src="<?=__URL__."uploads/images/gmap.png"?>"  style="height: 100px" alt=""></a>
+            <div class="card mx-auto col-10 col-md-4 m-2">
+                <img src="<?=__URL__."uploads/images/".$u->getFoto_file()?>" style="width: 100px;" class="card-img-top rounded-circle mx-auto mt-2" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title"><?=$u->getNombres()?> <?=$u->getApellidos()?>
+                    <?php if($u->getId()==is_login(false)) : ?>
+                        <a name="btn-fav" id="btn-fav" class="btn btn-outline-info" href="./edit.php" role="button"><?=($u->getId()==is_login(false)) ? '<span class="material-icons">edit</span>Editar' : ''?></a>
+                    <?php endif; ?>
+                    <?php if($u->getId()!=is_login(false)) : ?>
+                    <a name="btn-fav" id="btn-fav" class="btn btn-outline-danger" onclick="return confirm('¿Está seguro?')" href="../favorites/toggle.php?id=<?=$u->getId()?>" role="button"><?=!is_null($favorito) ? '<span class="material-icons">favorite</span> Eliminar Favorito' : '<span class="material-icons">favorite_border</span> Agregar Favorito '?></a>
+                    <?php endif;?>
+                    </h5>
+                    <?=$u->getBio()?>
+                </div>
+                <div class="card mb-2">
+                    <div class="card-header">
+                        Datos
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Genero: <?=$u->getGenero()?></li>
+                        <li class="list-group-item" id="fecha">Nacimiento: <?=$u->getFecha_nacimiento()?></li>
+                        <li class="list-group-item">Email: <?=$u->getCorreo()?></li>
+                        <li class="list-group-item">Localidad:
+                        <?php if($u->getId_poblacion()){
+                                    echo $poblacion->getNombre_poblacion().", ".$poblacion->getCiudad_nombre();
+                                ?>
+                                    <a target="_blank" href="<?="https://www.google.com/maps/search/".$poblacion->getNombre_poblacion().", ".$poblacion->getCiudad_nombre()."/";?>"><img src="<?=__URL__."uploads/images/gmap.png"?>"  style="height: 100px" alt=""></a>
 
-                        <?php } ?>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Redes Sociales</td>
-                        <td>
+                            <?php } ?>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        <hr>
+        <?php if (!is_null($contactoPersona)){ ?>
+            <h3>Redes Sociales</h3>
 
-                            <div class="card-columns" id="contactos">
-                            <?php if (!is_null($contactoPersona)){foreach($contactoPersona as $cp): ?>
-                                <div class="card red" id="red-<?=$cp->getId()?>" tipored="<?=$cp->getRed_id()?>" valor="<?=$cp->getValor()?>">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-sm-9 col-md-3">
-                                                <img class="card-img-top" src="<?=__URL__."uploads/images/".$cp->getIcono_red()?>" alt="Card image cap">
-                                            </div>
-                                            <div class="col-sm-9 col-md-9">
-                                                <h6 class="card-title"><?=$cp->getValor()?></h6>
-                                                <a href="<?=$cp->getUrl_red().$cp->getValor()?>"  target="_blank" class="btn btn-block btn-primary">Ir</a>
-                                            </div>
-                                        </div>
-                                    </div>
+            <div class="card-columns" id="contactos">
+                <?php foreach($contactoPersona as $cp): ?>
+                    <div class="card red shadow bg-white rounded" id="red-<?=$cp->getId()?>" tipored="<?=$cp->getRed_id()?>" valor="<?=$cp->getValor()?>">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-4">
+                                    <img class="card-img-top" src="<?=__URL__."uploads/images/".$cp->getIcono_red()?>" alt="Card image cap">
                                 </div>
-                            <?php endforeach;}?>
-                            </div>
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Oficios</td>
-                        <td>
-                            <div class="card-columns" id="oficios">
-                            <?php if (!is_null($oficiosPersona)){foreach($oficiosPersona as $op): ?>
-                                <div class="card oficio" id="oficio-<?=$op->getId()?>" tipooficio="<?=$op->getOficio_id()?>" expeciencia="<?=$op->getExperiencia()?>">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-sm-9 col-md-3">
-                                                <img class="card-img-top" src="<?=__URL__."uploads/images/".$op->getOficio_icon()?>" alt="Card image cap">
-                                            </div>
-                                            <div class="col-sm-9 col-md-9">
-                                                <h6 class="card-title"><?=$op->getOficio_nombre()?></h6>
-                                                <p>experiencia: <?=$op->getExperiencia()?></p>
-                                                <p>detalle: <?=$op->getDetalle()?></p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            <?php endforeach;}?>
-                            </div>
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Reseñas
-                        </td>
-                        <td>
-
-                        <?php if($u->getId()!=is_login(false)) : ?>
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-sm-9 col-md-2">
-                                        <?php $yo = usuarios(["id"=>is_login(false)])[0];?>
-                                            <img style="max-width:100px;" class="card-img-top rounded-circle img-thumbnail" src="<?=__URL__?>uploads/images/<?=$yo->getFoto_file()?>" alt="Card image cap">
-                                        </div>
-                                        <div class="col-sm-9 col-md-10 ">
-                                            <div class="row">
-                                                <div class="w-100 editor" id="editor" style="background-color: #f5f6f7;" name="editor"></div>
-                                            </div>
-                                            <div class="row">
-                                                <link rel="stylesheet" href="<?=__URL__?>css/slider.css">
-                                                <div class="slidecontainer">
-                                                    <input type="range" min="0" max="10" value="0" name="estrellasResena" class="slider" id="estrellasResena">
-                                                    <p>Valoración: <span id="estrellasTextresena"></span></p>
-                                                </div>
-                                                <script>
-                                                var slider = document.getElementById("estrellasResena");
-                                                var output = document.getElementById("estrellasTextresena");
-                                                output.innerHTML = slider.value;
-
-                                                slider.oninput = function() {
-                                                    output.innerHTML = this.value;
-                                                }
-                                                </script>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <button id="addresena" class="btn btn-success">Agregar Reseña</button>
-                            </div>
-
-                        <?php endif;?>
-                        <?php $resenas = resenas(["trabajador_id"=>$_GET["id"]]);?>
-                        <?php if (is_null($resenas)) {echo ("<h1>No tiene reseñas</h1>"); }
-                        else {
-                        echo '<h3>Reseñas Previas</h3>';
-                        foreach($resenas as $r) :
-                        $resenador = usuarios(["id"=>$r->getQuien_resena_id()])[0];
-                        ?>
-                        <div class="card mb-2">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-sm-9 col-md-2">
-                                        <img style="max-width:100px;" class="card-img-top rounded-circle img-thumbnail" src="<?=__URL__?>uploads/images/<?=$resenador->getFoto_file()?>" alt="Card image cap">
-                                    </div>
-                                    <div class="col-sm-9 col-md-10">
-                                        <p><a href="<?=__URL__?>profile?id=<?=$resenador->getId()?>"><?=$resenador->getNombres()?> <?=$resenador->getApellidos()?> </a><span class="text-muted fecha"><?=$r->getFecha()?></span></p>
-                                    <?php $nota = $r->getEvaluacion();
-                                    if($nota>6):?>
-                                    <span class="material-icons md-48">star</span><?=$nota?>
-                                    <?php elseif($nota>3): ?>
-                                    <i class="material-icons md-36">star_half</i><?=$nota?>
-                                    <?php elseif($nota>0): ?>
-                                    <i class="material-icons md-18">star_outline</i><?=$nota?>
-                                    <?php endif; ?>
-                                        <h6 class="card-title"><?=$r->getTexto()?></h6>
-                                    </div>
+                                <div class="col-6">
+                                    <h6><?=$cp->getValor()?></h6>
+                                    <a href="<?=$cp->getUrl_red().$cp->getValor()?>"  target="_blank" class="btn btn-block btn-primary">Ir</a>
                                 </div>
                             </div>
                         </div>
-                        <?php endforeach; ?>
-                                    <?php } ?>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                    </div>
+                <?php endforeach;?>
+            </div>
+            <hr>
+        <?php } ?>
+
+        <?php if (!is_null($oficiosPersona)){ ?>
+            <h3>Oficios</h3>
+            <div class="card-columns" id="oficios">
+                <?php foreach($oficiosPersona as $op): ?>
+                    <div class="card oficio shadow p-3 mb-5 bg-white rounded" id="oficio-<?=$op->getId()?>" tipooficio="<?=$op->getOficio_id()?>" expeciencia="<?=$op->getExperiencia()?>">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-4">
+                                    <img   class="card-img-top" src="<?=__URL__."uploads/images/".$op->getOficio_icon()?>" alt="Card image cap">
+                                </div>
+                                <div class="col-6">
+                                    <h6><?=$op->getOficio_nombre()?></h6>
+                                    <p>experiencia: <?=$op->getExperiencia()?></p>
+                                    <p>detalle: <?=$op->getDetalle()?></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach;?>
+            </div>
+            <hr>
+        <?php }?>
+
+        <h3>Reseñas</h3>
+        <?php if($u->getId()!=is_login(false)) : ?>
+            <div class="card shadow">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-9 col-md-2">
+                        <?php $yo = usuarios(["id"=>is_login(false)])[0];?>
+                            <img style="max-width:100px;" class="card-img-top rounded-circle img-thumbnail" src="<?=__URL__?>uploads/images/<?=$yo->getFoto_file()?>" alt="Card image cap">
+                        </div>
+                        <div class="col-sm-9 col-md-10 ">
+                            <div class="row">
+                                <div class="w-100 editor" id="editor" style="background-color: #f5f6f7;" name="editor"></div>
+                            </div>
+                            <div class="row">
+                                <link rel="stylesheet" href="<?=__URL__?>css/slider.css">
+                                <div class="slidecontainer">
+                                    <input type="range" min="0" max="10" value="0" name="estrellasResena" class="slider" id="estrellasResena">
+                                    <p>Valoración: <span id="estrellasTextresena"></span></p>
+                                </div>
+                                <script>
+                                var slider = document.getElementById("estrellasResena");
+                                var output = document.getElementById("estrellasTextresena");
+                                output.innerHTML = slider.value;
+
+                                slider.oninput = function() {
+                                    output.innerHTML = this.value;
+                                }
+                                </script>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <button id="addresena" class="btn btn-success">Agregar Reseña</button>
+            </div>
+        <?php endif;?>
+
+        <?php $resenas = resenas(["trabajador_id"=>$_GET["id"]]);?>
+        <?php if (is_null($resenas)) {echo ("<h3>No tiene reseñas</h3>"); }
+        else {
+            echo '<h3>Reseñas Previas</h3>';
+            foreach($resenas as $r) :
+                $resenador = usuarios(["id"=>$r->getQuien_resena_id()])[0];
+                ?>
+                <div class="card shadow mb-2">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-9 col-md-2">
+                                <img style="max-width:100px;" class="card-img-top rounded-circle img-thumbnail" src="<?=__URL__?>uploads/images/<?=$resenador->getFoto_file()?>" alt="Card image cap">
+                            </div>
+                            <div class="col-sm-9 col-md-10">
+                                <p><a href="<?=__URL__?>profile?id=<?=$resenador->getId()?>"><?=$resenador->getNombres()?> <?=$resenador->getApellidos()?> </a><span class="text-muted fecha"><?=$r->getFecha()?></span></p>
+                            <?php $nota = $r->getEvaluacion();
+                            if($nota>6):?>
+                            <span class="material-icons md-48">star</span><?=$nota?>
+                            <?php elseif($nota>3): ?>
+                            <i class="material-icons md-36">star_half</i><?=$nota?>
+                            <?php elseif($nota>0): ?>
+                            <i class="material-icons md-18">star_outline</i><?=$nota?>
+                            <?php endif; ?>
+                                <h6 class="card-title"><?=$r->getTexto()?></h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        <?php } ?>
         </div>
     </div>
 </body>
