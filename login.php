@@ -52,14 +52,14 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST'){
 <body>
 <div class="container">
   <div class="row">
-      <div class="col-sm-9 col-md-3 mx-auto">
-      <img  src="<?=__URL__?>logo.png" class="img-fluid" alt="logo">
+      <div class="col-11 col-md-6 mx-auto">
+      <img  src="<?=__URL__?>logow.png" class="img-fluid" alt="logo">
       </div>
     </div>
 </div>
     <div class="container">
     <div class="row">
-        <div class="col-sm-9 col-md-7 col-lg-6 mx-auto">
+        <div class="col-11 col-md-7 col-lg-6 mx-auto">
         <h1>Login</h1>
         <?php isset($modal) ? modal($modal) :'' ?>
         <a name="btn-register" id="btn-register" class="btn btn-primary" href="./register.php" role="button">Registrarse</a>

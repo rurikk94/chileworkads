@@ -1,51 +1,48 @@
 <div class="container">
   <div class="row">
-      <div class="col-sm-9 col-md-3 mx-auto">
-      <img  src="<?=__URL__?>logo.png" class="img-fluid" alt="logo">
+      <div class="col-sm-9 col-md-4 mx-auto mt-1">
+      <img  src="<?=__URL__?>logow.png" class="img-fluid" alt="logo">
       </div>
-    <div class="col-sm-9 col-md-9 mx-auto">
-  <div class="row d-flex justify-content-center">
-    <h1></h1>
-    </div>
+    <div class="col-sm-9 col-md-8 mt-3 mx-auto">
     <?php if (is_login(false)){ ?>
-  <div class="row d-flex justify-content-center">
-      <a name="btn-inicio" id="btn-inicio" class="btn btn-warning" href="<?=__URL__?>" role="button">Inicio</a>
-    <?php if (is_admin(false)){ ?>
-      <a name="btn-admin" id="btn-admin" class="btn btn-primary" href="<?=__URL__?>admin/index.php" role="button">Admin</a>
+      <div class="row d-flex justify-content-center">
+        <a name="btn-inicio" id="btn-inicio" class="btn btn-warning" href="<?=__URL__?>" role="button">Inicio</a>
+        <?php if (is_admin(false)){ ?>
+          <a name="btn-admin" id="btn-admin" class="btn btn-primary" href="<?=__URL__?>admin/index.php" role="button">Admin</a>
+        <?php } ?>
+        <a name="btn-perfil" id="btn-perfil" class="btn btn-success" href="<?=__URL__?>profile/index.php?id=<?=is_login(false)?>" role="button">Mi Perfil</a>
+        <a name="btn-favorites" id="btn-favorites" class="btn btn-info" href="<?=__URL__?>favorites/index.php" role="button">Favoritos</a>
+        <a name="btn-logout" id="btn-logout" class="btn btn-primary" href="<?=__URL__?>logout.php" role="button"><i class="material-icons">login</i> Salir</a>
+      </div>
     <?php } ?>
-    <a name="btn-perfil" id="btn-perfil" class="btn btn-success" href="<?=__URL__?>profile/index.php?id=<?=is_login(false)?>" role="button">Mi Perfil</a>
-    <a name="btn-favorites" id="btn-favorites" class="btn btn-info" href="<?=__URL__?>favorites/index.php" role="button">Favoritos</a>
-    <a name="btn-logout" id="btn-logout" class="btn btn-primary" href="<?=__URL__?>logout.php" role="button"><i class="material-icons">login</i> Salir</a>
-  </div>
-  <?php } ?>
     </div>
   </div>
 
   <?php if (is_login(false)){ ?>
   <form action="./index.php" method="get">
-  <input type="hidden" name="page" value="<?=(isset($_GET["page"])?$_GET["page"]:'1')?>">
-  <div class="row">
-      <div class="col-sm-9 col-md-3 mx-auto">
+  <input type="hidden" name="page" value="1">
+  <div class="row mt-2">
+      <div class="col-sm-9 col-md-4 mx-auto">
+        <h3 id="titlefiltros" class="btn btn-block btn-outline-primary lista_filtros" data-toggle="tooltip" title="Oculta los filtros" onclick="$('.lista_filtros').hide('fast');"><span class="material-icons">filter_alt</span>Filtros</h3>
       </div>
-    <div class="col-sm-9 col-md-9 mx-auto">
+    <div class="col-sm-9 col-md-8 mx-auto">
       <div class="input-group mb-3">
-        <input onclick="$('#lista_filtros').show('slow');" type="text" name="buscar" id="buscar" class="form-control" placeholder="Buscar Trabajador, Oficio" aria-label="Buscar Trabajador, Oficio" aria-describedby="basic-addon2">
+        <input autocomplete="off" onclick="$('.lista_filtros').show('fast');" type="text" name="buscar" id="buscar" class="form-control" placeholder="Buscar Trabajador, Oficio" aria-label="Buscar Trabajador, Oficio" aria-describedby="basic-addon2">
         <div class="input-group-append">
-          <button class="btn btn-secondary" type="submit"><span class="material-icons md-18">search</span>Buscar</button>
+          <button data-toggle="tooltip" title="Busca según datos ingresados y filtros establecidos" class="btn btn-success" type="submit"><span class="material-icons md-18">search</span>Buscar</button>
         </div>
       </div>
     </div>
   </div>
-  <div class="row" id="lista_filtros">
-    <div class="col-sm-9 col-md-3 mx-auto">
+  <div class="row">
+    <div class="col-sm-9 col-md-4 mx-auto lista_filtros">
       <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-      <h3>Filtros</h3>
-        <a class="nav-link" id="v-pills-filtro-oficio-tab" data-toggle="pill" href="#v-pills-filtro-oficio" role="tab" aria-controls="v-pills-filtro-oficio" aria-selected="true"><span class="material-icons">work</span>Oficios</a>
-        <a class="nav-link" id="v-pills-filtro-ubicacion-tab" data-toggle="pill" href="#v-pills-filtro-ubicacion" role="tab" aria-controls="v-pills-filtro-ubicacion" aria-selected="false"><span class="material-icons">location_on</span>Ubicacion</a>
-        <a class="nav-link" id="v-pills-filtro-calificacion-tab" data-toggle="pill" href="#v-pills-filtro-calificacion" role="tab" aria-controls="v-pills-filtro-calificacion" aria-selected="false"><span class="material-icons">grade</span>Calificación</a>
+        <a class="nav-link btn-outline-primary mt-2" id="v-pills-filtro-oficio-tab" data-toggle="pill" title="Filtra por Oficio" href="#v-pills-filtro-oficio" role="tab" aria-controls="v-pills-filtro-oficio" aria-selected="true"><span class="material-icons">work</span> Oficios</a>
+        <a class="nav-link btn-outline-primary mt-2" id="v-pills-filtro-ubicacion-tab" data-toggle="pill" title="Filtra por Ubicación" href="#v-pills-filtro-ubicacion" role="tab" aria-controls="v-pills-filtro-ubicacion" aria-selected="false"><span class="material-icons">location_on</span> Ubicacion</a>
+        <a class="nav-link btn-outline-primary mt-2" id="v-pills-filtro-calificacion-tab" data-toggle="pill" title="Filtra por Calificación" href="#v-pills-filtro-calificacion" role="tab" aria-controls="v-pills-filtro-calificacion" aria-selected="false"><span class="material-icons">grade</span> Calificación</a>
       </div>
     </div>
-    <div class="col-sm-9 col-md-9 mx-auto">
+    <div class="col-sm-9 col-md-8 mx-auto lista_filtros">
       <?php $oficios=oficios(); ?>
     <div class="tab-content" id="v-pills-tabContent">
         <div class="tab-pane fade" id="v-pills-filtro-oficio" role="tabpanel" aria-labelledby="v-pills-filtro-oficio">
@@ -109,10 +106,15 @@
   <?php } ?>
 </div>
 <script>
-  $("#lista_filtros").hide();
+  $(".lista_filtros").hide();
 </script>
 <script>
   const URL = "<?=__URL__?>";
+</script>
+<script>
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip();
+});
 </script>
 <script src="<?=__URL__?>js/comunas.js"></script>
 <script src="<?=__URL__?>js/ciudades.js"></script>

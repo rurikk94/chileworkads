@@ -53,6 +53,7 @@ if (($_SERVER["REQUEST_METHOD"] == 'GET') && isset($_GET)){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="<?=__URL__?>css/bootstrap.css">
         <script src="<?=__URL__?>js/jquery-3.4.1.min.js"></script>
+        <script src="<?=__URL__?>js/popper.js"></script>
         <link rel="icon" type="image/vnd.microsoft.icon" href="./favicon.ico">
         <script src="<?=__URL__?>js/bootstrap.min.js"></script>
         <script src="https://kit.fontawesome.com/0786957a7f.js" crossorigin="anonymous"></script>
@@ -63,21 +64,21 @@ if (($_SERVER["REQUEST_METHOD"] == 'GET') && isset($_GET)){
 </head>
 <body>
 <?php require_once(__BASE__."nav.php");?>
-    <div class="container">
+    <div class="container col-sm-9 col-md-10">
         <h1>Trabajadores</h1>
         <?php if (is_null($usuarios)): ?>
             <h2>No hay Usuarios</h2>
         <?php else: ?>
 
             <?php if (!isset($_GET["page"])) $_GET["page"]=1;
-            if($paginas>0): ?>
+            if($paginas>1): ?>
             <nav aria-label="...">
                 <ul class="pagination">
                     <?php if($_GET["page"]-1>0): ?>
                     <li class="page-item">
-                        <a class="page-link" onclick="cambiarPagina(<?=$_GET['page']-1?>)">Anterior</a>
+                        <a class="page-link" onclick="cambiarPagina(<?=$_GET['page']-1?>)" data-toggle="tooltip" title="Va a la página anterior">Anterior</a>
                     </li>
-                    <li class="page-item"><a class="page-link"  onclick="cambiarPagina(<?=$_GET['page']-1?>)"><?=$_GET["page"]-1?></a></li>
+                    <li class="page-item"><a class="page-link" data-toggle="tooltip" title="Va a la página <?=$_GET["page"]-1?>"  onclick="cambiarPagina(<?=$_GET['page']-1?>)"><?=$_GET["page"]-1?></a></li>
                     <?php endif; ?>
                     <li class="page-item active">
                     <span class="page-link">
@@ -86,9 +87,9 @@ if (($_SERVER["REQUEST_METHOD"] == 'GET') && isset($_GET)){
                     </span>
                     </li>
                     <?php if($_GET["page"]+1<=$paginas): ?>
-                    <li class="page-item"><a class="page-link" onclick="cambiarPagina(<?=$_GET['page']+1?>)"><?=$_GET["page"]+1?></a></li>
+                    <li class="page-item"><a class="page-link" data-toggle="tooltip" title="Va a la página <?=$_GET["page"]+1?>" onclick="cambiarPagina(<?=$_GET['page']+1?>)"><?=$_GET["page"]+1?></a></li>
                     <li class="page-item">
-                        <a class="page-link" onclick="cambiarPagina(<?=$_GET['page']+1?>)">Siguiente</a>
+                        <a class="page-link" data-toggle="tooltip" title="Va a la página siguiente" onclick="cambiarPagina(<?=$_GET['page']+1?>)">Siguiente</a>
                     </li>
                     <?php endif; ?>
                 </ul>
@@ -97,17 +98,17 @@ if (($_SERVER["REQUEST_METHOD"] == 'GET') && isset($_GET)){
                 <?php foreach($usuarios as $u) : ?>
                         <div class="card shadow mb-3 col-10 col-sm-10 col-md-8 col-lg-8 mx-auto">
                             <div class="row">
-                                <div class="col-3 m-2">
+                                <div class="col-3 m-3">
                                     <div class="row">
-                                            <img  class="card-img-top rounded-circle  mx-auto" src="<?=__URL__."uploads/images/".$u->getFoto_file()?>" alt="Card image cap">
+                                            <img style="max-width:180px;max-height:180px" class="card-img-top rounded-circle  mx-auto" src="<?=__URL__."uploads/images/".$u->getFoto_file()?>" alt="Card image cap">
                                             </div>
                                     <div class="row">
-                                            <a name="btn-detail" id="btn-detail" class="btn btn-info  mx-auto" href="./profile/index.php?id=<?=$u->getId()?>" role="button">Perfil</a>
+                                            <a  data-toggle="tooltip" title="Visitas su perfil." name="btn-detail" id="btn-detail" class="btn btn-info  mx-auto" href="./profile/index.php?id=<?=$u->getId()?>" role="button">Perfil</a>
                                         </div>
                                     </div>
-                                <div class="col-7 m-2">
-                                    <div class="row">
-                                        <h5 class="card-title"><?=$u->getNombres()?> <?=$u->getApellidos()?></h5>
+                                <div class="col-6 m-2">
+                                    <div class="row mt-3">
+                                        <h3 class="card-title"><?=$u->getNombres()?> <?=$u->getApellidos()?></h3>
                                     </div>
                                     <div class="row">
                                         <p>
@@ -116,11 +117,11 @@ if (($_SERVER["REQUEST_METHOD"] == 'GET') && isset($_GET)){
                                             <?php endif; ?>
                                             <?php $nota = $u->getCalificacion();
                                             if($nota>6):?>
-                                                <span class="material-icons md-48">star</span><?=$nota?>
+                                                <span class="material-icons md-48 text-warning">star</span><?=$nota?>
                                                 <?php elseif($nota>3): ?>
-                                                <i class="material-icons md-18">star_outline</i><?=$nota?>
+                                                <i class="material-icons md-36 text-warning">star_half</i><?=$nota?>
                                                 <?php elseif($nota>0): ?>
-                                                <i class="material-icons md-36">star_half</i><?=$nota?>
+                                                <i class="material-icons md-18 text-muted">star_outline</i><?=$nota?>
                                             <?php endif; ?>
                                         </p>
                                     </div>
@@ -130,7 +131,7 @@ if (($_SERVER["REQUEST_METHOD"] == 'GET') && isset($_GET)){
 
                 <?php endforeach; ?>
             <?php if (!isset($_GET["page"])) $_GET["page"]=1;
-            if($paginas>0): ?>
+            if($paginas>1): ?>
             <nav aria-label="...">
                 <ul class="pagination">
                     <?php if($_GET["page"]-1>0): ?>
