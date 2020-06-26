@@ -33,9 +33,16 @@ if (($_SERVER["REQUEST_METHOD"] == 'GET') && isset($_GET)){
     $filtro["enable"]=2;
     if(isset($_GET["estrellas"]))
         $filtro["avg"]=$_GET["estrellas"];
-        //$filtro["order"]="  COUNT  DESC, AVG desc";
-        $filtro["order"]="  RAND()";
-    $usuarios = usuarios($filtro);
+        $filtro["order"]="  COUNT  DESC, AVG desc";
+    $resultadosPagina = 25;
+        $filtro["limit"]="   LIMIT ".($_GET["page"]-1)*$resultadosPagina. " ";
+    //if(isset($_GET["page"]) && $_GET["page"]>1)
+        $filtro["limit"].=", ".$resultadosPagina;
+        //$filtro["order"]="  RAND()";
+    $usuarios = usuariosPag($filtro);
+    $count = $usuarios["count"];
+    $usuarios = $usuarios["data"];
+    $paginas = (($count/$resultadosPagina)-(($count%$resultadosPagina)/$resultadosPagina))+1;
 }
 ?>
 <!DOCTYPE html>
@@ -60,6 +67,32 @@ if (($_SERVER["REQUEST_METHOD"] == 'GET') && isset($_GET)){
         <?php if (is_null($usuarios)): ?>
             <h2>No hay Usuarios</h2>
         <?php else: ?>
+
+            <?php if (!isset($_GET["page"])) $_GET["page"]=1;
+            if($paginas>0): ?>
+            <nav aria-label="...">
+                <ul class="pagination">
+                    <?php if($_GET["page"]-1>0): ?>
+                    <li class="page-item">
+                        <a class="page-link" onclick="cambiarPagina(<?=$_GET['page']-1?>)">Anterior</a>
+                    </li>
+                    <li class="page-item"><a class="page-link"  onclick="cambiarPagina(<?=$_GET['page']-1?>)"><?=$_GET["page"]-1?></a></li>
+                    <?php endif; ?>
+                    <li class="page-item active">
+                    <span class="page-link">
+                        <?=$_GET["page"]?>
+                        <span class="sr-only">(current)</span>
+                    </span>
+                    </li>
+                    <?php if($_GET["page"]+1<=$paginas): ?>
+                    <li class="page-item"><a class="page-link" onclick="cambiarPagina(<?=$_GET['page']+1?>)"><?=$_GET["page"]+1?></a></li>
+                    <li class="page-item">
+                        <a class="page-link" onclick="cambiarPagina(<?=$_GET['page']+1?>)">Siguiente</a>
+                    </li>
+                    <?php endif; ?>
+                </ul>
+            </nav>
+            <?php endif; ?>
         <div class="table-responsive">
             <table class="table">
                 <thead>
@@ -93,8 +126,48 @@ if (($_SERVER["REQUEST_METHOD"] == 'GET') && isset($_GET)){
                 <?php endforeach; ?>
                 </tbody>
             </table>
+            <?php if (!isset($_GET["page"])) $_GET["page"]=1;
+            if($paginas>0): ?>
+            <nav aria-label="...">
+                <ul class="pagination">
+                    <?php if($_GET["page"]-1>0): ?>
+                    <li class="page-item">
+                        <a class="page-link" onclick="cambiarPagina(<?=$_GET['page']-1?>)">Anterior</a>
+                    </li>
+                    <li class="page-item"><a class="page-link"  onclick="cambiarPagina(<?=$_GET['page']-1?>)"><?=$_GET["page"]-1?></a></li>
+                    <?php endif; ?>
+                    <li class="page-item active">
+                    <span class="page-link">
+                        <?=$_GET["page"]?>
+                        <span class="sr-only">(current)</span>
+                    </span>
+                    </li>
+                    <?php if($_GET["page"]+1<=$paginas): ?>
+                    <li class="page-item"><a class="page-link" onclick="cambiarPagina(<?=$_GET['page']+1?>)"><?=$_GET["page"]+1?></a></li>
+                    <li class="page-item">
+                        <a class="page-link" onclick="cambiarPagina(<?=$_GET['page']+1?>)">Siguiente</a>
+                    </li>
+                    <?php endif; ?>
+                </ul>
+            </nav>
+            <?php endif; ?>
         </div>
         <?php endif; ?>
     </div>
+    <script>
+    function cambiarPagina(pag){
+        var link = window.location.href
+        link = link.replace(window.location.search,"");
+        var params = new URLSearchParams(window.location.search)
+
+        //if(params.has('page'))
+        //{
+            params.set('page', pag);
+        //}
+        link = link.concat("?");
+        link = link.concat(params.toString());
+        window.location.href = link;
+    }
+    </script>
 </body>
 </html>

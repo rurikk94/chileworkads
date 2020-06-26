@@ -23,6 +23,7 @@
 
   <?php if (is_login(false)){ ?>
   <form action="./index.php" method="get">
+  <input type="hidden" name="page" value="<?=(isset($_GET["page"])?$_GET["page"]:'1')?>">
   <div class="row">
       <div class="col-sm-9 col-md-3 mx-auto">
       </div>

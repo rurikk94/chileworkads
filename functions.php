@@ -288,9 +288,13 @@ function filtroOficios($filtro=[]){
     } */
     return $oficos;
 }
-function usuarios($filtro=[]){
+function found_rows(){
     $conn = new Db();
-    $query="SELECT p.*,
+    return $conn->seleccionar("SELECT FOUND_ROWS();");
+}
+function usuariosQuery($filtro=[]){
+    $conn = new Db();
+    $query="SELECT SQL_CALC_FOUND_ROWS p.*,
         (SELECT count(resena.id) FROM resena
             WHERE resena.trabajador_id = p.id ) count,
         (SELECT AVG(resena.evaluacion) FROM resena
@@ -350,7 +354,20 @@ function usuarios($filtro=[]){
         $query.=" ORDER BY " . $filtro["order"];
     }else
         $query.=" ORDER BY p.nombres ASC";
-    return $conn->seleccionarObject($query,"User");
+    if(isset($filtro["limit"]) && !is_null($filtro["limit"]))
+    {
+        $query.= $filtro["limit"];
+    }
+    return $query;
+
+}
+function usuarios($filtro=[]){
+    $conn = new Db();
+    return $conn->seleccionarObject(usuariosQuery($filtro),"User");
+}
+function usuariosPag($filtro=[]){
+    $conn = new Db();
+    return $conn->selObjPag(usuariosQuery($filtro),"User");
 }
 function tipoUsuario($id)
 {

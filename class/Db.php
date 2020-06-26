@@ -74,6 +74,13 @@ class Db
           return $array;
         }
     }
+    function selObjPag($query = NULL,$obj=NULL){
+      $result["data"]=$this->seleccionarObject($query,$obj);
+      $cant = $this->_connection->query("SELECT FOUND_ROWS();");
+      $result["count"] = $cant->fetch_assoc()["FOUND_ROWS()"];
+      return $result;
+
+    }
     /** selecciona devuelve array dependiendo de cant resultados */
     function seleccionarObject($query = NULL,$obj=NULL)
     {
