@@ -41,15 +41,15 @@ if(!isset($_GET["id"])){
         <a name="btn-volver" id="btn-add" class="btn btn-primary" href="../index.php" role="button">Volver</a>
             <div class="card mx-auto col-10 col-md-4 m-2">
                 <img src="<?=__URL__."uploads/images/".$u->getFoto_file()?>" style="width: 100px;" class="card-img-top rounded-circle mx-auto mt-2" alt="...">
-                <div class="card-body">
+                <div class="card-body text-center">
                     <h5 class="card-title"><?=$u->getNombres()?> <?=$u->getApellidos()?>
+                    </h5>
                     <?php if($u->getId()==is_login(false)) : ?>
-                        <a name="btn-fav" id="btn-fav" class="btn btn-outline-info" href="./edit.php" role="button"><?=($u->getId()==is_login(false)) ? '<span class="material-icons">edit</span>Editar' : ''?></a>
+                        <a name="btn-fav" id="btn-fav" class="btn btn-outline-info mt-2" href="./edit.php" role="button"><?=($u->getId()==is_login(false)) ? '<span class="material-icons">edit</span>Editar' : ''?></a>
                     <?php endif; ?>
                     <?php if($u->getId()!=is_login(false)) : ?>
-                    <a name="btn-fav" id="btn-fav" class="btn btn-outline-danger" onclick="return confirm('¿Está seguro?')" href="../favorites/toggle.php?id=<?=$u->getId()?>" role="button"><?=!is_null($favorito) ? '<span class="material-icons">favorite</span> Eliminar Favorito' : '<span class="material-icons">favorite_border</span> Agregar Favorito '?></a>
+                        <a name="btn-fav" id="btn-fav" class="btn btn-outline-danger mt-2" onclick="return confirm('¿Está seguro?')" href="../favorites/toggle.php?id=<?=$u->getId()?>" role="button"><?=!is_null($favorito) ? '<span class="material-icons">favorite</span> Eliminar Favorito' : '<span class="material-icons">favorite_border</span> Agregar Favorito '?></a>
                     <?php endif;?>
-                    </h5>
                     <?=$u->getBio()?>
                 </div>
                 <div class="card mb-2">
@@ -123,19 +123,24 @@ if(!isset($_GET["id"])){
             <div class="card shadow">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-sm-9 col-md-2">
+                        <div class="col-3 col-sm-3 col-md-2">
                         <?php $yo = usuarios(["id"=>is_login(false)])[0];?>
                             <img style="max-width:100px;" class="card-img-top rounded-circle img-thumbnail" src="<?=__URL__?>uploads/images/<?=$yo->getFoto_file()?>" alt="Card image cap">
                         </div>
-                        <div class="col-sm-9 col-md-10 ">
+                        <div class="col-9 col-sm-9 col-md-9">
                             <div class="row">
-                                <div class="w-100 editor" id="editor" style="background-color: #f5f6f7;" name="editor"></div>
+                                <div class="col-10">
+                                    <div class="w-100 editor" id="editor" style="background-color: #f5f6f7;" name="editor"></div>
+                                </div>
+                                <script src="<?=__URL__?>js/dropzone-5.7.0/dist/dropzone.js"></script>
+                                <div class="col-2" id="subir-foto">
+                                </div>
                             </div>
-                            <div class="row">
+                            <div class="row mt-2">
                                 <link rel="stylesheet" href="<?=__URL__?>css/slider.css">
                                 <div class="slidecontainer">
                                     <input type="range" min="0" max="10" value="0" name="estrellasResena" class="slider" id="estrellasResena">
-                                    <p>Valoración: <span id="estrellasTextresena"></span></p>
+                                    <p>Calificación: <span id="estrellasTextresena"></span></p>
                                 </div>
                                 <script>
                                 var slider = document.getElementById("estrellasResena");
@@ -157,31 +162,55 @@ if(!isset($_GET["id"])){
 
         <?php $resenas = resenas(["trabajador_id"=>$_GET["id"]]);?>
         <?php if (is_null($resenas)) {echo ("<h3>No tiene reseñas</h3>"); }
-        else {
-            echo '<h3>Reseñas Previas</h3>';
+        else { ?>
+
+            <link  href="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css" rel="stylesheet">
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js"></script>
+            <h3>Reseñas Previas</h3>
+            <?php
             foreach($resenas as $r) :
                 $resenador = usuarios(["id"=>$r->getQuien_resena_id()])[0];
                 ?>
-                <div class="card shadow mb-2">
+                <div class="card shadow mb-4" id="resena_<?=$r->getId()?>">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-sm-9 col-md-2">
-                                <img style="max-width:100px;" class="card-img-top rounded-circle img-thumbnail" src="<?=__URL__?>uploads/images/<?=$resenador->getFoto_file()?>" alt="Card image cap">
+                            <div class="col-4 col-sm-4 col-md-2">
+                                <img class="my-auto rounded-circle img-thumbnail" src="<?=__URL__?>uploads/images/<?=$resenador->getFoto_file()?>" alt="Card image cap">
                             </div>
-                            <div class="col-sm-9 col-md-10">
+                            <div class="col-5 col-sm-5 col-md-6">
                                 <p><a href="<?=__URL__?>profile?id=<?=$resenador->getId()?>"><?=$resenador->getNombres()?> <?=$resenador->getApellidos()?> </a><span class="text-muted fecha"><?=$r->getFecha()?></span></p>
-                            <?php $nota = $r->getEvaluacion();
-                            if($nota>6):?>
-                            <span class="material-icons md-48">star</span><?=$nota?>
-                            <?php elseif($nota>3): ?>
-                            <i class="material-icons md-36">star_half</i><?=$nota?>
-                            <?php elseif($nota>0): ?>
-                            <i class="material-icons md-18">star_outline</i><?=$nota?>
-                            <?php endif; ?>
+                                <?php $nota = $r->getEvaluacion();
+                                if($nota>6):?>
+                                <span class="material-icons md-48">star</span><?=$nota?>
+                                <?php elseif($nota>3): ?>
+                                <i class="material-icons md-36">star_half</i><?=$nota?>
+                                <?php elseif($nota>0): ?>
+                                <i class="material-icons md-18">star_outline</i><?=$nota?>
+                                <?php endif; ?>
                                 <h6 class="card-title"><?=$r->getTexto()?></h6>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-4">
+                                <?php $im = json_decode($r->getImagenes()); ?>
+                                <?php if (!is_null($im) AND (sizeof($im)>0)): ?>
+                                    <div class="fotorama mt-3" data-height="200" data-allowfullscreen="true" data-loop="true" data-nav="thumbs">
+                                    <?php foreach( $im as $i): ?>
+                                        <img src="<?=__URL__."uploads/images/".$i?>">
+                                    <?php endforeach; ?>
+                                    </div>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>
+                    <?php if((is_admin(false)) OR ($u->getId()!=is_login(false))) : ?>
+                    <div class="card-footer text-center text-muted">
+                        <?php if($u->getId()!=is_login(false)) : ?>
+                            <i class="btn btn-outline-secondary" onclick="prompt('Ingrese un motivo del reporte:', '');//alert('La reseña ha sido reportada.')//alert(this.getAttribute('resena'))" resena="<?=$r->getId()?>"><small><span class="material-icons">report_problem</span>Reportar</small></i>
+                        <?php endif; ?>
+                        <?php if(is_admin(false)) : ?>
+                            <i class="btn btn-outline-danger" onclick="alert('La reseña ha sido eliminada.')//alert(this.getAttribute('resena'))" resena="<?=$r->getId()?>"><small><span class="material-icons">delete</span>Eliminar Reseña</small></i>
+                        <?php endif; ?>
+                    </div>
+                    <?php endif; ?>
                 </div>
             <?php endforeach; ?>
         <?php } ?>
@@ -248,14 +277,31 @@ if(!isset($_GET["id"])){
       } );
 	</script>
     <script>
+        var imagenes = [];
     document.querySelector( '#addresena' ).addEventListener( 'click', () => {
         const resena = editor.getData();
         const val = document.getElementById("estrellasResena").value
+        if(val==0)
+            {
+                alert("Por favor califique a la persona.");
+                return;
+            }
+        if(resena=="")
+            {
+                alert("Por favor escriba una reseña.");
+                return;
+            }
+        if(imagenes.length==0)
+            {
+                alert("Por favor escriba suba algunas imagenes.");
+                return;
+            }
         const trabajador = <?=$_GET["id"]?>
         //console.log(resena)
         const data = new FormData();
         data.append('resena', resena);
         data.append('val', val);
+        data.append('imagenes', JSON.stringify(imagenes));
         data.append('trabajador', trabajador);
         fetch('../api/agregarResena.php', {
           method: 'POST',
@@ -275,5 +321,29 @@ if(!isset($_GET["id"])){
 
         // ...
     } );
+    </script>
+    <script>
+        /* var myDropzone = new Dropzone("div#subir-foto", { url: "../api/subirFotos.php"});
+        Dropzone.options.myDropzone = {
+        init: function() {
+            this.on("addedfile", function(file) { alert("Added file."); });
+        }}; */
+        $(function() {
+        // Now that the DOM is fully loaded, create the dropzone, and setup the
+        // event listeners
+        var myDropzone = new Dropzone("div#subir-foto", { url: "../api/subirFotos.php"});
+        myDropzone.on("addedfile", function(file) {
+            /* Maybe display some more file information on your page */
+            //alert("Added file.");
+            //alert (response);
+        });
+        myDropzone.on("success", function(a,e) {
+            /* Maybe display some more file information on your page */
+            //alert(a);
+            //alert (e);
+            imagenes.push(e);
+
+        });
+        });
     </script>
 </html>

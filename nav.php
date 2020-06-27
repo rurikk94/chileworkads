@@ -85,7 +85,7 @@
         <link rel="stylesheet" href="<?=__URL__?>css/slider.css">
         <div class="slidecontainer">
           <input type="range" min="0" max="10" value="0" name="estrellas" class="slider" id="estrellas">
-          <p>Valoración: <span id="estrellasText"></span></p>
+          <p>Calificación: <span id="estrellasText"></span></p>
         </div>
 
         <script>

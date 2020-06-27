@@ -7,6 +7,7 @@ private $texto;
 private $fecha;
 private $evaluacion;
 private $enable;
+private $imagenes;
 
     public function getId(){
         return $this->id;
@@ -64,6 +65,14 @@ private $enable;
         $this->enable = $enable;
     }
 
+    public function getImagenes(){
+        return $this->imagenes;
+    }
+
+    public function setImagenes($imagenes){
+        $this->imagenes = $imagenes;
+    }
+
     public function toArray(){
         $array=[
             $array["id"] = $this->getId(),
@@ -72,23 +81,43 @@ private $enable;
             $array["texto"] = $this->getTexto(),
             $array["fecha"] = $this->getFecha(),
             $array["evaluacion"] = $this->getEvaluacion(),
-            $array["enable"] = $this->getEnable()
+            $array["enable"] = $this->getEnable(),
+            $array["imagenes"] = $this->getImagenes()
         ];
         return $array;
     }
     public function insertar(){
         $conn = new Db();
         $query =
-        "INSERT INTO `resena` (`trabajador_id`, `quien_resena_id`, `texto`, `evaluacion`)
-        VALUES (?, ?, ?, ?)";
+        "INSERT INTO `resena` (`trabajador_id`, `quien_resena_id`, `texto`, `evaluacion`,`imagenes`)
+        VALUES (?, ?, ?, ?,?)";
         $result = $conn->execSQL($query,
-        ["iisi",
+        ["iisis",
             $this->getTrabajador_id(),
             $this->getQuien_resena_id(),
             $this->getTexto(),
-            $this->getEvaluacion()
+            $this->getEvaluacion(),
+            $this->getImagenes()
         ],true);
         return $result;
+        /* $query =
+        "INSERT INTO `resena` (`trabajador_id`, `quien_resena_id`, `texto`, `evaluacion`,`evaluacion`)
+        VALUES (
+            $this->getTrabajador_id(),
+        $this->getQuien_resena_id(),
+        `$this->getTexto()`,
+        $this->getEvaluacion(),
+        `$this->getImagenes()`)";
+        return $conn->insertar($query); */
+    }
+    public function delete(){
+        $conn = new Db();
+        $query =
+        "UPDATE `resena` SET `enable`='".$this->getEnable()."' "
+        ."WHERE `id` = ".$this->getId();
+        return $conn->update($query);
+        //return $result;
+
     }
 }
 ?>

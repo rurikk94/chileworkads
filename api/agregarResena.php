@@ -8,6 +8,7 @@
         $r->setTrabajador_id($_POST["trabajador"]);
         $r->setQuien_resena_id(is_login(false));
         $r->setTexto($_POST["resena"]);
+        $r->setImagenes($_POST["imagenes"]);
         $r->setEvaluacion($_POST["val"]);
 
         if ($r->insertar()) {

@@ -27,6 +27,7 @@
 <a name="" id="" class="btn btn-primary" href="./poblaciones/index.php" role="button">Poblaciones</a>
 <a name="" id="" class="btn btn-primary" href="./oficios/index.php" role="button">Oficios</a>
 <a name="" id="" class="btn btn-primary" href="./redes/index.php" role="button">Redes Sociales</a>
+<a name="" id="" class="btn btn-primary" href="./reportes/index.php" role="button">Reportes</a>
 </div>
 </body>
 </html>

@@ -138,7 +138,7 @@
                     <?php if(!is_null($poblaciones)) : ?>
                         <?php foreach($poblaciones as $p) : ?>
                         <?php //if($p->getCiudad_id()==$c->getId()) : ?>
-                            <option value="<?=$p->getId()?>" <?=($p->getId()==$poblacion->getId())?'selected':''?>>
+                            <option value="<?=$p->getId()?>" <?=(isset($poblacion)&&($p->getId()==$poblacion->getId()))?'selected':''?>>
                                 <?=$p->getNombre_poblacion()?>, <?=$p->nombre_ciudad?>
                             </option>
                         <?php //endif;?>

@@ -18,6 +18,7 @@ require_once($site_config['SITE']['base'] . '/class/Favorito.php');
 require_once($site_config['SITE']['base'] . '/class/OficioPersona.php');
 require_once($site_config['SITE']['base'] . '/class/Hijo.php');
 require_once($site_config['SITE']['base'] . '/class/Resena.php');
+require_once($site_config['SITE']['base'] . '/class/Reporte.php');
 
 
 function is_login($r=true){
@@ -431,4 +432,30 @@ function oficioPersona($filtro=[]){
     }
     $query.=" ORDER BY o.oficio_nombre ASC";
     return $conn->seleccionarObject($query,"OficioPersona");
+}
+function reportes($filtros=[]){
+    $conn = new Db();
+    return $conn->seleccionar(reportesQuery($filtros));
+}
+function reportesQuery($filtros=[])
+{
+    $query="SELECT r.id, r.resena_id, r.perfil_resena, r.quien_reporta, r.quien_resena, r.fecha, r.revisado,
+    p1.nombres perfil_resena_nombre, p1.apellidos perfil_resena_apellidos, p1.id perfil_resena_id,
+    p2.nombres quien_reporta_nombre, p2.apellidos quien_reporta_apellidos, p2.id quien_reporta_id,
+    p3.nombres quien_resena_nombre, p3.apellidos quien_resena_apellidos, p3.id quien_resena_id,
+    p3.foto_file quien_resena_foto, rs.fecha resena_fecha, rs.evaluacion, rs.texto
+    FROM reporte  r
+    LEFT JOIN resena rs on rs.id = r.resena_id
+    LEFT JOIN persona p1 on p1.id = r.perfil_resena
+    LEFT JOIN persona p2 on p2.id = r.quien_reporta
+    LEFT JOIN persona p3 on p3.id = r.quien_resena";
+    if(isset($filtros["id_resena"]) && !is_null($filtros["id_resena"]) && !empty($filtros["id_resena"]))
+        $query.="   WHERE r.resena_id = " . $filtros["id_resena"];
+    $query.=" ORDER BY r.fecha DESC;;";
+    return $query;
+
+}
+function reportesO($filtros=[]){
+    $conn = new Db();
+    return $conn->seleccionarObject(reportesQuery($filtros),"Reporte");
 }
