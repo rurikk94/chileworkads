@@ -127,16 +127,18 @@ if(!isset($_GET["id"])){
                         <?php $yo = usuarios(["id"=>is_login(false)])[0];?>
                             <img style="max-width:100px;" class="card-img-top rounded-circle img-thumbnail" src="<?=__URL__?>uploads/images/<?=$yo->getFoto_file()?>" alt="Card image cap">
                         </div>
-                        <div class="col-9 col-sm-9 col-md-9">
+                        <div class="col-9 col-sm-9 col-md-10">
                             <div class="row">
-                                <div class="col-10">
-                                    <div class="w-100 editor" id="editor" style="background-color: #f5f6f7;" name="editor"></div>
+                                <div class="col-8">
+                                    <div class="w-100 editor" id="editor" style="background-color: #f5f6f7;" name="editor">
+                                    </div>
                                 </div>
-                                <script src="<?=__URL__?>js/dropzone-5.7.0/dist/dropzone.js"></script>
-                                <div class="col-2" id="subir-foto">
+                                <div class="col-4">
+                                    <script src="<?=__URL__?>js/dropzone-5.7.0/dist/dropzone.js"></script>
+                                    <link rel="stylesheet" href="<?=__URL__?>js/dropzone-5.7.0/dist/dropzone.css">
+                                    <form action="../api/subirFotos.php" id="weasubir" class="dropzone"></form>
                                 </div>
-                            </div>
-                            <div class="row mt-2">
+                            <div class="col-12 mt-2">
                                 <link rel="stylesheet" href="<?=__URL__?>css/slider.css">
                                 <div class="slidecontainer">
                                     <input type="range" min="0" max="10" value="0" name="estrellasResena" class="slider" id="estrellasResena">
@@ -152,11 +154,12 @@ if(!isset($_GET["id"])){
                                 }
                                 </script>
                             </div>
+                            </div>
                         </div>
 
                     </div>
+                    <button id="addresena" class="btn btn-success btn-block">Agregar Reseña</button>
                 </div>
-                <button id="addresena" class="btn btn-success">Agregar Reseña</button>
             </div>
         <?php endif;?>
 
@@ -177,7 +180,7 @@ if(!isset($_GET["id"])){
                             <div class="col-4 col-sm-4 col-md-2">
                                 <img class="my-auto rounded-circle img-thumbnail" src="<?=__URL__?>uploads/images/<?=$resenador->getFoto_file()?>" alt="Card image cap">
                             </div>
-                            <div class="col-5 col-sm-5 col-md-6">
+                            <div class="col-5 col-sm-5 col-md-7">
                                 <p><a href="<?=__URL__?>profile?id=<?=$resenador->getId()?>"><?=$resenador->getNombres()?> <?=$resenador->getApellidos()?> </a><span class="text-muted fecha"><?=$r->getFecha()?></span></p>
                                 <?php $nota = $r->getEvaluacion();
                                 if($nota>6):?>
@@ -189,7 +192,7 @@ if(!isset($_GET["id"])){
                                 <?php endif; ?>
                                 <h6 class="card-title"><?=$r->getTexto()?></h6>
                             </div>
-                            <div class="col-12 col-sm-12 col-md-4">
+                            <div class="col-12 col-sm-12 col-md-3">
                                 <?php $im = json_decode($r->getImagenes()); ?>
                                 <?php if (!is_null($im) AND (sizeof($im)>0)): ?>
                                     <div class="fotorama mt-3" data-height="200" data-allowfullscreen="true" data-loop="true" data-nav="thumbs">
@@ -323,27 +326,13 @@ if(!isset($_GET["id"])){
     } );
     </script>
     <script>
-        /* var myDropzone = new Dropzone("div#subir-foto", { url: "../api/subirFotos.php"});
-        Dropzone.options.myDropzone = {
-        init: function() {
-            this.on("addedfile", function(file) { alert("Added file."); });
-        }}; */
-        $(function() {
-        // Now that the DOM is fully loaded, create the dropzone, and setup the
-        // event listeners
-        var myDropzone = new Dropzone("div#subir-foto", { url: "../api/subirFotos.php"});
-        myDropzone.on("addedfile", function(file) {
-            /* Maybe display some more file information on your page */
-            //alert("Added file.");
-            //alert (response);
-        });
-        myDropzone.on("success", function(a,e) {
-            /* Maybe display some more file information on your page */
-            //alert(a);
-            //alert (e);
-            imagenes.push(e);
-
-        });
-        });
+        Dropzone.options.weasubir = {
+        paramName: "file", // The name that will be used to transfer the file
+        maxFilesize: 10, // MB
+        success: function(file, response) {
+            //alert(response);
+            imagenes.push(response);
+            },
+        };
     </script>
 </html>
