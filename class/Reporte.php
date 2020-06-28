@@ -7,7 +7,16 @@ class Reporte{
     private $quien_resena;
     private $fecha;
     private $revisado;
+    private $motivo;
     //GET Y GET
+        public function getMotivo(){
+            return $this->motivo;
+        }
+
+        public function setMotivo($motivo){
+            $this->motivo = $motivo;
+        }
+
         public function getId(){
             return $this->id;
         }
@@ -66,6 +75,20 @@ class Reporte{
             $conn=new Db();
             return $conn->execSQL("UPDATE reporte SET revisado = ?
             WHERE id = ?;",["si",$this->getRevisado(),$this->getId()],TRUE);
+        }
+        public function insertar(){
+            $conn=new Db();
+            return $conn->execSQL("INSERT INTO reporte
+            (resena_id,perfil_resena,quien_reporta,quien_resena,motivo)
+            VALUES
+            (?,?,?,?,?);",
+            ["iiiis",
+            $this->getResena_id(),
+            $this->getPerfil_resena(),
+            $this->getQuien_reporta(),
+            $this->getQuien_resena(),
+            $this->getMotivo()],
+            TRUE);
         }
 }
 

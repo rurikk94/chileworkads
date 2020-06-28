@@ -129,11 +129,11 @@ if(!isset($_GET["id"])){
                         </div>
                         <div class="col-9 col-sm-9 col-md-10">
                             <div class="row">
-                                <div class="col-8">
+                                <div class="col-12 col-sm-12 col-md-8">
                                     <div class="w-100 editor" id="editor" style="background-color: #f5f6f7;" name="editor">
                                     </div>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-12 col-sm-12 col-md-4">
                                     <script src="<?=__URL__?>js/dropzone-5.7.0/dist/dropzone.js"></script>
                                     <link rel="stylesheet" href="<?=__URL__?>js/dropzone-5.7.0/dist/dropzone.css">
                                     <form action="../api/subirFotos.php" id="weasubir" class="dropzone"></form>
@@ -207,10 +207,10 @@ if(!isset($_GET["id"])){
                     <?php if((is_admin(false)) OR ($u->getId()!=is_login(false))) : ?>
                     <div class="card-footer text-center text-muted">
                         <?php if($u->getId()!=is_login(false)) : ?>
-                            <i class="btn btn-outline-secondary" onclick="prompt('Ingrese un motivo del reporte:', '');//alert('La reseña ha sido reportada.')//alert(this.getAttribute('resena'))" resena="<?=$r->getId()?>"><small><span class="material-icons">report_problem</span>Reportar</small></i>
+                            <i class="btn btn-outline-secondary" onclick="sendReporte('<?=$_GET['id']?>','<?=$r->getId()?>','<?=$resenador->getId()?>');//alert('La reseña ha sido reportada.')//alert(this.getAttribute('resena'))" resena="<?=$r->getId()?>"><small><span class="material-icons">report_problem</span>Reportar</small></i>
                         <?php endif; ?>
                         <?php if(is_admin(false)) : ?>
-                            <i class="btn btn-outline-danger" onclick="alert('La reseña ha sido eliminada.')//alert(this.getAttribute('resena'))" resena="<?=$r->getId()?>"><small><span class="material-icons">delete</span>Eliminar Reseña</small></i>
+                            <i class="btn btn-outline-danger" onclick="eliminarResena('<?=$r->getId()?>')" resena="<?=$r->getId()?>"><small><span class="material-icons">delete</span>Eliminar Reseña</small></i>
                         <?php endif; ?>
                     </div>
                     <?php endif; ?>
@@ -328,6 +328,7 @@ if(!isset($_GET["id"])){
     <script>
         Dropzone.options.weasubir = {
         paramName: "file", // The name that will be used to transfer the file
+        dictDefaultMessage: "Subas las imagenes",
         maxFilesize: 10, // MB
         success: function(file, response) {
             //alert(response);
@@ -335,4 +336,9 @@ if(!isset($_GET["id"])){
             },
         };
     </script>
+    <script src="<?=__URL__?>js/sendreporte.js"></script>
+    <?php if(is_admin(false))  : ?>
+    <script>const __URL__ = '<?=__URL__?>';</script>
+    <script src="<?=__URL__?>js/reporte.js"></script>
+    <?php endif; ?>
 </html>

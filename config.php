@@ -5,7 +5,10 @@
     $site_config['PDO']['user']="chileworkads";
     $site_config['PDO']['pass']="chileworkads";
     $site_config['SITE']['base']=dirname(__FILE__).'/';
-    $site_config['SITE']['URL']="http://190.47.174.39/chileworkads/";
+    $site_config['SITE']['URL']="http://".$_SERVER["HTTP_HOST"]."/";
+    if($_SERVER["HTTP_HOST"]!="chileworkads.ddns.net")
+        $site_config['SITE']['URL']="http://".$_SERVER["HTTP_HOST"]."/chileworkads/";
+    //$site_config['SITE']['URL']="http://chileworkads.ddns.net/chileworkads/";
 
 /*
     $site_config['PDO']['server']="sql10.freemysqlhosting.net";

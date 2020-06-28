@@ -443,7 +443,8 @@ function reportesQuery($filtros=[])
     p1.nombres perfil_resena_nombre, p1.apellidos perfil_resena_apellidos, p1.id perfil_resena_id,
     p2.nombres quien_reporta_nombre, p2.apellidos quien_reporta_apellidos, p2.id quien_reporta_id,
     p3.nombres quien_resena_nombre, p3.apellidos quien_resena_apellidos, p3.id quien_resena_id,
-    p3.foto_file quien_resena_foto, rs.fecha resena_fecha, rs.evaluacion, rs.texto
+    p3.foto_file quien_resena_foto, rs.fecha resena_fecha, rs.evaluacion, rs.texto, r.motivo,
+    rs.imagenes
     FROM reporte  r
     LEFT JOIN resena rs on rs.id = r.resena_id
     LEFT JOIN persona p1 on p1.id = r.perfil_resena

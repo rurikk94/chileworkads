@@ -26,27 +26,53 @@
         $reportes = reportes();
         if (is_null($reportes))
             echo ("<h2>No hay Reportes</h2>");
-        else {
-            echo '<h2>Reportes</h2>';
-            foreach($reportes as $r) :
+        else { ?>
+            <h2>Reportes</h2>
+
+            <link  href="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css" rel="stylesheet">
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js"></script>
+            <?php foreach($reportes as $r) :
                 ?>
                 <div class="card shadow mb-4">
+                        <div class="card-footer">
+                            <div class="row">
+                            <div class="col text-center">
+                                <blockquote class="blockquote">
+                                <p class="mb-0"><em>"<?=$r["motivo"]?>"</em></p>
+                                <footer class="blockquote-footer">Reportado por: <strong><?=$r["quien_reporta_nombre"]?> <?=$r["quien_reporta_apellidos"]?></strong> <small class="text-muted"><?=$r["fecha"]?></small></footer>
+                                </blockquote>
+                                </div>
+                            </div>
+                        </div>
+                    <div class="card-body">
+                        <h3>Reseña:</h3>
+                    </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-sm-9 col-md-2 text-center">
                                 <img style="max-width:100px;" class="card-img-top rounded-circle img-thumbnail" src="<?=__URL__?>uploads/images/<?=$r["quien_resena_foto"]?>" alt="Card image cap">
                             </div>
-                            <div class="col-sm-9 col-md-10">
+                            <div class="col-sm-9 col-md-7">
                                 <p><a href="<?=__URL__?>profile?id=<?=$r["quien_resena_id"]?>"><?=$r["quien_resena_nombre"]?> <?=$r["quien_resena_apellidos"]?> </a><span class="text-muted fecha"><?=$r["resena_fecha"]?></span></p>
-                            <?php $nota = $r["evaluacion"];
-                            if($nota>6):?>
-                            <span class="material-icons md-48">star</span><?=$nota?>
-                            <?php elseif($nota>3): ?>
-                            <i class="material-icons md-36">star_half</i><?=$nota?>
-                            <?php elseif($nota>0): ?>
-                            <i class="material-icons md-18">star_outline</i><?=$nota?>
-                            <?php endif; ?>
+                                <?php $nota = $r["evaluacion"];
+                                if($nota>6):?>
+                                <span class="material-icons md-48">star</span><?=$nota?>
+                                <?php elseif($nota>3): ?>
+                                <i class="material-icons md-36">star_half</i><?=$nota?>
+                                <?php elseif($nota>0): ?>
+                                <i class="material-icons md-18">star_outline</i><?=$nota?>
+                                <?php endif; ?>
                                 <h6 class="card-title"><?=$r["texto"]?></h6>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-3">
+                                <?php $im = json_decode($r["imagenes"]); ?>
+                                <?php if (!is_null($im) AND (sizeof($im)>0)): ?>
+                                    <div class="fotorama mt-3" data-height="200" data-allowfullscreen="true" data-loop="true" data-nav="thumbs">
+                                    <?php foreach( $im as $i): ?>
+                                        <img src="<?=__URL__."uploads/images/".$i?>">
+                                    <?php endforeach; ?>
+                                    </div>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>
