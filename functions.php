@@ -4,21 +4,7 @@ global $site_config;
 require_once('config.php');  //están las variables del sitio ($site_config)
 require_once('constantes.php');  //están las variables del sitio ($site_config)
 
-require_once($site_config['SITE']['base'] . '/class/Db.php');
-require_once($site_config['SITE']['base'] . '/class/User.php');
-require_once($site_config['SITE']['base'] . '/class/Region.php');
-require_once($site_config['SITE']['base'] . '/class/Comuna.php');
-require_once($site_config['SITE']['base'] . '/class/Oficio.php');
-require_once($site_config['SITE']['base'] . '/class/Upload.php');
-require_once($site_config['SITE']['base'] . '/class/Red.php');
-require_once($site_config['SITE']['base'] . '/class/Ciudad.php');
-require_once($site_config['SITE']['base'] . '/class/Poblacion.php');
-require_once($site_config['SITE']['base'] . '/class/Contacto.php');
-require_once($site_config['SITE']['base'] . '/class/Favorito.php');
-require_once($site_config['SITE']['base'] . '/class/OficioPersona.php');
-require_once($site_config['SITE']['base'] . '/class/Hijo.php');
-require_once($site_config['SITE']['base'] . '/class/Resena.php');
-require_once($site_config['SITE']['base'] . '/class/Reporte.php');
+require 'vendor/autoload.php';
 
 
 function is_login($r=true){
@@ -266,7 +252,7 @@ function resenas($filtro=[])
         $query.=" AND r.evaluacion >= ". $conn->validar($filtro["evaluacion"]);
     }
     $query.=" ORDER BY r.fecha DESC";
-    return $conn->seleccionarObject($query,"Resena");
+    return $conn->seleccionarObject($query,"Resena",[]);
 }
 function filtroOficios($filtro=[]){
 

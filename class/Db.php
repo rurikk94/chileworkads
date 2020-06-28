@@ -82,17 +82,26 @@ class Db
 
     }
     /** selecciona devuelve array dependiendo de cant resultados */
-    function seleccionarObject($query = NULL,$obj=NULL)
+    function seleccionarObject($query = NULL,$obj=NULL,array $parametros=NULL)
     {
         $this->conectar();
         $result = $this->_connection->query($query);
         if ($result->num_rows > 0) {
             $array = [];
           // output data of each row
-          while($row = $result->fetch_object($obj)) {
-            $array[] = $row;
-            //echo "id: " . $row["id"]. " - Name: " . $row["firstname"]. " " . $row["lastname"]. "<br>";
+          if(!is_null($parametros))
+          {
+            while($row = $result->fetch_object($obj,$parametros)) {
+              $array[] = $row;
+              //echo "id: " . $row["id"]. " - Name: " . $row["firstname"]. " " . $row["lastname"]. "<br>";
+            }
+          }else{
+            while($row = $result->fetch_object($obj)) {
+              $array[] = $row;
+              //echo "id: " . $row["id"]. " - Name: " . $row["firstname"]. " " . $row["lastname"]. "<br>";
+            }
           }
+
           return $array;
         }
     }

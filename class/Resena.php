@@ -9,6 +9,43 @@ private $evaluacion;
 private $enable;
 private $imagenes;
 
+    private function __construct(
+        int $trabajador_id = null,
+        int $quien_resena_id = null,
+        string $texto = null,
+        int $evaluacion = null,
+        string $imagenes = null
+    )
+    {
+
+        if(!is_null($trabajador_id))
+        $this->setTrabajador_id($trabajador_id);
+        if(!is_null($quien_resena_id))
+        $this->setQuien_resena_id($quien_resena_id);
+        if(!is_null($texto))
+        $this->setTexto($texto);
+        if(!is_null($evaluacion))
+        $this->setEvaluacion($evaluacion);
+        if(!is_null($imagenes))
+        $this->setImagenes($imagenes);
+    }
+
+    public function __toString(): string
+    {
+        return $this->texto;
+    }
+
+    public static function fromArray(array $array): self
+    {
+        return new self(
+            $array["trabajador_id"],
+            $array["quien_resena_id"],
+            $array["texto"],
+            $array["evaluacion"],
+            $array["imagenes"]
+        );
+    }
+
     public function getId(){
         return $this->id;
     }
