@@ -8,6 +8,12 @@
     $site_config['SITE']['URL']="http://".$_SERVER["HTTP_HOST"]."/";
     if($_SERVER["HTTP_HOST"]!="chileworkads.ddns.net")
         $site_config['SITE']['URL']="http://".$_SERVER["HTTP_HOST"]."/chileworkads/";
+
+
+    $email_config['host']="smtp.gmail.com";
+    $email_config['port']="587";
+    $email_config['username']="chileworkads@gmail.com";
+    $email_config['password']="eUjcq8JaXTMZ5xUX";
     //$site_config['SITE']['URL']="http://chileworkads.ddns.net/chileworkads/";
 
 /*

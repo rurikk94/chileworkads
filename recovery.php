@@ -25,21 +25,17 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST'){
     {
         echo "el usuario no existe";exit();
     }
-    $account["host"]='smtp.gmail.com';
-    $account["port"]='587';
-    $account["username"]='videojuegos01vina@gmail.com';
-    $account["password"]='videojuegos01';
     $message["byEmail"]='ChileWorkAds@gmail.com';
     $message["byName"]='ChileWorkAds';
     $message["forEmail"]=$email;
     $message["forName"]=$user[0]["nombres"];
-    $message["Titulo"]='ChileWorkAds Contraseña Recuperar';
+    $message["Titulo"]='ChileWorkAds - Recuperar Contraseña';
     $message["Body"]="<html><body>"
     ."<h1>ChileWorkAds</h1>"
     ."<p>Recupere su contraseña en el siguiente link</p><br/> "
     ."<a href='". __URL__."recovery.php?id=".$user[0]["contrasena"]."'>CAMBIAR CONTRASEÑA</a>"
     ."</body></html>";
-    if(enviar_email($account,$message)){
+    if(enviar_email($message)){
         $modal["titulo"]="Recuperar Contraseña.";
         $modal["cuerpo"]="Se ha enviado un email a su correo.";}
 }

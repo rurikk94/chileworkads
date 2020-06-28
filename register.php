@@ -19,10 +19,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST'){
         header("Location: error.php");
         exit();
     }
-        $account["host"]='smtp.gmail.com';
-        $account["port"]='587';
-        $account["username"]='videojuegos01vina@gmail.com';
-        $account["password"]='videojuegos01';
         $message["byEmail"]='ChileWorkAds@gmail.com';
         $message["byName"]='ChileWorkAds';
         $message["forEmail"]=$correo;
@@ -34,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST'){
         ."<p>Siga el siguiente link para activar la cuenta.</p><br/>"
         ."<a href='". __URL__."activar.php?id=".$contrasenaCodificada."'>ACTIVAR CUENTA</a>"
         ."</body></html>";
-    if(enviar_email($account,$message)){
+    if(enviar_email($message)){
         $modal["titulo"]="Registrar Cuenta.";
         $modal["cuerpo"]="Se ha enviado un email a su correo.";}
 }

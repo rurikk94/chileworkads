@@ -7,9 +7,11 @@ use PHPMailer\PHPMailer\Exception;
 
 // Load Composer's autoloader
 require 'vendor/autoload.php';
-function send_email($account=null,$message=null)
+require_once('./config.php');
+function send_email($message=null)
 {
-    if(is_null($account) OR is_null($message))
+    global $email_config;
+    if(is_null($email_config) OR is_null($message))
         return NULL;
 
     // Instantiation and passing `true` enables exceptions
@@ -22,13 +24,13 @@ function send_email($account=null,$message=null)
     // 1 = client messages
     // 2 = client and server messages
     $mail->SMTPDebug  = 0;
-    $mail->Host       = $account["host"];//'smtp.gmail.com'
-    $mail->Port       = $account["port"];//587;
+    $mail->Host       = $email_config["host"];//'smtp.gmail.com'
+    $mail->Port       = $email_config["port"];//587;
     $mail->SMTPSecure = 'tls';
     $mail->SMTPAuth   = true;
     $mail->CharSet = 'UTF-8';
-    $mail->Username   = $account["username"];//"videojuegos01vina@gmail.com";
-    $mail->Password   = $account["password"];//"videojuegos01";
+    $mail->Username   = $email_config["username"];//"videojuegos01vina@gmail.com";
+    $mail->Password   = $email_config["password"];//"videojuegos01";
     $mail->SetFrom($message["byEmail"], $message["byName"]);//'ChileWorkAds@gmail.com','ChileWorkAds'
     $mail->AddAddress($message["forEmail"],$message["forName"]);
     $mail->Subject = $message["Titulo"];//'ChileWorkAds Bienvenido!';

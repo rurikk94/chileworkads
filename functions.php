@@ -126,11 +126,11 @@ function is_admin($r=true){
     return false;
 
 }
-function enviar_email($account=null,$message=null){
-    if(is_null($account) OR is_null($message))
+function enviar_email($message=null){
+    if(is_null($message))
         return NULL;
     require("./sendemail.php");
-    return send_email($account,$message);
+    return send_email($message);
 }
 function modal($modal=null)
 {
