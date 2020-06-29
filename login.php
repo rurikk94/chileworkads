@@ -35,9 +35,18 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST'){
 }
 ?>
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" prefix="http://ogp.me/ns/website#">
 <head>
     <meta charset="UTF-8">
+    <meta property="og:title" content="Chile WorkAds" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="<?=__URL__?>logof.png" />
+    <meta property="og:url" content="<?=__URL__?>" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="2400" />
+    <meta property="og:image:height" content="1260" />
+    <meta name="twitter:card" content="summary_large_image"></meta>
+    <meta property="og:description" content="Chile WorkAds, la red social para publicitarte" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="<?=__URL__?>css/bootstrap.css">
         <script src="<?=__URL__?>js/jquery-3.4.1.min.js"></script>
