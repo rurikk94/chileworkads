@@ -47,19 +47,50 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST'){
         <link rel="stylesheet" href="<?=__URL__?>css/css.css">
         <script src="<?=__URL__?>js/jquery-3.4.1.min.js"></script>
         <script src="<?=__URL__?>js/bootstrap.min.js"></script>
-    <title>Login</title>
+    <title>Login - dev</title>
 </head>
 <body>
 <div class="container">
-  <div class="row">
-      <div class="col-11 col-md-6 mx-auto">
-      <img  src="<?=__URL__?>logow.png" class="img-fluid" alt="logo">
-      </div>
+    <div class="row">
+        <div class="col-11 col-md-8 col-lg-7 mx-auto">
+            <div class="row">
+            <style>
+            @font-face {
+                font-family: Norwester;
+                src: url("./fonts/norwester.otf");
+            }
+            .logo{
+                /* height: 100px; */
+            }
+            .titulo-chile{
+                font-family: "Norwester";
+                /* position: absolute; */
+                /* font-size:  2.5em; */
+                /* bottom: 25%; */
+                /* left: -50px; */
+
+            }
+            .bottom-right {
+                font-family: "Norwester";
+                position: absolute;
+                bottom: 2px;
+                left: 28%;
+            }
+            </style>
+                <div class="col-5 col-sm-3 col-md-3">
+                    <img class="img-fluid" src="<?=__URL__?>logo.svg" alt="logo">
+                </div>
+                <div class="col-6 col-sm-8 col-md-8 my-auto">
+                    <h1 class="titulo-chile">Chile WorkAds</h1>
+                </div>
+            </div>
+            <div class="bottom-right">DEV</div>
+        </div>
     </div>
 </div>
     <div class="container">
     <div class="row">
-        <div class="col-11 col-md-7 col-lg-6 mx-auto">
+        <div class="col-11 col-md-8 col-lg-7 mx-auto">
         <h1>Login</h1>
         <?php isset($modal) ? modal($modal) :'' ?>
         <a name="btn-register" id="btn-register" class="btn btn-primary" href="./register.php" role="button">Registrarse</a>

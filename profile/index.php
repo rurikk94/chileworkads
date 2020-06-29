@@ -72,6 +72,12 @@ if(!isset($_GET["id"])){
                 </div>
             </div>
         <hr>
+        <?php if (!is_null($u->getCV())): ?>
+            <h3>Curriculum Vitae</h3>
+            <iframe src = "<?=__URL__?>js/ViewerJS/#<?=__URL__."uploads/docs/".$u->getCV()?>"
+            width='100%' height='500' allowfullscreen webkitallowfullscreen></iframe>
+        <hr>
+        <?php endif;?>
         <?php if (!is_null($contactoPersona)){ ?>
             <h3>Redes Sociales</h3>
 
@@ -204,16 +210,14 @@ if(!isset($_GET["id"])){
                             </div>
                         </div>
                     </div>
-                    <?php if((is_admin(false)) OR ($u->getId()!=is_login(false))) : ?>
                     <div class="card-footer text-center text-muted">
-                        <?php if($u->getId()!=is_login(false)) : ?>
-                            <i class="btn btn-outline-secondary" onclick="sendReporte('<?=$_GET['id']?>','<?=$r->getId()?>','<?=$resenador->getId()?>');//alert('La reseña ha sido reportada.')//alert(this.getAttribute('resena'))" resena="<?=$r->getId()?>"><small><span class="material-icons">report_problem</span>Reportar</small></i>
+                        <?php if($resenador->getId()!=is_login(false)) : ?>
+                            <i class="btn btn-outline-secondary" onclick="sendReporte('<?=$_GET['id']?>','<?=$r->getId()?>','<?=$resenador->getId()?>');" resena="<?=$r->getId()?>"><small><span class="material-icons">report_problem</span>Reportar</small></i>
                         <?php endif; ?>
-                        <?php if(is_admin(false)) : ?>
+                        <?php if(is_admin(false) OR ($resenador->getId()==is_login(false))) : ?>
                             <i class="btn btn-outline-danger" onclick="eliminarResena('<?=$r->getId()?>')" resena="<?=$r->getId()?>"><small><span class="material-icons">delete</span>Eliminar Reseña</small></i>
                         <?php endif; ?>
                     </div>
-                    <?php endif; ?>
                 </div>
             <?php endforeach; ?>
         <?php } ?>
@@ -229,6 +233,7 @@ if(!isset($_GET["id"])){
     });
 </script>
 
+<?php if($u->getId()!=is_login(false)) : ?>
 <script src="../js/ckeditor.js"></script>
 	<script>InlineEditor
 			.create( document.querySelector( '#editor' ), {
@@ -336,9 +341,8 @@ if(!isset($_GET["id"])){
             },
         };
     </script>
-    <script src="<?=__URL__?>js/sendreporte.js"></script>
-    <?php if(is_admin(false))  : ?>
+<?php endif; ?>
     <script>const __URL__ = '<?=__URL__?>';</script>
-    <script src="<?=__URL__?>js/reporte.js"></script>
-    <?php endif; ?>
+    <script src="<?=__URL__?>js/resena.js"></script>
+    <script src="<?=__URL__?>js/sendreporte.js"></script>
 </html>

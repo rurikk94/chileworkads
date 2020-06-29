@@ -84,6 +84,27 @@
                     </form>
                 </td>
             </tr>
+            <tr>
+                <td colspan="2">
+                <div class="row">
+                  <div class="col-2 text-center">
+                  <?php if(!is_null($u->getCV())) : ?>
+                    <a href="<?=__URL__."uploads/docs/".$u->getCV()?>" target="_blank" rel="noopener noreferrer">
+                      <img src="<?=__URL__."uploads/images/pdf.svg"?>" class="img-fluid" style="height: 100px" alt="">
+                      <p>CV.pdf</p>
+                    </a>
+                    <button id="delcv" onclick="borrarPDF()" class="btn btn-danger btn-block">Borrar CV</button>
+                  <?php endif;?>
+                  </div>
+                  <div class="col-10">
+                      <script src="<?=__URL__?>js/dropzone-5.7.0/dist/dropzone.js"></script>
+                      <link rel="stylesheet" href="<?=__URL__?>js/dropzone-5.7.0/dist/dropzone.css">
+                      <form action="../api/subirCV.php" id="weasubir" class="dropzone"></form>
+                      <button id="addcv" onclick="guardarPDF()" class="btn btn-success btn-block">Guardar CV</button>
+                  </div>
+                </div>
+                </td>
+            </tr>
             <tr><td>Descripción</td>
             <td>
               <div class="editor" style="background-color:powderblue;">
@@ -410,5 +431,68 @@
         // ...
     } );
 	</script>
+  <script>
+      var pdf = [];
+      Dropzone.options.weasubir = {
+      paramName: "file", // The name that will be used to transfer the file
+      acceptedFiles: "application/pdf",
+      maxFiles: 1,
+      dictDefaultMessage: "Suba un PDF",
+      maxFilesize: 25, // MB
+      success: function(file, response) {
+          //alert(response);
+          pdf.push(response);
+
+          },
+      };
+
+      function guardarPDF(){
+        if(pdf.length>0){
+          const data = new FormData();
+          data.append('pdf', pdf);
+          fetch('../api/agregarCVPerfil.php', {
+            method: 'POST',
+            body: data
+          }).then(function(response) {
+              if(response.ok) {
+                  console.log('Respuesta OK');
+                  alert("Archivo subido");
+                  location.reload();
+              } else {
+                  console.log('Respuesta de red OK pero respuesta HTTP no OK');
+              }
+          })
+          .catch(function(error) {
+          console.log('Hubo un problema con la petición Fetch:' + error.message);
+          });
+        }else{
+          alert("Debe subir algún PDF");
+        }
+
+      }
+  </script>
+  <?php if(!is_null($u->getCV())) : ?>
+  <script>
+  function borrarPDF(){
+    fetch('../api/borrarCVPerfil.php', {
+            method: 'POST'
+          }).then(function(response) {
+              if(response.ok) {
+                  console.log('Respuesta OK');
+                  alert("Archivo Eliminado");
+                  location.reload();
+              } else {
+                  console.log('Respuesta de red OK pero respuesta HTTP no OK');
+              }
+          })
+          .catch(function(error) {
+          console.log('Hubo un problema con la petición Fetch:' + error.message);
+          });
+        }
+
+  </script>
+
+  <?php endif; ?>
+
 </body>
 </html>

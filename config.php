@@ -6,8 +6,8 @@
     $site_config['PDO']['pass']="chileworkads";
     $site_config['SITE']['base']=dirname(__FILE__).'/';
     $site_config['SITE']['URL']="http://".$_SERVER["HTTP_HOST"]."/";
-    if($_SERVER["HTTP_HOST"]!="chileworkads.ddns.net")
-        $site_config['SITE']['URL']="http://".$_SERVER["HTTP_HOST"]."/chileworkads/";
+    if($_SERVER["HTTP_HOST"]!="devchileworkads.ddns.net")
+        $site_config['SITE']['URL']="http://".$_SERVER["HTTP_HOST"]."/dev.chileworkads/";
 
 
     $email_config['host']="smtp.gmail.com";

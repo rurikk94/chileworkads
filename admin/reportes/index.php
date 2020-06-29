@@ -93,5 +93,6 @@
     </div>
     <script>const __URL__ = '<?=__URL__?>';</script>
     <script src="<?=__URL__?>js/reporte.js"></script>
+    <script src="<?=__URL__?>js/resena.js"></script>
 </body>
 </html>

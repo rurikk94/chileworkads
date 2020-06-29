@@ -1,7 +1,36 @@
 <div class="container">
   <div class="row">
       <div class="col-sm-9 col-md-4 mx-auto mt-1">
-      <img  src="<?=__URL__?>logow.png" class="img-fluid" alt="logo">
+        <style>
+        @font-face {
+          font-family: Norwester;
+          src: url("<?=__URL__?>fonts/norwester.otf");
+        }
+        .logo{
+          height: 80px;
+        }
+        .titulo-chile{
+          font-family: "Norwester";
+          /* position: absolute;
+          font-size:  2.65em;
+          bottom: 8px;
+          left: 100px; */
+
+        }
+        .bottom-right {
+          font-family: "Norwester";
+          position: absolute;
+          bottom: 1px;
+          left: 28%;
+        }
+        </style>
+        <div class="row">
+          <div class="col-3">
+            <img class="logo" src="<?=__URL__?>logo.svg" class="img-fluid" alt="logo">
+          </div>
+          <div class="col-9"><h1 class="titulo-chile">Chile WorkAds </h1></div>
+        </div>
+        <div class="bottom-right">DEV</div>
       </div>
     <div class="col-sm-9 col-md-8 mt-3 mx-auto">
     <?php if (is_login(false)){ ?>

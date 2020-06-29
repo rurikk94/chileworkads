@@ -15,6 +15,7 @@ class User
     private $rut;
     private $foto_file;
     private $bio;
+    private $file_cv;
 
     private $admin;
     private $tipo_user;
@@ -40,6 +41,7 @@ class User
         {
             $user = $user[0];
             $this->bio = $user["bio"];
+            $this->file_cv = $user["file_cv"];
             $this->id = $user["id"];
             $this->nombres = $user["nombres"];
             $this->correo = $user["correo"];
@@ -63,6 +65,12 @@ class User
     }
     public function getId(){
         return $this->id;
+    }
+    public function setCV($file_cv){
+        $this->file_cv =$file_cv;
+    }
+    public function getCV(){
+        return $this->file_cv;
     }
     public function setBio($bio){
         $this->bio =$bio;
@@ -171,6 +179,15 @@ class User
         $this->setId($conn->validar($this->getId()));
         $this->setTipoUser($conn->validar($tipo));
         return $conn->update("UPDATE persona SET admin = '".$this->getTipoUser()."' WHERE id=".$this->getId());
+    }
+    public function actualizarCV(){
+        $conn = new Db();
+        $this->setCV($this->getCV());
+        $this->setId($conn->validar($this->getId()));
+        if(!is_null($this->getCV()))
+            return $conn->update("UPDATE persona SET file_cv = '".$this->getCV()."' WHERE id=".$this->getId());
+        else
+            return $conn->update("UPDATE persona SET file_cv = NULL WHERE id=".$this->getId());
     }
     public function getCalificacion(){
         $conn = new Db();
