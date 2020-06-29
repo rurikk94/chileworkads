@@ -14,20 +14,29 @@ private $imagenes;
         int $quien_resena_id = null,
         string $texto = null,
         int $evaluacion = null,
-        string $imagenes = null
+        string $imagenes = null,
+        string $id = null,
+        string $fecha = null,
+        string $enable = null
     )
     {
+    if (
+        is_null($trabajador_id) OR
+        is_null($quien_resena_id) OR
+        is_null($texto) OR
+        is_null($evaluacion)
+        ) {
+            throw new Exception('Datos NULL.');
+        }
 
-        if(!is_null($trabajador_id))
         $this->setTrabajador_id($trabajador_id);
-        if(!is_null($quien_resena_id))
         $this->setQuien_resena_id($quien_resena_id);
-        if(!is_null($texto))
         $this->setTexto($texto);
-        if(!is_null($evaluacion))
         $this->setEvaluacion($evaluacion);
-        if(!is_null($imagenes))
         $this->setImagenes($imagenes);
+        $this->setId($id);
+        $this->setFecha($fecha);
+        $this->setEnable($enable);
     }
 
     public function __toString(): string
@@ -42,7 +51,10 @@ private $imagenes;
             $array["quien_resena_id"],
             $array["texto"],
             $array["evaluacion"],
-            $array["imagenes"]
+            $array["imagenes"],
+            $array["id"],
+            $array["fecha"],
+            $array["enable"]
         );
     }
 

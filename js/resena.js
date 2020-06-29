@@ -9,6 +9,7 @@ function eliminarResena(id_resena) {
             success: function(result) {
                 console.log(result);
                 alert("Resena Eliminada");
+                document.getElementById("resena_" + id_resena).remove();
             },
             error: function(xhr) {
                 //alert("Ocurrió un error: " + xhr.status + " " + xhr.statusText);
