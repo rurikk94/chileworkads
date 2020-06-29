@@ -1,5 +1,5 @@
 <?php
-
+	$site_config["version"]="DEV";
     $site_config['PDO']['server']="127.0.0.1";
     $site_config['PDO']['db']="chileworkads";
     $site_config['PDO']['user']="chileworkads";

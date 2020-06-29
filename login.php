@@ -1,4 +1,5 @@
-<?php require_once("./functions.php"); ?>
+<?php require_once("./functions.php");
+global $site_config; ?>
 <?php is_login(false); ?>
 <?php
 
@@ -47,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST'){
         <link rel="stylesheet" href="<?=__URL__?>css/css.css">
         <script src="<?=__URL__?>js/jquery-3.4.1.min.js"></script>
         <script src="<?=__URL__?>js/bootstrap.min.js"></script>
-    <title>Login - dev</title>
+    <title>Login</title>
 </head>
 <body>
 <div class="container">
@@ -84,7 +85,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST'){
                     <h1 class="titulo-chile">Chile WorkAds</h1>
                 </div>
             </div>
-            <div class="bottom-right">DEV</div>
+            <div class="bottom-right"><?=$site_config["version"]?></div>
         </div>
     </div>
 </div>

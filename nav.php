@@ -1,4 +1,5 @@
 <div class="container">
+<?php global $site_config; ?>
   <div class="row">
       <div class="col-sm-9 col-md-4 mx-auto mt-1">
         <style>
@@ -30,7 +31,7 @@
           </div>
           <div class="col-9"><h1 class="titulo-chile">Chile WorkAds </h1></div>
         </div>
-        <div class="bottom-right">DEV</div>
+        <div class="bottom-right"><?=$site_config["version"]?></div>
       </div>
     <div class="col-sm-9 col-md-8 mt-3 mx-auto">
     <?php if (is_login(false)){ ?>
