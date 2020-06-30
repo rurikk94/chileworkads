@@ -57,7 +57,9 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST'){
         <link rel="stylesheet" href="<?=__URL__?>css/css.css">
         <script src="<?=__URL__?>js/jquery-3.4.1.min.js"></script>
         <script src="<?=__URL__?>js/bootstrap.min.js"></script>
-    <title>Login</title>
+        <meta name="keywords" content="Chile WorkAds, Chile, WorkAds"/>
+        <meta name="description" content="Chile WorkAds, la red social para publicitarte"/>
+    <title>Login - Chile WorkAds</title>
 </head>
 <body>
 <div class="container">

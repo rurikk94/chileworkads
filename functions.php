@@ -252,8 +252,11 @@ function resenas($filtro=[])
     }
     $query.=" ORDER BY r.fecha DESC";
     $resenas = [];
-    foreach ($conn->seleccionar($query) as $d) {
-        array_push($resenas,Resena::fromArray($d));
+    $resenas = $conn->seleccionar($query);
+    if (!is_null($resenas) AND sizeof($resenas)){
+        foreach ($resenas  as $d) {
+            array_push($resenas,Resena::fromArray($d));
+        }
     }
     return $resenas;
     //return $conn->seleccionarObject($query,"Resena",[]);
