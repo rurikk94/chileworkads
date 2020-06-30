@@ -31,6 +31,7 @@ if(!isset($_GET["id"])){
         <link rel="stylesheet" href="<?=__URL__?>css/material-icons.css">
         <link rel="stylesheet" href="<?=__URL__?>css/css.css">
         <link rel="stylesheet" href="<?=__URL__?>css/cards.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.4.0/bootbox.min.js"></script>
         <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script> -->
     <title>Usuario</title>
@@ -291,17 +292,17 @@ if(!isset($_GET["id"])){
         const val = document.getElementById("estrellasResena").value
         if(val==0)
             {
-                alert("Por favor califique a la persona.");
+                bootbox.alert("Por favor califique a la persona.");
                 return;
             }
         if(resena=="")
             {
-                alert("Por favor escriba una reseña.");
+                bootbox.alert("Por favor escriba una reseña.");
                 return;
             }
         if(imagenes.length==0)
             {
-                alert("Por favor escriba suba algunas imagenes.");
+                bootbox.alert("Por favor escriba suba algunas imagenes.");
                 return;
             }
         const trabajador = <?=$_GET["id"]?>
@@ -317,7 +318,7 @@ if(!isset($_GET["id"])){
         }).then(function(response) {
             if(response.ok) {
                 console.log('Respuesta OK');
-                alert("Reseña publicada");
+                bootbox.alert("Reseña publicada");
                 location.reload();
             } else {
                 console.log('Respuesta de red OK pero respuesta HTTP no OK');
@@ -336,7 +337,6 @@ if(!isset($_GET["id"])){
         dictDefaultMessage: "Subas las imagenes",
         maxFilesize: 10, // MB
         success: function(file, response) {
-            //alert(response);
             imagenes.push(response);
             },
         };

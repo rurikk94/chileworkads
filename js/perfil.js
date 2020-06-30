@@ -53,7 +53,7 @@ function guardarContactos() {
         data: { redes: redes },
         success: function(result) {
             console.log(result);
-            alert("Redes de Contato guardadas");
+            bootbox.alert("Redes de Contato guardadas");
         },
         error: function(xhr) {
             //alert("Ocurrió un error: " + xhr.status + " " + xhr.statusText);
@@ -81,7 +81,7 @@ function guardarOficios() {
         data: { oficios: oficios },
         success: function(result) {
             console.log(result);
-            alert("Oficios guardadas");
+            bootbox.alert("Oficios guardadas");
         },
         error: function(xhr) {
             //alert("Ocurrió un error: " + xhr.status + " " + xhr.statusText);

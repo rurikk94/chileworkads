@@ -16,6 +16,7 @@
         <link rel="stylesheet" href="<?=__URL__?>css/css.css">
         <script src="<?=__URL__?>js/jquery-3.4.1.min.js"></script>
         <script src="<?=__URL__?>js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.4.0/bootbox.min.js"></script>
     <title>Admin</title>
 </head>
 <body>

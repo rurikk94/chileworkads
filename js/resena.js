@@ -8,7 +8,7 @@ function eliminarResena(id_resena) {
             data: { id: id_resena },
             success: function(result) {
                 console.log(result);
-                alert("Resena Eliminada");
+                bootbox.alert("Resena Eliminada");
                 document.getElementById("resena_" + id_resena).remove();
             },
             error: function(xhr) {

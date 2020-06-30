@@ -57,6 +57,7 @@
         <script src="<?=__URL__?>js/validarRUT.js"></script>
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.4.0/bootbox.min.js"></script>
     <title>Editar Mi Perfil</title>
 </head>
 <body>
@@ -418,7 +419,7 @@
         }).then(function(response) {
             if(response.ok) {
                 console.log('Respuesta OK');
-                alert("Bio guardada");
+                bootbox.alert("Bio guardada");
                 location.reload();
             } else {
                 console.log('Respuesta de red OK pero respuesta HTTP no OK');
@@ -456,7 +457,7 @@
           }).then(function(response) {
               if(response.ok) {
                   console.log('Respuesta OK');
-                  alert("Archivo subido");
+                  bootbox.alert("Archivo subido");
                   location.reload();
               } else {
                   console.log('Respuesta de red OK pero respuesta HTTP no OK');
@@ -466,7 +467,7 @@
           console.log('Hubo un problema con la petición Fetch:' + error.message);
           });
         }else{
-          alert("Debe subir algún PDF");
+          bootbox.alert("Debe subir algún PDF");
         }
 
       }
@@ -479,7 +480,7 @@
           }).then(function(response) {
               if(response.ok) {
                   console.log('Respuesta OK');
-                  alert("Archivo Eliminado");
+                  bootbox.alert("Archivo Eliminado");
                   location.reload();
               } else {
                   console.log('Respuesta de red OK pero respuesta HTTP no OK');

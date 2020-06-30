@@ -6,7 +6,6 @@ require_once('constantes.php');  //están las variables del sitio ($site_config)
 
 require 'vendor/autoload.php';
 
-
 function is_login($r=true){
     comenzar_sesion();
     if(!isset($_SESSION['user'])){  //si no existen datos de sesion
