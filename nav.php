@@ -36,13 +36,13 @@
     <div class="col-sm-9 col-md-8 mt-3 mx-auto">
     <?php if (is_login(false)){ ?>
       <div class="row d-flex justify-content-center">
-        <a name="btn-inicio" id="btn-inicio" class="btn btn-warning" href="<?=__URL__?>" role="button"><span class="material-icons">home</span> Inicio</a>
-        <?php if (is_admin(false)){ ?>
-          <a name="btn-admin" id="btn-admin" class="btn btn-primary" href="<?=__URL__?>admin/index.php" role="button"><span class="material-icons">settings</span> Admin</a>
-        <?php } ?>
-        <a name="btn-perfil" id="btn-perfil" class="btn btn-success" href="<?=__URL__?>profile/index.php?id=<?=is_login(false)?>" role="button"><span class="material-icons"> account_box</span> Mi Perfil</a>
-        <a name="btn-favorites" id="btn-favorites" class="btn btn-info" href="<?=__URL__?>favorites/index.php" role="button"><span class="material-icons"> favorite</span>Favoritos</a>
-        <a name="btn-logout" id="btn-logout" class="btn btn-primary" href="<?=__URL__?>logout.php" role="button"><i class="material-icons">login</i> Salir</a>
+        <a name="btn-inicio" id="btn-inicio" class="btn btn-warning" href="<?=__URL__?>" role="button" data-toggle="tooltip" title="Ir a Inicio"><i class="material-icons">home</i> <span class="d-none d-md-inline">Inicio</span></a>
+        <?php if (is_admin(false)): ?>
+          <a name="btn-admin" id="btn-admin" class="btn btn-primary" href="<?=__URL__?>admin/index.php" role="button" data-toggle="tooltip" title="Ir a Administración"><span class="material-icons">settings</span>  <span class="d-none d-md-inline">Admin</span></a>
+        <?php endif; ?>
+        <a name="btn-perfil" id="btn-perfil" class="btn btn-success" href="<?=__URL__?>profile/index.php?id=<?=is_login(false)?>" role="button"  data-toggle="tooltip" title="Ver a Mi Perfil"><span class="material-icons"> account_box</span>  <span class="d-none d-md-inline">Mi Perfil</span></a>
+        <a name="btn-favorites" id="btn-favorites" class="btn btn-info" href="<?=__URL__?>favorites/index.php" role="button"  data-toggle="tooltip" title="Ver a Favoritos"><span class="material-icons"> favorite</span>  <span class="d-none d-md-inline">Favoritos</span></a>
+        <a name="btn-logout" id="btn-logout" class="btn btn-primary" href="<?=__URL__?>logout.php" role="button"  data-toggle="tooltip" title="Cerrar Sesión"><i class="material-icons">login</i>  <span class="d-none d-md-inline">Salir</span></a>
       </div>
     <?php } ?>
     </div>
@@ -59,7 +59,7 @@
       <div class="input-group mb-3">
         <input autocomplete="off" onclick="$('.lista_filtros').show('fast');" type="text" name="buscar" id="buscar" class="form-control" placeholder="Buscar Trabajador, Oficio" aria-label="Buscar Trabajador, Oficio" aria-describedby="basic-addon2">
         <div class="input-group-append">
-          <button data-toggle="tooltip" title="Busca según datos ingresados y filtros establecidos" class="btn btn-success" type="submit"><span class="material-icons md-18">search</span>Buscar</button>
+          <button data-toggle="tooltip" title="Busca según datos ingresados y filtros establecidos" class="btn btn-success" type="submit"><span class="material-icons md-18">search</span> <span class="d-none d-md-inline">Buscar</span></button>
         </div>
       </div>
     </div>

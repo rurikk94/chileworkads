@@ -103,7 +103,7 @@ if (($_SERVER["REQUEST_METHOD"] == 'GET') && isset($_GET)){
                                             <img style="max-width:180px;max-height:180px" class="card-img-top rounded-circle  mx-auto" src="<?=__URL__."uploads/images/".$u->getFoto_file()?>" alt="Card image cap">
                                             </div>
                                     <div class="row">
-                                            <a  data-toggle="tooltip" title="Visitas su perfil." name="btn-detail" id="btn-detail" class="btn btn-info  mx-auto" href="./profile/index.php?id=<?=$u->getId()?>" role="button">Perfil</a>
+                                            <a  data-toggle="tooltip" title="Ver su perfil." name="btn-detail" id="btn-detail" class="btn btn-info mt-2 btn-block mx-auto" href="./profile/index.php?id=<?=$u->getId()?>" role="button"><span class="material-icons">account_circle</span> <span class="d-none d-md-inline">Perfil</span></a>
                                         </div>
                                     </div>
                                 <div class="col-6 m-2">
