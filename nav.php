@@ -36,12 +36,12 @@
     <div class="col-sm-9 col-md-8 mt-3 mx-auto">
     <?php if (is_login(false)){ ?>
       <div class="row d-flex justify-content-center">
-        <a name="btn-inicio" id="btn-inicio" class="btn btn-warning" href="<?=__URL__?>" role="button">Inicio</a>
+        <a name="btn-inicio" id="btn-inicio" class="btn btn-warning" href="<?=__URL__?>" role="button"><span class="material-icons">home</span> Inicio</a>
         <?php if (is_admin(false)){ ?>
-          <a name="btn-admin" id="btn-admin" class="btn btn-primary" href="<?=__URL__?>admin/index.php" role="button">Admin</a>
+          <a name="btn-admin" id="btn-admin" class="btn btn-primary" href="<?=__URL__?>admin/index.php" role="button"><span class="material-icons">settings</span> Admin</a>
         <?php } ?>
-        <a name="btn-perfil" id="btn-perfil" class="btn btn-success" href="<?=__URL__?>profile/index.php?id=<?=is_login(false)?>" role="button">Mi Perfil</a>
-        <a name="btn-favorites" id="btn-favorites" class="btn btn-info" href="<?=__URL__?>favorites/index.php" role="button">Favoritos</a>
+        <a name="btn-perfil" id="btn-perfil" class="btn btn-success" href="<?=__URL__?>profile/index.php?id=<?=is_login(false)?>" role="button"><span class="material-icons"> account_box</span> Mi Perfil</a>
+        <a name="btn-favorites" id="btn-favorites" class="btn btn-info" href="<?=__URL__?>favorites/index.php" role="button"><span class="material-icons"> favorite</span>Favoritos</a>
         <a name="btn-logout" id="btn-logout" class="btn btn-primary" href="<?=__URL__?>logout.php" role="button"><i class="material-icons">login</i> Salir</a>
       </div>
     <?php } ?>
