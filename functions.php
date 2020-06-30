@@ -251,14 +251,14 @@ function resenas($filtro=[])
         $query.=" AND r.evaluacion >= ". $conn->validar($filtro["evaluacion"]);
     }
     $query.=" ORDER BY r.fecha DESC";
-    $resenas = [];
+    $array = [];
     $resenas = $conn->seleccionar($query);
     if (!is_null($resenas) AND sizeof($resenas)){
         foreach ($resenas  as $d) {
-            array_push($resenas,Resena::fromArray($d));
+            array_push($array,Resena::fromArray($d));
         }
     }
-    return $resenas;
+    return $array;
     //return $conn->seleccionarObject($query,"Resena",[]);
 }
 function filtroOficios($filtro=[]){
