@@ -26,32 +26,40 @@ $regiones = $conn->seleccionar("SELECT * FROM region;"); */
 <body>
 <?php require_once(__BASE__."nav.php");?>
     <div class="container">
-        <h1>Regiones</h1>
-        <a name="btn-volver" id="btn-add" class="btn btn-primary" href="../index.php" role="button">Volver</a>
-        <a name="btn-add" id="btn-add" class="btn btn-success" href="./add.php" role="button">Agregar</a>
-        <?php if (is_null($regiones)): ?>
-            <h2>No hay Regiones</h2>
-        <?php else: ?>
-        <div class="table-responsive">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Region</th>
-                        <th>Opciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                <?php foreach($regiones as $r) : ?>
-                    <tr>
-                        <td><?=$r->getNombreRegion()?></td>
-                        <td><a name="btn-mod" id="btn-mod" class="btn btn-primary" href="./edit.php?id=<?=$r->getId()?>" role="button">Modificar</a>
-                        <a name="btn-del" id="btn-del" class="btn btn-danger" onclick="return confirm('¿Está seguro?')" href="./delete.php?id=<?=$r->getId()?>" role="button">Eliminar</a></td>
-                    </tr>
-                <?php endforeach; ?>
-                </tbody>
-            </table>
+    <?php echo adminmenu("regiones"); ?>
+                <a name="btn-add" id="btn-add" class="btn btn-success" href="./add.php" role="button">Agregar</a>
+                <?php if (is_null($regiones)): ?>
+                    <h2>No hay Regiones</h2>
+                <?php else: ?>
+                <input id="myInput" class="form-control" type="text" placeholder="Buscar Región...">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Region</th>
+                                <th>Opciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="myTable">
+                        <?php foreach($regiones as $r) : ?>
+                            <tr>
+                                <td><?=$r->getNombreRegion()?></td>
+                                <td><div class="btn-group-vertical" role="group" aria-label="Opciones"><a name="btn-mod" id="btn-mod" class="btn btn-primary" href="./edit.php?id=<?=$r->getId()?>" role="button">Modificar</a>
+                                <a name="btn-del" id="btn-del" class="btn btn-danger" onclick="return confirm('¿Está seguro?')" href="./delete.php?id=<?=$r->getId()?>" role="button">Eliminar</a></div></td>
+                            </tr>
+                        <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+                <?php endif; ?>
+            </div>
         </div>
-        <?php endif; ?>
+        <script>
+            $('.nav-link').hover(function() {
+            $(this).toggleClass('bg-info text-light');
+            });
+        </script>
+        <script src="<?=__URL__?>js/tablafiltro.js"></script>
     </div>
 </body>
 </html>

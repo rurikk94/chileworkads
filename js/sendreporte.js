@@ -1,4 +1,4 @@
-function sendReporte(perfil, id_resena, quien_resena) {
+function sendReporte(perfil, id_resena, quien_resena, url) {
     bootbox.prompt({
         title: 'Ingrese un motivo del reporte:',
         centerVertical: true,
@@ -7,7 +7,7 @@ function sendReporte(perfil, id_resena, quien_resena) {
             if (motivo != null) {
                 //bootbox.alert(motivo)
                 $.ajax({
-                    url: __URL__ + 'api/recibirReporte.php',
+                    url: url + 'api/recibirReporte.php',
                     type: 'GET',
                     data: {
                         id: id_resena,

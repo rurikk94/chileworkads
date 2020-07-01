@@ -4,7 +4,7 @@
 
 if (($_SERVER["REQUEST_METHOD"] == 'GET') && isset($_GET["id"])){
 $red=redesSociales($filtros=["id"=>$_GET["id"]]);
-$r=$red[0];
+$red=$red[0];
 }
 if (($_SERVER["REQUEST_METHOD"] == 'POST')){
   if (isset($_FILES["photo"]) && ($_FILES["photo"]["size"]>0)){
@@ -41,44 +41,49 @@ if (($_SERVER["REQUEST_METHOD"] == 'POST')){
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="<?=__URL__?>css/material-icons.css">
         <link rel="stylesheet" href="<?=__URL__?>css/css.css">
-        <script src="<?=__URL__?>js/jquery-3.4.1.min.js"></script>
-        <script src="<?=__URL__?>js/bootstrap.min.js"></script>
     <title>Admin</title>
 </head>
 <body>
 <?php require_once(__BASE__."nav.php");?>
     <div class="container">
-        <h1>Editar Red Social</h1>
-        <a name="btn-volver" id="btn-add" class="btn btn-primary" href="../index.php" role="button">Volver</a>
+    <?php echo adminmenu("redes"); ?>
+        <a name="btn-volver" id="btn-add" class="btn btn-primary" href="./index.php" role="button">Volver</a>
 
-<form method="post" enctype="multipart/form-data">
-<input type="hidden" name="id" value="<?=$_GET["id"]?>">
-  <div class="row">
-    <div class="col-2">
-      <img style="width:130px" src="<?=__URL__."uploads/images/".$r->getIcono_red()?>" class="img-fluid rounded-circle img-thumbnail w-100">
-    </div>
-    <div class="col-10">
-    <div class="custom-file">
-        <input type="file" class="custom-file-input" name="photo" id="photo">
-        <label class="custom-file-label" for="customFile">Cambiar Imagen</label>
-    </div>
-    </div>
-    </div>
-    <div class="form-group">
-      <label for="nombre">Nombre Red Social</label>
-      <input type="text"
-        class="form-control" name="nombre" id="nombre" aria-describedby="helpId" placeholder="Nombre de la red" required value="<?=$r->getNombre_red()?>">
-      <small id="helpId" class="form-text text-muted">Nombre de la red</small>
-    </div>
-    <div class="form-group">
-      <label for="url">Url</label>
-      <input type="text"
-        class="form-control" name="url" id="url" aria-describedby="helpId" placeholder="Url de la red" required value="<?=$r->getUrl_red()?>">
-      <small id="helpId" class="form-text text-muted">Url de la Red</small>
-    </div>
+              <form method="post" enctype="multipart/form-data">
+              <input type="hidden" name="id" value="<?=$_GET["id"]?>">
+                <div class="row">
+                  <div class="col-2">
+                    <img style="width:130px" src="<?=__URL__."uploads/images/".$red->getIcono_red()?>" class="img-fluid rounded-circle img-thumbnail w-100">
+                  </div>
+                  <div class="col-10">
+                  <div class="custom-file">
+                      <input type="file" class="custom-file-input" name="photo" id="photo">
+                      <label class="custom-file-label" for="customFile">Cambiar Imagen</label>
+                  </div>
+                  </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="nombre">Nombre Red Social</label>
+                    <input type="text"
+                      class="form-control" name="nombre" id="nombre" aria-describedby="helpId" placeholder="Nombre de la red" required value="<?=$red->getNombre_red()?>">
+                    <small id="helpId" class="form-text text-muted">Nombre de la red</small>
+                  </div>
+                  <div class="form-group">
+                    <label for="url">Url</label>
+                    <input type="text"
+                      class="form-control" name="url" id="url" aria-describedby="helpId" placeholder="Url de la red" required value="<?=$red->getUrl_red()?>">
+                    <small id="helpId" class="form-text text-muted">Url de la Red</small>
+                  </div>
 
-    <input type="submit" value="Editar" name="submit">
-</form>
+                  <input type="submit" value="Editar" name="submit">
+              </form>
+            </div>
+        </div>
+        <script>
+            $('.nav-link').hover(function() {
+            $(this).toggleClass('bg-info text-light');
+            });
+        </script>
 </div>
 
 </body>

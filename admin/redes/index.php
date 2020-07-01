@@ -2,9 +2,6 @@
 <?php is_admin();?>
 <?php
 $redes = redesSociales();
-/*
-$conn = new Db();
-$regiones = $conn->seleccionar("SELECT * FROM region;"); */
 
 ?>
 <!DOCTYPE html>
@@ -19,20 +16,19 @@ $regiones = $conn->seleccionar("SELECT * FROM region;"); */
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="<?=__URL__?>css/material-icons.css">
         <link rel="stylesheet" href="<?=__URL__?>css/css.css">
-        <script src="<?=__URL__?>js/jquery-3.4.1.min.js"></script>
-        <script src="<?=__URL__?>js/bootstrap.min.js"></script>
     <title>Admin</title>
 </head>
 <body>
 <?php require_once(__BASE__."nav.php");?>
     <div class="container">
-        <h1>Redes Sociales</h1>
+    <?php echo adminmenu("redes"); ?>
         <a name="btn-volver" id="btn-add" class="btn btn-primary" href="../index.php" role="button">Volver</a>
         <a name="btn-add" id="btn-add" class="btn btn-success" href="./add.php" role="button">Agregar</a>
         <?php if (is_null($redes)): ?>
             <h2>No hay Redes Sociales</h2>
         <?php else: ?>
-        <div class="table-responsive">
+            <input id="myInput" class="form-control" type="text" placeholder="Buscar Red Social...">
+            <div class="table-responsive">
             <table class="table">
                 <thead>
                     <tr>
@@ -42,20 +38,28 @@ $regiones = $conn->seleccionar("SELECT * FROM region;"); */
                         <th>Opciones</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="myTable">
                 <?php foreach($redes as $c) : ?>
                     <tr>
                         <td><img src="<?=__URL__."uploads/images/".$c->getIcono_red()?>" class="img-fluid rounded w-100" alt=""></td>
                         <td><?=$c->getNombre_red()?></td>
                         <td><?=$c->getUrl_red()?></td>
-                        <td><a name="btn-mod" id="btn-mod" class="btn btn-primary" href="./edit.php?id=<?=$c->getId()?>" role="button">Modificar</a>
-                        <a name="btn-del" id="btn-del" class="btn btn-danger" onclick="return confirm('¿Está seguro?')" href="./delete.php?id=<?=$c->getId()?>" role="button">Eliminar</a></td>
+                        <td><div class="btn-group-vertical" role="group" aria-label="Opciones"><a name="btn-mod" id="btn-mod" class="btn btn-primary" href="./edit.php?id=<?=$c->getId()?>" role="button">Modificar</a>
+                        <a name="btn-del" id="btn-del" class="btn btn-danger" onclick="return confirm('¿Está seguro?')" href="./delete.php?id=<?=$c->getId()?>" role="button">Eliminar</a></div></td>
                     </tr>
                 <?php endforeach; ?>
                 </tbody>
             </table>
         </div>
         <?php endif; ?>
+            </div>
+        </div>
+        <script>
+            $('.nav-link').hover(function() {
+            $(this).toggleClass('bg-info text-light');
+            });
+        </script>
+        <script src="<?=__URL__?>js/tablafiltro.js"></script>
     </div>
 </body>
 </html>

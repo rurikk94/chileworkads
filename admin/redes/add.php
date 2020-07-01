@@ -38,36 +38,41 @@ if (isset($_FILES["photo"])){
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="<?=__URL__?>css/material-icons.css">
         <link rel="stylesheet" href="<?=__URL__?>css/css.css">
-        <script src="<?=__URL__?>js/jquery-3.4.1.min.js"></script>
-        <script src="<?=__URL__?>js/bootstrap.min.js"></script>
     <title>Admin</title>
 </head>
 <body>
 <?php require_once(__BASE__."nav.php");?>
     <div class="container">
-        <h1>Agregar Oficio</h1>
-        <a name="btn-volver" id="btn-add" class="btn btn-primary" href="../index.php" role="button">Volver</a>
+    <?php echo adminmenu("redes"); ?>
+                 <a name="btn-volver" id="btn-add" class="btn btn-primary" href="./index.php" role="button">Volver</a>
 
-<form method="post" enctype="multipart/form-data">
-    <div class="custom-file">
-        <input type="file" class="custom-file-input" name="photo" id="photo" required>
-        <label class="custom-file-label" for="customFile">Subir Foto</label>
-    </div>
-    <div class="form-group">
-      <label for="nombre">Nombre Oficio</label>
-      <input type="text"
-        class="form-control" name="nombre" id="nombre" aria-describedby="helpId" placeholder="Nombre de la red" required>
-      <small id="helpId" class="form-text text-muted">Nombre del Oficio</small>
-    </div>
-    <div class="form-group">
-      <label for="url">URL</label>
-      <input type="text"
-        class="form-control" name="url" id="url" aria-describedby="helpId" placeholder="Url de la red" required>
-      <small id="helpId" class="form-text text-muted">url del Oficio</small>
-    </div>
+                <form method="post" enctype="multipart/form-data">
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" name="photo" id="photo" required>
+                        <label class="custom-file-label" for="customFile">Subir Foto</label>
+                    </div>
+                    <div class="form-group">
+                    <label for="nombre">Nombre Oficio</label>
+                    <input type="text"
+                        class="form-control" name="nombre" id="nombre" aria-describedby="helpId" placeholder="Nombre de la red" required>
+                    <small id="helpId" class="form-text text-muted">Nombre del Oficio</small>
+                    </div>
+                    <div class="form-group">
+                    <label for="url">URL</label>
+                    <input type="text"
+                        class="form-control" name="url" id="url" aria-describedby="helpId" placeholder="Url de la red" required>
+                    <small id="helpId" class="form-text text-muted">url del Oficio</small>
+                    </div>
 
-    <input type="submit" value="Agregar" name="submit">
-</form>
+                    <input type="submit" value="Agregar" name="submit">
+                </form>
+            </div>
+        </div>
+        <script>
+            $('.nav-link').hover(function() {
+            $(this).toggleClass('bg-info text-light');
+            });
+        </script>
 </div>
 
 </body>

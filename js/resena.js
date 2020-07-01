@@ -1,9 +1,9 @@
-function eliminarResena(id_resena) {
+function eliminarResena(id_resena, url) {
 
     var r = confirm("¿Está seguro de eliminarla?");
     if (r == true) {
         $.ajax({
-            url: __URL__ + 'api/eliminarResena.php',
+            url: url + 'api/eliminarResena.php',
             type: 'GET',
             data: { id: id_resena },
             success: function(result) {

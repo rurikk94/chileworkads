@@ -1,7 +1,7 @@
-function cambiarEstadoReporte(id_resena) {
+function cambiarEstadoReporte(id_resena, url) {
 
     $.ajax({
-        url: __URL__ + 'api/cambiarEstadoReporte.php',
+        url: url + 'api/cambiarEstadoReporte.php',
         type: 'GET',
         data: { id: id_resena },
         success: function(result) {

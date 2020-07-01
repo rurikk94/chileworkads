@@ -52,8 +52,6 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="<?=__URL__?>css/material-icons.css">
         <link rel="stylesheet" href="<?=__URL__?>css/css.css">
-        <script src="<?=__URL__?>js/jquery-3.4.1.min.js"></script>
-        <script src="<?=__URL__?>js/bootstrap.min.js"></script>
         <script src="<?=__URL__?>js/validarRUT.js"></script>
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>

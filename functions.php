@@ -454,3 +454,48 @@ function reportesO($filtros=[]){
     $conn = new Db();
     return $conn->seleccionarObject(reportesQuery($filtros),"Reporte");
 }
+function adminmenu($active){
+
+    $menu = '<style>.breadcrumb {
+        background-color: white;
+        font-size: 1em;
+    }</style>
+        <div class="row d-md-none">
+            <div class="col-sm-10">
+                <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="'.__URL__.'">Inicio</a></li>
+                    <li class="breadcrumb-item"><a href="'.__URL__.'admin">Administrar</a></li>
+                    <li class="breadcrumb-item"><a href="'.__URL__.'admin/'.$active.'/">'.ucwords($active).'</a></li>
+                </ol>
+                </nav>
+            </div>
+        </div>';
+    $menu .= '
+<div class="row">
+    <div class="col-sm-12 col-md-4 col-lg-3">
+    <h1>Administrar</h1>
+        <div class="nav flex-column nav-pills d-none d-md-flex" id="v-pills-tab" role="tablist" aria-orientation="vertical">';
+                $menu .= '<a class="nav-link'.(($active=="usuarios")?' active':'').'" href="'.__URL__.'admin/usuarios/index.php#title" role="button">Usuarios</a>';
+                $menu .= '<a class="nav-link'.(($active=="regiones")?' active':'').'" href="'.__URL__.'admin/regiones/index.php#title" role="button">Regiones</a>';
+                $menu .= '<a class="nav-link'.(($active=="comunas")?' active':'').'" href="'.__URL__.'admin/comunas/index.php#title" role="button">Comunas</a>';
+                $menu .= '<a class="nav-link'.(($active=="ciudades")?' active':'').'" href="'.__URL__.'admin/ciudades/index.php#title" role="button">Ciudades</a>';
+                $menu .= '<a class="nav-link'.(($active=="poblaciones")?' active':'').'" href="'.__URL__.'admin/poblaciones/index.php#title" role="button">Poblaciones</a>';
+                $menu .= '<a class="nav-link'.(($active=="oficios")?' active':'').'" href="'.__URL__.'admin/oficios/index.php#title" role="button">Oficios</a>';
+                $menu .= '<a class="nav-link'.(($active=="redes")?' active':'').'" href="'.__URL__.'admin/redes/index.php#title" role="button">Redes Sociales</a>';
+                $menu .= '<a class="nav-link'.(($active=="reportes")?' active':'').'" href="'.__URL__.'admin/reportes/index.php#title" role="button">Reportes</a>';
+            $menu .= '</div>
+        </div>
+        <div class="col-sm-12 col-md-8 col-lg-9">';
+        $menu .= '<h3 id="title">';
+        $array = explode ('/',$_SERVER["SCRIPT_FILENAME"]);
+        if(array_search('add.php', $array))
+            $menu .= 'Agregar ';
+        if(array_search('edit.php', $array))
+            $menu .= 'Editar ';
+        if(array_search('detail.php', $array))
+            $menu .= 'Detalle ';
+        $menu .= ucwords($active).'</h3>';
+
+        return $menu;
+}

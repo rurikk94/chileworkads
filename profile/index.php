@@ -25,15 +25,8 @@ if(!isset($_GET["id"])){
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="<?=__URL__?>css/material-icons.css">
         <link rel="stylesheet" href="<?=__URL__?>css/css.css">
-        <script src="<?=__URL__?>js/jquery-3.4.1.min.js"></script>
-        <script src="<?=__URL__?>js/bootstrap.min.js"></script>
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <link rel="stylesheet" href="<?=__URL__?>css/material-icons.css">
-        <link rel="stylesheet" href="<?=__URL__?>css/css.css">
         <link rel="stylesheet" href="<?=__URL__?>css/cards.css">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.4.0/bootbox.min.js"></script>
-        <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script> -->
+        <script src="<?=__URL__?>js/bootbox.min.js"></script>
     <title>Usuario</title>
 </head>
 <body>
@@ -213,10 +206,10 @@ if(!isset($_GET["id"])){
                     </div>
                     <div class="card-footer text-center text-muted">
                         <?php if($resenador->getId()!=is_login(false)) : ?>
-                            <i class="btn btn-outline-secondary" onclick="sendReporte('<?=$_GET['id']?>','<?=$r->getId()?>','<?=$resenador->getId()?>');" resena="<?=$r->getId()?>"><small><span class="material-icons">report_problem</span>Reportar</small></i>
+                            <i class="btn btn-outline-secondary" onclick="sendReporte('<?=$_GET['id']?>','<?=$r->getId()?>','<?=$resenador->getId()?>','<?=__URL__?>');" resena="<?=$r->getId()?>"><small><span class="material-icons">report_problem</span>Reportar</small></i>
                         <?php endif; ?>
                         <?php if(is_admin(false) OR ($resenador->getId()==is_login(false))) : ?>
-                            <i class="btn btn-outline-danger" onclick="eliminarResena('<?=$r->getId()?>')" resena="<?=$r->getId()?>"><small><span class="material-icons">delete</span>Eliminar Reseña</small></i>
+                            <i class="btn btn-outline-danger" onclick="eliminarResena('<?=$r->getId()?>','<?=__URL__?>')" resena="<?=$r->getId()?>"><small><span class="material-icons">delete</span>Eliminar Reseña</small></i>
                         <?php endif; ?>
                     </div>
                 </div>
@@ -342,7 +335,6 @@ if(!isset($_GET["id"])){
         };
     </script>
 <?php endif; ?>
-    <script>const __URL__ = '<?=__URL__?>';</script>
     <script src="<?=__URL__?>js/resena.js"></script>
     <script src="<?=__URL__?>js/sendreporte.js"></script>
 </html>

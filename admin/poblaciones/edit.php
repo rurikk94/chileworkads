@@ -27,14 +27,12 @@ if (($_SERVER["REQUEST_METHOD"] == 'POST') && isset($_POST["id"]) && isset($_POS
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="<?=__URL__?>css/material-icons.css">
         <link rel="stylesheet" href="<?=__URL__?>css/css.css">
-        <script src="<?=__URL__?>js/jquery-3.4.1.min.js"></script>
-        <script src="<?=__URL__?>js/bootstrap.min.js"></script>
     <title>Admin</title>
 </head>
 <body>
 <?php require_once(__BASE__."nav.php");?>
     <div class="container">
-    <h1>Editar Ciudad</h1>
+    <?php echo adminmenu("poblaciones"); ?>
         <a name="btn-add" id="btn-add" class="btn btn-primary" href="./index.php" role="button">Volver</a>
         <form method="post">
         <input type="hidden" name="id" value="<?=$poblacion[0]->getId()?>">
@@ -57,6 +55,13 @@ if (($_SERVER["REQUEST_METHOD"] == 'POST') && isset($_POST["id"]) && isset($_POS
         </div>
         <button type="submit" class="btn btn-success">Editar</button>
         </form>
+            </div>
+        </div>
+        <script>
+            $('.nav-link').hover(function() {
+            $(this).toggleClass('bg-info text-light');
+            });
+        </script>
     </div>
 </body>
 </html>
