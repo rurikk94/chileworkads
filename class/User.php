@@ -163,6 +163,11 @@ class User
         $this->setId($conn->validar($this->getId()));
         return $conn->update("UPDATE persona SET enable ='0' WHERE id=".$this->getId());
     }
+    public function setLast_login(){
+        $conn = new Db();
+        $this->setId($conn->validar($this->getId()));
+        return $conn->update("UPDATE persona SET last_login = now() WHERE id=".$this->getId());
+    }
     public function eliminar(){
         $conn = new Db();
         $this->setId($conn->validar($this->getId()));

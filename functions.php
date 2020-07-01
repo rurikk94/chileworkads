@@ -70,6 +70,7 @@ function login($user,$pass){
             if($u->getEnable()!='2')
                 return 1;
             comenzar_sesion();
+            $u->setLast_login();
             $_SESSION["user"]=$u;
             return $u;
     }
