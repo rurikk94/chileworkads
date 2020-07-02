@@ -5,34 +5,42 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST'){
 
     $nombre = $_POST["nombre"];
     $correo=$_POST["correo"];
-    $contrasena=$_POST["contrasena"];
-    $contrasenaCodificada = password_hash($contrasena, PASSWORD_DEFAULT);
-
-    $conn = new Db();
-    $insertado = $conn->insertar(
-        "INSERT INTO  persona (nombres,foto_file,correo,contrasena)
-        VALUES ('$nombre','user.png','$correo','$contrasenaCodificada');"
-    );
-
-    if (!$insertado)
+    $u = usuarios(["correo"=>$correo]);
+    if(sizeof($u)!=0)
     {
-        header("Location: error.php");
-        exit();
+        $modal["titulo"]="Error al registrar cuenta.";
+        $modal["cuerpo"]="El email ya está registrado.";
+    }else{
+
+        $contrasena=$_POST["contrasena"];
+        $contrasenaCodificada = password_hash($contrasena, PASSWORD_DEFAULT);
+
+        $conn = new Db();
+        $insertado = $conn->insertar(
+            "INSERT INTO  persona (nombres,foto_file,correo,contrasena)
+            VALUES ('$nombre','user.png','$correo','$contrasenaCodificada');"
+        );
+
+        if (!$insertado)
+        {
+            header("Location: error.php");
+            exit();
+        }
+            $message["byEmail"]='ChileWorkAds@gmail.com';
+            $message["byName"]='ChileWorkAds';
+            $message["forEmail"]=$correo;
+            $message["forName"]=$nombre;
+            $message["Titulo"]='ChileWorkAds Bienvenido!';
+            $message["Body"]="<html><body>"
+            ."<h1>ChileWorkAds</h1>"
+            ."<p>Gracias por registrarse.</p><br/>"
+            ."<p>Siga el siguiente link para activar la cuenta.</p><br/>"
+            ."<a href='". __URL__."activar.php?id=".$contrasenaCodificada."'>ACTIVAR CUENTA</a>"
+            ."</body></html>";
+        if(enviar_email($message)){
+            $modal["titulo"]="Registrar Cuenta.";
+            $modal["cuerpo"]="Se ha enviado un email a su correo.";}
     }
-        $message["byEmail"]='ChileWorkAds@gmail.com';
-        $message["byName"]='ChileWorkAds';
-        $message["forEmail"]=$correo;
-        $message["forName"]=$nombre;
-        $message["Titulo"]='ChileWorkAds Bienvenido!';
-        $message["Body"]="<html><body>"
-        ."<h1>ChileWorkAds</h1>"
-        ."<p>Gracias por registrarse.</p><br/>"
-        ."<p>Siga el siguiente link para activar la cuenta.</p><br/>"
-        ."<a href='". __URL__."activar.php?id=".$contrasenaCodificada."'>ACTIVAR CUENTA</a>"
-        ."</body></html>";
-    if(enviar_email($message)){
-        $modal["titulo"]="Registrar Cuenta.";
-        $modal["cuerpo"]="Se ha enviado un email a su correo.";}
 }
 ?>
 <!DOCTYPE html>

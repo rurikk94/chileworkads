@@ -308,6 +308,10 @@ function usuariosQuery($filtro=[]){
     {
         $query.=" AND p.nombres = ". $conn->validar($filtro["nombre"]);
     }
+    if(isset($filtro["correo"]) && !is_null($filtro["correo"]))
+    {
+        $query.=" AND p.correo LIKE '". $conn->validar($filtro["correo"]) . "' ";
+    }
     if(isset($filtro["region"]) && !is_null($filtro["region"]))
     {
         $query.=" AND co.id_region = ". $conn->validar($filtro["region"]);
