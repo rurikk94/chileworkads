@@ -10,13 +10,17 @@
         .logo{
           height: 80px;
         }
+        .logo:hover{
+          -webkit-filter: drop-shadow( 5px 5px 3px grey);
+          filter: drop-shadow(  5px 5px 3px grey);
+        }
         .titulo-chile{
           font-family: "Norwester";
-          /* position: absolute;
-          font-size:  2.65em;
-          bottom: 8px;
-          left: 100px; */
+          color: black;
 
+        }
+        .titulo-chile:hover {
+          text-shadow: 2px 2px 5px grey;
         }
         .bottom-right {
           font-family: "Norwester";
@@ -25,35 +29,37 @@
           left: 28%;
         }
         </style>
-        <div class="row">
-          <div class="col-3">
-            <img class="logo" src="<?=__URL__?>logo.svg" class="img-fluid" alt="logo">
+        <a tabindex="1" href="<?=__URL__?>">
+          <div class="row">
+            <div class="col-3">
+              <img class="logo" src="<?=__URL__?>logo.svg" class="img-fluid" alt="logo">
+            </div>
+            <div class="col-9"><h1 class="titulo-chile">Chile WorkAds </h1></div>
           </div>
-          <div class="col-9"><h1 class="titulo-chile">Chile WorkAds </h1></div>
-        </div>
+        </a>
         <div class="bottom-right"><?=$site_config["version"]?></div>
       </div>
     <div class="col-sm-9 col-md-8 mt-3 mx-auto">
     <?php if (is_login(false)){ ?>
       <div class="row d-flex justify-content-center">
-        <a name="btn-inicio" id="btn-inicio" class="btn btn-warning" href="<?=__URL__?>" role="button" data-toggle="tooltip" title="Ir a Inicio"><i class="material-icons">home</i> <span class="d-none d-md-inline">Inicio</span></a>
+        <a tabindex="2" name="btn-inicio" id="btn-inicio" class="btn btn-warning" href="<?=__URL__?>" role="button" data-toggle="tooltip" title="Ir a Inicio"><i class="material-icons">home</i> <span class="d-none d-md-inline">Inicio</span></a>
         <?php if (is_admin(false)): ?>
-          <a name="btn-admin" id="btn-admin" class="btn btn-primary" href="<?=__URL__?>admin/index.php" role="button" data-toggle="tooltip" title="Ir a Administración"><span class="material-icons">settings</span>  <span class="d-none d-md-inline">Admin</span></a>
+          <a tabindex="3" name="btn-admin" id="btn-admin" class="btn btn-primary" href="<?=__URL__?>admin/index.php" role="button" data-toggle="tooltip" title="Ir a Administración"><span class="material-icons">settings</span>  <span class="d-none d-md-inline">Admin</span></a>
         <?php endif; ?>
-        <a name="btn-perfil" id="btn-perfil" class="btn btn-success" href="<?=__URL__?>profile/index.php?id=<?=is_login(false)?>" role="button"  data-toggle="tooltip" title="Ver a Mi Perfil"><span class="material-icons"> account_box</span>  <span class="d-none d-md-inline">Mi Perfil</span></a>
-        <a name="btn-favorites" id="btn-favorites" class="btn btn-info" href="<?=__URL__?>favorites/index.php" role="button"  data-toggle="tooltip" title="Ver a Favoritos"><span class="material-icons"> favorite</span>  <span class="d-none d-md-inline">Favoritos</span></a>
-        <a name="btn-logout" id="btn-logout" class="btn btn-primary" href="<?=__URL__?>logout.php" role="button"  data-toggle="tooltip" title="Cerrar Sesión"><i class="material-icons">login</i>  <span class="d-none d-md-inline">Salir</span></a>
+        <a tabindex="4" name="btn-perfil" id="btn-perfil" class="btn btn-success" href="<?=__URL__?>profile/index.php?id=<?=is_login(false)?>" role="button"  data-toggle="tooltip" title="Ver a Mi Perfil"><span class="material-icons"> account_box</span>  <span class="d-none d-md-inline">Mi Perfil</span></a>
+        <a tabindex="5" name="btn-favorites" id="btn-favorites" class="btn btn-info" href="<?=__URL__?>favorites/index.php" role="button"  data-toggle="tooltip" title="Ver a Favoritos"><span class="material-icons"> favorite</span>  <span class="d-none d-md-inline">Favoritos</span></a>
+        <a tabindex="6" name="btn-logout" id="btn-logout" class="btn btn-primary" href="<?=__URL__?>logout.php" role="button"  data-toggle="tooltip" title="Cerrar Sesión"><i class="material-icons">login</i>  <span class="d-none d-md-inline">Salir</span></a>
       </div>
     <?php } ?>
     </div>
   </div>
 
   <?php if (is_login(false)){ ?>
-  <form action="./index.php" method="get">
+  <form action="<?=__URL__?>index.php" method="get">
   <input type="hidden" name="page" value="1">
   <div class="row mt-2">
       <div class="col-sm-9 col-md-4 mx-auto">
-        <h3 id="titlefiltros" class="btn btn-block btn-outline-primary lista_filtros" data-toggle="tooltip" title="Oculta los filtros" onclick="$('.lista_filtros').hide('fast');"><span class="material-icons">filter_alt</span>Filtros</h3>
+        <h3 tabindex="7" id="titlefiltros" class="btn btn-block btn-outline-primary" data-toggle="tooltip" title="Oculta los filtros" onclick="$('.lista_filtros').toggle('fast');"><span class="material-icons">filter_alt</span>Filtros</h3>
       </div>
     <div class="col-sm-9 col-md-8 mx-auto">
       <div class="input-group mb-3">
@@ -137,6 +143,12 @@
 </div>
 <script>
   $(".lista_filtros").hide();
+  $('#titlefiltros').keypress(function(event){
+    var keycode = (event.keyCode ? event.keyCode : event.which);
+    if(keycode == '13'){
+      $(".lista_filtros").toggle("fast");
+    }
+});
 </script>
 <script>
   const URL = "<?=__URL__?>";
