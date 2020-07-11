@@ -25,6 +25,7 @@ class Db
     }
     private function conectar(){
             $this->_connection = mysqli_connect($this->_host, $this->_username, $this->_password, $this->_database);
+            $this->_connection->set_charset('utf8');
             if (!$this->_connection)
             {
                 echo("Connection failed: " . mysqli_connect_error());
